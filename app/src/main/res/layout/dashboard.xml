@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/header_layout"
+        layout="@layout/header_layout" />
+
+    <TextView
+        android:id="@+id/tv_login_username_dashboard_xml"
+        style="@style/navi_text_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:textSize="@dimen/_8sdp"
+        android:layout_alignTop="@+id/imgbtn_logout_dashboard_xml"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:text="Welcome : " />
+
+    <ImageButton
+        android:id="@+id/imgbtn_logout_dashboard_xml"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/header_layout"
+        android:layout_marginBottom="0dp"
+        android:layout_marginEnd="20dp"
+        android:contentDescription="@null"
+        android:src="@drawable/logout" />
+
+    <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/grid_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/footer_layout"
+        android:layout_below="@+id/imgbtn_logout_dashboard_xml"
+        android:layout_margin="5dp"
+        android:columnWidth="5dp"
+        android:gravity="center"
+        android:horizontalSpacing="0dp"
+        android:numColumns="2"
+        android:stretchMode="columnWidth" />
+
+    <include
+        android:id="@+id/footer_layout"
+        layout="@layout/footer_layout" />
+
+</RelativeLayout>

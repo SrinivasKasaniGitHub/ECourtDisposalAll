@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="title_bar_height">100dp</dimen>
+    <dimen name="margin_left">20dp</dimen>
+    <dimen name="margin_right">20dp</dimen>
+    <!--LOGIN START-->
+
+    <!--Header -->
+    <dimen name="logo_marginTop">30dp</dimen>
+    <dimen name="header_logo_size">65dp</dimen>
+    <dimen name="header_text_size">22sp</dimen>
+    <dimen name="logo_size">150dp</dimen>
+
+    <dimen name="_40sdp">40.00dp</dimen>
+    <dimen name="_410sdp">410.00dp</dimen>
+
+    <!--Card View Layt-->
+    <dimen name="lyt_padding_LR">55dp</dimen>
+    <dimen name="IP_marginTop">45dp</dimen>
+    <dimen name="Ip_Icon">40dp</dimen>
+    <dimen name="Ip_settings_font">20sp</dimen>
+    <dimen name="edittext_font">20sp</dimen>
+    <dimen name="edtTxtLyt_font">18sp</dimen>
+    <dimen name="IP_Set_EdtTxtsize">18sp</dimen>
+    <dimen name="spinner_size">70dp</dimen>
+
+
+    <dimen name="DD_Txt_font">17sp</dimen>
+    <dimen name="DD_Txt_FS_font">16dp</dimen>
+    <dimen name="DD_RADIO_Txt_font">15dp</dimen>
+
+
+
+    <!--footer-->
+    <dimen name="footer_size">55dp</dimen>
+    <dimen name="footer_text_size">16sp</dimen>
+
+    <!--LOGIN END-->
+
+    <!--Custom Adapter lyt-->
+    <dimen name="DD_MOB_ADHAR_FONT">22sp</dimen>
+
+    <!--multiple screen time-->
+    <dimen name="login_layout_margin_top">75dp</dimen>
+    <dimen name="login_logo_width">175dp</dimen>
+    <dimen name="login_logo_height">175dp</dimen>
+    <dimen name="login_logo_margin_bottom">10dp</dimen>
+    <dimen name="login_header_padding">10dp</dimen>
+    <dimen name="login_et_margin_top">10dp</dimen>
+    <dimen name="login_btn_margin_top">20dp</dimen>
+    <dimen name="login_btn_width">175dp</dimen>
+    <dimen name="content_padding">15dp</dimen>
+    <dimen name="header_img_size">75dp</dimen>
+    <dimen name="dashboard_img_size">75dp</dimen>
+    <dimen name="header_name_margin_start">40dp</dimen>
+
+    <dimen name="header_icon_size">75dp</dimen>
+
+</resources>

@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/header_layout"
+        layout="@layout/header_layout" />
+
+    <include
+        android:id="@+id/footer_layout"
+        layout="@layout/footer_layout" />
+
+    <LinearLayout
+        android:id="@+id/rl_dp_report_type_xml"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header_layout"
+        android:baselineAligned="false"
+        android:padding="20dp"
+        android:weightSum="2">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/cust_text_style_Label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/offence_from_date"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/DD_Txt_font" />
+
+            <Button
+                android:id="@+id/btn_date_offence_Form"
+                style="@style/dd_custom_blue_btn_style"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:padding="7dp"
+                android:text="@string/select_date" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/cust_text_style_Label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/offence_to_date"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/DD_Txt_font" />
+
+            <Button
+                android:id="@+id/btn_date_offence_To"
+                style="@style/dd_custom_blue_btn_style"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:padding="7dp"
+                android:text="@string/select_date" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_CC_getdetails"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl_dp_report_type_xml"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/background"
+        android:gravity="center"
+        android:text="@string/get"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/footer_layout"
+        android:layout_below="@+id/btn_CC_getdetails"
+        android:layout_marginTop="@dimen/login_layout_margin_top">
+
+        <RelativeLayout
+            android:id="@+id/lyt_TableData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btn_CC_getdetails"
+            android:layout_marginTop="50dp"
+            android:visibility="gone">
+
+            <TableLayout
+                android:id="@+id/table"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <View
+                    style="@style/Divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp" />
+
+                <TableRow
+                    android:id="@+id/tableRow1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#90dedc"
+                    android:weightSum="3">
+
+                    <View
+                        style="@style/Divider"
+                        android:layout_width="2dp"
+                        android:layout_height="match_parent" />
+
+
+                    <TextView
+                        android:id="@+id/textView12"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Cases"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/edittext_font"
+                        android:textStyle="bold" />
+
+                    <View
+                        style="@style/Divider"
+                        android:layout_width="2dp"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:id="@+id/textView13"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="DD "
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/edittext_font"
+                        android:textStyle="bold" />
+
+                    <View
+                        style="@style/Divider"
+                        android:layout_width="2dp"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:id="@+id/textView14"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="ChargeSheet "
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/edittext_font"
+                        android:textStyle="bold" />
+
+                    <View
+                        style="@style/Divider"
+                        android:layout_width="2dp"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:id="@+id/textView15"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="TopViolator"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/edittext_font"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+
+                    <View
+                        style="@style/Divider"
+                        android:layout_width="2dp"
+                        android:layout_height="match_parent" />
+
+
+                </TableRow>
+
+                <View
+                    style="@style/Divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp" />
+
+                <TableRow
+                    android:id="@+id/tableRow2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#daf7f6"
+                    android:gravity="center"
+                    android:weightSum="3">
+
+
+                    <View
+                        style="@style/Divider"
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent" />
+
+
+                    <TextView
+                        android:id="@+id/textView21"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Booked"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/edittext_font"
+                        android:textStyle="bold" />
+
+                    <View
+                        style="@style/Divider"
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:id="@+id/Txt_DD_Booked"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/dd_Bkd"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/edittext_font"
+                        android:textStyle="bold" />
+
+                    <View
+                        style="@style/Divider"
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:id="@+id/Txt_ChgBkd"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/chg_Bkd"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/edittext_font"
+                        android:textStyle="bold" />
+
+                    <View
+                        style="@style/Divider"
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:id="@+id/Txt_TopVltnBkd"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/TopVltn_Bkd"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/edittext_font"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+
+                    <View
+                        style="@style/Divider"
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent" />
+
+
+                </TableRow>
+
+                <View
+                    style="@style/Divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp" />
+
+                <TableRow
+                    android:id="@+id/tableRow3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#daf7f6"
+                    android:gravity="center"
+                    android:weightSum="3">
+
+                    <View
+                        style="@style/Divider"
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent" />
+
+
+                    <TextView
+                        android:id="@+id/textView31"
+                        android:layout_width="0dp"
+                        android:layout_height="75dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Counselling \n not attended "
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/edittext_font"
+                        android:textStyle="bold" />
+
+                    <View
+                        style="@style/Divider"
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="75dp"
+                        android:layout_weight="1"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/Txt_DD_CouncelngNot_Atnd"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/edittext_font"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+
+                    <View
+                        style="@style/Divider"
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:id="@+id/Txt_CHG_CouncelngNot_Atnd"
+                        android:layout_width="0dp"
+                        android:layout_height="75dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/edittext_font"
+                        android:textStyle="bold" />
+
+                    <View
+                        style="@style/Divider"
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:id="@+id/Txt_TV_CouncelngNot_Atnd"
+                        android:layout_width="0dp"
+                        android:layout_height="75dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/edittext_font"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+
+                    <View
+                        style="@style/Divider"
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent" />
+
+
+                </TableRow>
+
+                <View
+                    style="@style/Divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp" />
+
+                <TableRow
+                    android:id="@+id/tableRow4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#daf7f6"
+                    android:gravity="center"
+                    android:weightSum="3">
+
+                    <View
+                        style="@style/Divider"
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:id="@+id/textView41"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Court not attended"
+
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/edittext_font"
+                        android:textStyle="bold" />
+
+                    <View
+                        style="@style/Divider"
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:id="@+id/Txt_DD_CourtNot_Atndg"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/edittext_font"
+                        android:textStyle="bold" />
+
+                    <View
+                        style="@style/Divider"
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:id="@+id/Txt_CHG_CourtNot_Atndg"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/edittext_font"
+                        android:textStyle="bold" />
+
+                    <View
+                        style="@style/Divider"
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:id="@+id/Txt_TV_CourtNot_Atndg"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/edittext_font"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+
+                    <View
+                        style="@style/Divider"
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent" />
+
+
+                </TableRow>
+
+                <View
+                    style="@style/Divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp" />
+
+            </TableLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
