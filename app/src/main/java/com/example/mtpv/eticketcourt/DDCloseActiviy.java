@@ -14,9 +14,13 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -38,6 +42,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
@@ -50,9 +56,11 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.analogics.thermalAPI.Bluetooth_Printer_3inch_ThermalAPI;
 import com.analogics.thermalprinter.AnalogicsThermalPrinter;
 import com.example.mtpv.eticketcourt.service.DBHelper;
 import com.example.mtpv.eticketcourt.service.ServiceHelper;
@@ -169,7 +177,14 @@ public class DDCloseActiviy extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ddclosing);
 
-        loadUiComponents();
+        tv_officer_name = (TextView) findViewById(R.id.officer_Name);
+        tv_officer_name.setText(MainActivity.pidName + "(" + MainActivity.cadreName + ")");
+        //tv_officer_cadre_name = findViewById(R.id.officer_cadre);
+        //tv_officer_cadre_name.setText(MainActivity.cadreName);
+        tv_officer_ps = (TextView) findViewById(R.id.officer_PS);
+        tv_officer_ps.setText(MainActivity.psName);
+        //tv_officer_pid = findViewById(R.id.tv_officer_pid);
+        //tv_officer_pid.setText(MainActivity.user_id);
 
         db = new DBHelper(getApplicationContext());
         getCourtDisNamesFromDB();
@@ -195,6 +210,9 @@ public class DDCloseActiviy extends Activity {
         lytImages = (LinearLayout) findViewById(R.id.lytImages);
         imgView_CourtOrderCopy = (AppCompatImageView) findViewById(R.id.img_CourtCopy);
         imgView_DLCopy = (AppCompatImageView) findViewById(R.id.img_DLCopy);
+        compny_Name = (TextView) findViewById(R.id.CompanyName);
+        Animation marquee = AnimationUtils.loadAnimation(this, R.anim.marquee);
+        compny_Name.startAnimation(marquee);
         et_dp_regno = (EditText) findViewById(R.id.edt_regno_dp_xml);
         edtTxt_STC_No = (EditText) findViewById(R.id.edtTxt_STC_NO);
         edtTxt_FineAmnt = (EditText) findViewById(R.id.edtTxt_FineAmnt);
@@ -813,20 +831,6 @@ public class DDCloseActiviy extends Activity {
 
     }
 
-    private void loadUiComponents() {
-        tv_officer_name = (TextView) findViewById(R.id.officer_Name);
-        tv_officer_name.setText(MainActivity.pidName + "(" + MainActivity.cadreName + ")");
-        //tv_officer_cadre_name = findViewById(R.id.officer_cadre);
-        //tv_officer_cadre_name.setText(MainActivity.cadreName);
-        tv_officer_ps = (TextView)findViewById(R.id.officer_PS);
-        tv_officer_ps.setText(MainActivity.psName);
-        //tv_officer_pid = findViewById(R.id.tv_officer_pid);
-        //tv_officer_pid.setText(MainActivity.user_id);
-        compny_Name = (TextView) findViewById(R.id.CompanyName);
-        Animation marquee = AnimationUtils.loadAnimation(this, R.anim.marquee);
-        compny_Name.startAnimation(marquee);
-    }
-
     public void clearData() {
         edtTxt_FineAmnt.setText("");
         edtTxtConDays.setText("");
@@ -934,18 +938,20 @@ public class DDCloseActiviy extends Activity {
             return null;
         }
 
+        @SuppressWarnings("deprecation")
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             showDialog(PROGRESS_DIALOG);
+//            dd_lyt.setVisibility(View.GONE);
+//            pay_dd_lyt.setVisibility(View.GONE);
         }
 
+        @SuppressWarnings("deprecation")
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-
             removeDialog(PROGRESS_DIALOG);
-
             try {
                 if (null != ServiceHelper.Opdata_Chalana && !ServiceHelper.Opdata_Chalana.equals("NA") &&
                         !"0".equals(ServiceHelper.Opdata_Chalana) && !"1".equals(ServiceHelper.Opdata_Chalana)) {
@@ -964,69 +970,91 @@ public class DDCloseActiviy extends Activity {
     }
 
     public void sucessFull_DialogMSG(String msg) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(DDCloseActiviy.this);
-        builder.setTitle("E-Court");
-        builder.setIcon(R.drawable.logo_hyd);
-        builder.setMessage(msg);
-        builder.setCancelable(false);
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
+        TextView title = new TextView(this);
+        title.setText("Hyderabad E-Ticket");
+        title.setBackgroundColor(Color.BLUE);
+        title.setGravity(Gravity.CENTER);
+        title.setTextColor(Color.WHITE);
+        title.setTextSize(26);
+        title.setTypeface(title.getTypeface(), Typeface.BOLD);
+        title.setCompoundDrawablesWithIntrinsicBounds(R.drawable.dialog_logo, 0, R.drawable.dialog_logo, 0);
+        title.setPadding(20, 0, 20, 0);
+        title.setHeight(70);
+
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DDCloseActiviy.this, AlertDialog.THEME_HOLO_LIGHT);
+        alertDialogBuilder.setCustomTitle(title);
+        alertDialogBuilder.setIcon(R.drawable.dialog_logo);
+        alertDialogBuilder.setMessage(msg);
+        alertDialogBuilder.setCancelable(false);
+        alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // TODO Auto-generated method stub
+//                dd_lyt.setVisibility(View.GONE);
+//                pay_dd_lyt.setVisibility(View.GONE);
+//                et_dp_regno.setText("");
+//                btn_dp_date_selection.setText("Select Date");
                 if (tckt_UPdated_Flag.equals("Y")) {
                     Intent intent = new Intent(getApplicationContext(), DDCloseActiviy.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 } else {
-                    builder.create().dismiss();
+//                    finish();
+                    alertDialogBuilder.create().dismiss();
                 }
+
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
-        AlertDialog alertDialog = builder.create();
+
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+
+        alertDialog.getWindow().getAttributes();
+
+        TextView textView = (TextView) alertDialog.findViewById(android.R.id.message);
+        textView.setTextSize(22);
+        textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
+        textView.setGravity(Gravity.CENTER);
+
+        Button btn = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+        btn.setTextSize(22);
+        btn.setTextColor(Color.WHITE);
+        btn.setTypeface(btn.getTypeface(), Typeface.BOLD);
+        btn.setBackgroundColor(Color.BLUE);
+
     }
 
-    private ProgressDialog progressDialog;
-
     private class Async_getDD_details extends AsyncTask<Void, Void, String> {
-
         @SuppressLint("DefaultLocale")
         @SuppressWarnings("unused")
         @Override
         protected String doInBackground(Void... params) {
-            ServiceHelper.getCourtClosingTicketInfo("" + et_dp_regno.getText().toString().trim().toUpperCase(),
-                    "" + present_date_toSend);
+
+            ServiceHelper.getCourtClosingTicketInfo("" + et_dp_regno.getText().toString().trim().toUpperCase(), "" + present_date_toSend);
+
             return null;
         }
 
+        @SuppressWarnings("deprecation")
         @Override
         protected void onPreExecute() {
+            // TODO Auto-generated method stub
             super.onPreExecute();
-            progressDialog = new ProgressDialog(DDCloseActiviy.this);
-            progressDialog.setTitle(R.string.app_name);
-            progressDialog.setIcon(R.drawable.logo_hyd);
-            progressDialog.setMessage("Please wait...");
-            progressDialog.setCancelable(false);
-            progressDialog.setCanceledOnTouchOutside(true);
-            progressDialog.show();
-
+            showDialog(PROGRESS_DIALOG);
             dd_lyt.setVisibility(View.GONE);
             pay_dd_lyt.setVisibility(View.GONE);
         }
 
+        @SuppressWarnings("deprecation")
         @Override
         protected void onPostExecute(String result) {
+            // TODO Auto-generated method stub
             super.onPostExecute(result);
-
-            //removeDialog(PROGRESS_DIALOG);
-
-            progressDialog.dismiss();
+            removeDialog(PROGRESS_DIALOG);
 
             online_report_status = "";
-
             if (null != ServiceHelper.Opdata_Chalana && !ServiceHelper.Opdata_Chalana.equals("NA")) {
 
                 try {
@@ -1630,12 +1658,12 @@ public class DDCloseActiviy extends Activity {
                     if (options[item].equals("Open Camera")) {
                         if (Build.VERSION.SDK_INT <= 23) {
                             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                            File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+                            File f = new File(Environment.getExternalStorageDirectory(), "temp.jpg");
                             intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
                             startActivityForResult(intent, 1);
                         } else {
                             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                            File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+                            File f = new File(Environment.getExternalStorageDirectory(), "temp.jpg");
                             intent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(DDCloseActiviy.this,
                                     BuildConfig.APPLICATION_ID + ".provider", f));
                             intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -1643,7 +1671,7 @@ public class DDCloseActiviy extends Activity {
                         }
                     } else if (options[item].equals("Choose from Gallery")) {
                         Intent intent = new Intent(Intent.ACTION_PICK,
-                                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                         startActivityForResult(intent, 2);
                     } else if (options[item].equals("Cancel")) {
                         dialog.dismiss();
@@ -1663,12 +1691,12 @@ public class DDCloseActiviy extends Activity {
                     if (options[item].equals("Open Camera")) {
                         if (Build.VERSION.SDK_INT <= 23) {
                             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                            File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+                            File f = new File(Environment.getExternalStorageDirectory(), "temp.jpg");
                             intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
                             startActivityForResult(intent, 1);
                         } else {
                             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                            File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+                            File f = new File(Environment.getExternalStorageDirectory(), "temp.jpg");
                             intent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(DDCloseActiviy.this,
                                     BuildConfig.APPLICATION_ID + ".provider", f));
                             intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -1677,7 +1705,7 @@ public class DDCloseActiviy extends Activity {
                     } else if (options[item].equals("Choose from Gallery")) {
 
                         Intent intent = new Intent(Intent.ACTION_PICK,
-                                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                         startActivityForResult(intent, 2);
                     } else if (options[item].equals("Cancel")) {
                         dialog.dismiss();
@@ -1711,7 +1739,7 @@ public class DDCloseActiviy extends Activity {
                     BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
                     bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(), bitmapOptions);
 
-                    String path = android.os.Environment.getExternalStorageDirectory() + File.separator + "COURTAPP"
+                    String path = Environment.getExternalStorageDirectory() + File.separator + "COURTAPP"
                             + File.separator + current_date;
                     File camerapath = new File(path);
 
@@ -1840,22 +1868,16 @@ public class DDCloseActiviy extends Activity {
     }
 
     private void showToast(String msg) {
-        /*LayoutInflater inflater = getLayoutInflater();
+        Toast toast = Toast.makeText(getApplicationContext(), "" + msg, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        View toastView = toast.getView();
+        ViewGroup group = (ViewGroup) toast.getView();
+        TextView messageTextView = (TextView) group.getChildAt(0);
+        messageTextView.setPadding(20,0,20, 0);
+        messageTextView.setTextSize(getResources().getDimension(R.dimen._10sdp));
 
-        View layout = inflater.inflate(R.layout.custom_toast,
-                (ViewGroup) findViewById(R.id.custom_toast_layout_id));
-
-        // set a message
-        TextView text = (TextView) layout.findViewById(R.id.text);
-        text.setText(msg);
-
-        // Toast...
-        Toast toast = new Toast(getApplicationContext());
-        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-        toast.setDuration(Toast.LENGTH_LONG);
-        toast.setView(layout);
-        toast.show();*/
-        Toast.makeText(this, "" + msg, Toast.LENGTH_LONG).show();
+        toastView.setBackgroundResource(R.drawable.toast_background);
+        toast.show();
     }
 
     public void dateReset() {

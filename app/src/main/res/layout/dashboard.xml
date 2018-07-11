@@ -7,44 +7,146 @@
         android:id="@+id/header_layout"
         layout="@layout/header_layout" />
 
+    <include
+        android:id="@+id/footer_layout"
+        layout="@layout/footer_layout" />
+
+    <ImageButton
+        android:id="@+id/imgbtn_logout_dashboard_xml"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/header_layout"
+        android:layout_marginBottom="0dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="10dp"
+        android:background="@null"
+        android:contentDescription="@null"
+        android:src="@drawable/logout" />
+
     <TextView
         android:id="@+id/tv_login_username_dashboard_xml"
         style="@style/navi_text_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:textSize="@dimen/_8sdp"
         android:layout_alignTop="@+id/imgbtn_logout_dashboard_xml"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:text="Welcome : " />
+        android:text="Welcome" />
 
-    <ImageButton
-        android:id="@+id/imgbtn_logout_dashboard_xml"
-        android:layout_width="@dimen/_25sdp"
-        android:layout_height="@dimen/_25sdp"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/header_layout"
-        android:layout_marginBottom="0dp"
-        android:layout_marginEnd="20dp"
-        android:contentDescription="@null"
-        android:src="@drawable/logout" />
-
-    <GridView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/grid_view"
+    <LinearLayout
+        android:id="@+id/ll_dashbrd1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/footer_layout"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/imgbtn_logout_dashboard_xml"
-        android:layout_margin="5dp"
-        android:columnWidth="5dp"
-        android:gravity="center"
-        android:horizontalSpacing="0dp"
-        android:numColumns="2"
-        android:stretchMode="columnWidth" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="@dimen/_2sdp"
+        android:layout_marginEnd="@dimen/_2sdp"
+        android:weightSum="2">
 
-    <include
-        android:id="@+id/footer_layout"
-        layout="@layout/footer_layout" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_marginEnd="@dimen/_3sdp"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/tv_pending_booked_dashboard_xml"
+                android:layout_width="@dimen/_55sdp"
+                android:layout_height="@dimen/_55sdp"
+                android:src="@drawable/generate_ticket" />
+
+            <TextView
+                style="@style/navi_text_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal|center_vertical"
+
+                android:text="Court/Councelling\nSMS Intimation" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_marginStart="@dimen/_3sdp"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/tv_generateticket_dashboard_xml"
+                android:layout_width="@dimen/_55sdp"
+                android:layout_height="@dimen/_55sdp"
+                android:src="@drawable/spot_challan" />
+
+            <TextView
+                style="@style/navi_text_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="Court-Details\nUpadation" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_dashbrd2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_dashbrd1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="@dimen/_2sdp"
+        android:layout_marginEnd="@dimen/_2sdp"
+        android:weightSum="2">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_marginEnd="@dimen/_3sdp"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/tv_sync_dashboard_xml"
+                android:layout_width="@dimen/_55sdp"
+                android:layout_height="@dimen/_55sdp"
+                android:src="@drawable/generate_ticket" />
+
+            <TextView
+                style="@style/navi_text_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="@string/sync" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_marginStart="@dimen/_3sdp"
+            android:visibility="invisible">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:layout_width="@dimen/_55sdp"
+                android:layout_height="@dimen/_55sdp"
+                android:src="@drawable/spot_challan" />
+
+            <TextView
+                style="@style/navi_text_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="Court-Details \n Upadation" />
+        </LinearLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>

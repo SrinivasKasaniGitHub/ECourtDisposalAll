@@ -4,17 +4,14 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:orientation="vertical"
-    android:background="@drawable/progress_background"
-
-    >
-
+    android:padding="@dimen/_5sdp"
+    android:background="@drawable/progress_background">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="150dp"
         android:gravity="center_horizontal"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -33,8 +30,7 @@
                 android:id="@+id/progres"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                >
+                android:gravity="center">
 
                 <ProgressBar
                     android:id="@+id/progress"
@@ -46,7 +42,6 @@
                     android:indeterminateDrawable="@drawable/custom_progressbar" />
 
             </RelativeLayout>
-
 
         </RelativeLayout>
 

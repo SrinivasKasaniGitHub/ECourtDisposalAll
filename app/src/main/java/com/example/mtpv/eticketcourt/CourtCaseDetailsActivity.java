@@ -32,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mtpv.eticketcourt.Pojos.CasesDetailsPojo;
+import com.example.mtpv.eticketcourt.adapter.CustomAdapter;
 import com.example.mtpv.eticketcourt.adapter.CustomRecyclerViewAdapter;
 import com.example.mtpv.eticketcourt.service.DBHelper;
 import com.example.mtpv.eticketcourt.service.ServiceHelper;
@@ -81,7 +82,6 @@ public class CourtCaseDetailsActivity extends Activity {
     String spinnerAvailblity;
     String sms_key, btn_Txt;
     TextView compny_Name;
-
     ImageView imageView1;
     TextView tv_officer_name, tv_officer_cadre_name, tv_officer_ps, tv_officer_pid;
 
@@ -90,7 +90,14 @@ public class CourtCaseDetailsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_courtcase_details);
 
-        loadUiComponents();
+        tv_officer_name = (TextView) findViewById(R.id.officer_Name);
+        tv_officer_name.setText(MainActivity.pidName + "(" + MainActivity.cadreName + ")");
+        //tv_officer_cadre_name = findViewById(R.id.officer_cadre);
+        //tv_officer_cadre_name.setText(MainActivity.cadreName);
+        tv_officer_ps = (TextView) findViewById(R.id.officer_PS);
+        tv_officer_ps.setText(MainActivity.psName);
+        //tv_officer_pid = findViewById(R.id.tv_officer_pid);
+        //tv_officer_pid.setText(MainActivity.user_id);
 
         recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         btn_Update_Case_Details = (AppCompatButton) findViewById(R.id.btn_Update_CasesDetails);
@@ -99,8 +106,9 @@ public class CourtCaseDetailsActivity extends Activity {
         compny_Name = (TextView) findViewById(R.id.CompanyName);
         Animation marquee = AnimationUtils.loadAnimation(this, R.anim.marquee);
         compny_Name.startAnimation(marquee);
+
         layoutManager = new LinearLayoutManager(getApplicationContext().getApplicationContext());
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this) );
         recyclerView.setHasFixedSize(true);
         db = new DBHelper(getApplicationContext());
         getCourtNamesFromDB();
@@ -203,8 +211,9 @@ public class CourtCaseDetailsActivity extends Activity {
         }*/
 
 
-        CustomRecyclerViewAdapter custom_CourtCase_DetailsAdapter = new CustomRecyclerViewAdapter(this, arrayList_CourtCase_Detilas);
+        CustomRecyclerViewAdapter custom_CourtCase_DetailsAdapter = new CustomRecyclerViewAdapter(this,arrayList_CourtCase_Detilas);
         recyclerView.setAdapter(custom_CourtCase_DetailsAdapter);
+
 
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,
@@ -224,7 +233,7 @@ public class CourtCaseDetailsActivity extends Activity {
                 }
                 for (String mapCourt_Name : paramsCourt_Address.keySet()) {
                     if (selectedCourtName.equals(mapCourt_Name)) {
-                        selectedCourtAddress = "";
+                        selectedCourtAddress="";
                         selectedCourtAddress = paramsCourt_Address.get(mapCourt_Name);
                         break;
                     }
@@ -329,20 +338,6 @@ public class CourtCaseDetailsActivity extends Activity {
         });
     }
 
-    private void loadUiComponents() {
-        tv_officer_name = (TextView) findViewById(R.id.officer_Name);
-        tv_officer_name.setText(MainActivity.pidName + "(" + MainActivity.cadreName + ")");
-        //tv_officer_cadre_name = findViewById(R.id.officer_cadre);
-        //tv_officer_cadre_name.setText(MainActivity.cadreName);
-        tv_officer_ps = (TextView) findViewById(R.id.officer_PS);
-        tv_officer_ps.setText(MainActivity.psName);
-        //tv_officer_pid = findViewById(R.id.tv_officer_pid);
-        //tv_officer_pid.setText(MainActivity.user_id);
-        compny_Name = (TextView) findViewById(R.id.CompanyName);
-        Animation marquee = AnimationUtils.loadAnimation(this, R.anim.marquee);
-        compny_Name.startAnimation(marquee);
-    }
-
     public Boolean isOnline() {
         ConnectivityManager conManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo nwInfo = conManager.getActiveNetworkInfo();
@@ -398,7 +393,7 @@ public class CourtCaseDetailsActivity extends Activity {
 
             if (cursor_courtnames.moveToFirst()) {
                 paramsCourt = new HashMap<String, String>();
-                paramsCourt_Address = new HashMap<>();
+                paramsCourt_Address=new HashMap<>();
                 while (!cursor_courtnames.isAfterLast()) {
                     try {
 
@@ -415,7 +410,7 @@ public class CourtCaseDetailsActivity extends Activity {
             }
         } catch (SQLException e) {
             paramsCourt = new HashMap<>();
-            paramsCourt_Address = new HashMap<>();
+            paramsCourt_Address=new HashMap<>();
             showToast("Please download the Masters");
             e.printStackTrace();
         }
@@ -425,21 +420,16 @@ public class CourtCaseDetailsActivity extends Activity {
     }
 
     private void showToast(String msg) {
-       /* LayoutInflater inflater = getLayoutInflater();
-        View layout = inflater.inflate(R.layout.custom_toast,
-                (ViewGroup) findViewById(R.id.custom_toast_layout_id));
-        // set a message
-        TextView text = (TextView) layout.findViewById(R.id.text);
-        text.setText(msg);
+        Toast toast = Toast.makeText(getApplicationContext(), "" + msg, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        View toastView = toast.getView();
+        ViewGroup group = (ViewGroup) toast.getView();
+        TextView messageTextView = (TextView) group.getChildAt(0);
+        messageTextView.setPadding(20,0,20, 0);
+        messageTextView.setTextSize(getResources().getDimension(R.dimen._10sdp));
 
-        // Toast...
-        Toast toast = new Toast(getApplicationContext());
-        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-        toast.setDuration(Toast.LENGTH_LONG);
-        toast.setView(layout);
-        toast.show();*/
-
-        Toast.makeText(this, "" + msg, Toast.LENGTH_LONG).show();
+        toastView.setBackgroundResource(R.drawable.toast_background);
+        toast.show();
     }
 
     DatePickerDialog.OnDateSetListener councelling_Date_Dialog = new DatePickerDialog.OnDateSetListener() {
