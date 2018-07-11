@@ -220,7 +220,7 @@ public class Dashboard extends Activity implements View.OnClickListener {
             tv_login_username.setText("Welcome : " + MainActivity.arr_logindetails[1]);
         }
 
-        grid =  findViewById(R.id.grid_view);
+        grid = (GridView) findViewById(R.id.grid_view);
         ImageAdapter adapter = new ImageAdapter(getApplicationContext(), module_name, module_image);
         grid.setAdapter(adapter);
         grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -457,13 +457,13 @@ public class Dashboard extends Activity implements View.OnClickListener {
         dialog.setTitle("Download Progress");
         dialog.setCancelable(false);
 
-        TextView text = dialog.findViewById(R.id.tv1);
+        TextView text = (TextView) dialog.findViewById(R.id.tv1);
         text.setText("Downloading file ... ");
-        cur_val = dialog.findViewById(R.id.cur_pg_tv);
+        cur_val = (TextView) dialog.findViewById(R.id.cur_pg_tv);
         cur_val.setText("It may Take Few Minutes.....");
         dialog.show();
 
-        progress = dialog.findViewById(R.id.progress_bar);
+        progress = (ProgressBar) dialog.findViewById(R.id.progress_bar);
         progress.setProgress(0);// initially progress is 0
         progress.setMax(100);
         progress.setIndeterminate(true);
@@ -472,29 +472,29 @@ public class Dashboard extends Activity implements View.OnClickListener {
 
     @SuppressLint("SetTextI18n")
     private void loadUiComponents() {
-        versin_txt = findViewById(R.id.textView2);
-        tv_officer_name = findViewById(R.id.officer_Name);
+        versin_txt = (TextView) findViewById(R.id.textView2);
+        tv_officer_name = (TextView) findViewById(R.id.officer_Name);
         tv_officer_name.setText(MainActivity.pidName + "(" + MainActivity.cadreName + ")");
         //tv_officer_cadre_name = findViewById(R.id.officer_cadre);
         //tv_officer_cadre_name.setText(MainActivity.cadreName);
-        tv_officer_ps = findViewById(R.id.officer_PS);
+        tv_officer_ps = (TextView) findViewById(R.id.officer_PS);
         tv_officer_ps.setText(MainActivity.psName);
         //tv_officer_pid = findViewById(R.id.tv_officer_pid);
         //tv_officer_pid.setText(MainActivity.user_id);
-        compny_Name = findViewById(R.id.CompanyName);
+        compny_Name = (TextView) findViewById(R.id.CompanyName);
         Animation marquee = AnimationUtils.loadAnimation(this, R.anim.marquee);
         compny_Name.startAnimation(marquee);
 
-        tv_login_username = findViewById(R.id.tv_login_username_dashboard_xml);
-        tv_settings = findViewById(R.id.tv_settings_dashboard_xml);
-        tv_sync = findViewById(R.id.tv_sync_dashboard_xml);
+        tv_login_username = (TextView) findViewById(R.id.tv_login_username_dashboard_xml);
+        tv_settings = (TextView) findViewById(R.id.tv_settings_dashboard_xml);
+        tv_sync = (TextView) findViewById(R.id.tv_sync_dashboard_xml);
 
-        aadhaar = findViewById(R.id.aadhaar);
-        echallan = findViewById(R.id.echallan);
-        echallan_reports = findViewById(R.id.echallan_reports);
-        ibtn_logout = findViewById(R.id.imgbtn_logout_dashboard_xml);
+        aadhaar = (ImageView) findViewById(R.id.aadhaar);
+        echallan = (TextView) findViewById(R.id.echallan);
+        echallan_reports = (TextView) findViewById(R.id.echallan_reports);
+        ibtn_logout = (ImageButton) findViewById(R.id.imgbtn_logout_dashboard_xml);
 
-        imageView1 = findViewById(R.id.img_logo);
+        imageView1 = (ImageView) findViewById(R.id.img_logo);
 
         ibtn_logout = (ImageButton) findViewById(R.id.imgbtn_logout_dashboard_xml);
     }
@@ -1001,7 +1001,7 @@ public class Dashboard extends Activity implements View.OnClickListener {
 
                 alertDialog.getWindow().getAttributes();
 
-                TextView textView = alertDialog.findViewById(android.R.id.message);
+                TextView textView = (TextView) alertDialog.findViewById(android.R.id.message);
                 textView.setTextSize(28);
                 textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
                 textView.setGravity(Gravity.CENTER);

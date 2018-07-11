@@ -150,13 +150,13 @@ public class MainActivity extends Activity implements LocationListener {
     }
 
     private void loadUiComponents() {
-        textView2 = findViewById(R.id.textView2);
-        compny_Name = findViewById(R.id.CompanyName);
-        ip_Settings = findViewById(R.id.ip_settings);
-        btn_login = findViewById(R.id.btnlog);
-        et_pid = findViewById(R.id.edtTxt_pid);
-        et_pid_pwd = findViewById(R.id.edtTxt_pwd);
-        progIndicator = findViewById(R.id.progIndicator);
+        textView2 = (TextView) findViewById(R.id.textView2);
+        compny_Name = (AppCompatTextView) findViewById(R.id.CompanyName);
+        ip_Settings = (AppCompatImageView) findViewById(R.id.ip_settings);
+        btn_login = (AppCompatButton) findViewById(R.id.btnlog);
+        et_pid = (AppCompatEditText) findViewById(R.id.edtTxt_pid);
+        et_pid_pwd = (AppCompatEditText) findViewById(R.id.edtTxt_pwd);
+        progIndicator = (AVLoadingIndicatorView) findViewById(R.id.progIndicator);
         Animation marquee = AnimationUtils.loadAnimation(this, R.anim.marquee);
         compny_Name.startAnimation(marquee);
     }

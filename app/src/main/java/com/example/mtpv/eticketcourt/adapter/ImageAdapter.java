@@ -50,8 +50,8 @@ public class ImageAdapter extends BaseAdapter {
             grid = new View(context);
             assert inflater != null;
             grid = inflater.inflate(R.layout.grid_item_layout, null);
-            TextView textView = grid.findViewById(R.id.grid_text);
-            ImageView imageView = grid.findViewById(R.id.grid_image);
+            TextView textView = (TextView) grid.findViewById(R.id.grid_text);
+            ImageView imageView = (ImageView) grid.findViewById(R.id.grid_image);
             textView.setText(name[position]);
             imageView.setImageResource(image[position]);
         } else {

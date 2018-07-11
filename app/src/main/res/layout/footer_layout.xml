@@ -21,7 +21,7 @@
         android:singleLine="true"
         android:text="@string/CompanyName"
         android:textColor="#ffffff"
-        android:textSize="@dimen/footer_text_size"
+        android:textSize="@dimen/_8sdp"
         android:textStyle="bold" />
 
 </RelativeLayout>

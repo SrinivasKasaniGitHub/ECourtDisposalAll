@@ -130,8 +130,8 @@
                     android:layout_marginTop="@dimen/_10sdp"
                     android:background="@drawable/background"
                     android:text="@string/login"
+                    android:textSize="@dimen/_8sdp"
                     android:textColor="@android:color/white"
-                    android:textSize="@dimen/edittext_font"
                     android:textStyle="bold" />
 
             </LinearLayout>

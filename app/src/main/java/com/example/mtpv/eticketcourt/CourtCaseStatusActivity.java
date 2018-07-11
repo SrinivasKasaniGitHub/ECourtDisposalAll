@@ -72,9 +72,7 @@ public class CourtCaseStatusActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_courtcases_status);
-
         loadUiComponents();
-
         cal = Calendar.getInstance();
         present_year = cal.get(Calendar.YEAR);
         present_month = cal.get(Calendar.MONTH);
@@ -250,30 +248,30 @@ public class CourtCaseStatusActivity extends Activity {
 
     @SuppressLint("SetTextI18n")
     private void loadUiComponents() {
-        tv_officer_name = findViewById(R.id.officer_Name);
+        tv_officer_name = (TextView) findViewById(R.id.officer_Name);
         tv_officer_name.setText(MainActivity.pidName + "(" + MainActivity.cadreName + ")");
         //tv_officer_cadre_name = findViewById(R.id.officer_cadre);
         //tv_officer_cadre_name.setText(MainActivity.cadreName);
-        tv_officer_ps = findViewById(R.id.officer_PS);
+        tv_officer_ps = (TextView) findViewById(R.id.officer_PS);
         tv_officer_ps.setText(MainActivity.psName);
         //tv_officer_pid = findViewById(R.id.tv_officer_pid);
         //tv_officer_pid.setText(MainActivity.user_id);
-        compny_Name = findViewById(R.id.CompanyName);
+        compny_Name = (TextView) findViewById(R.id.CompanyName);
         Animation marquee = AnimationUtils.loadAnimation(this, R.anim.marquee);
         compny_Name.startAnimation(marquee);
 
-        btn_offenceDate_From = findViewById(R.id.btn_date_offence_Form);
-        btn_offenceDate_To = findViewById(R.id.btn_date_offence_To);
-        btn_get_details = findViewById(R.id.btn_CC_getdetails);
+        btn_offenceDate_From = (Button) findViewById(R.id.btn_date_offence_Form);
+        btn_offenceDate_To = (Button) findViewById(R.id.btn_date_offence_To);
+        btn_get_details = (Button) findViewById(R.id.btn_CC_getdetails);
 
         scrollView = (ScrollView)findViewById(R.id.scrollView);
-        layout_TbleData = findViewById(R.id.lyt_TableData);
-        Txt_DD_Bkd = findViewById(R.id.Txt_DD_Booked);
-        Txt_DD_CouncelngNot_Atnd = findViewById(R.id.Txt_DD_CouncelngNot_Atnd);
-        Txt_DD_CourtNot_Atnd = findViewById(R.id.Txt_DD_CourtNot_Atndg);
-        Txt_CHG_Bkd = findViewById(R.id.Txt_ChgBkd);
-        Txt_CHG_CouncelngNot_Atnd = findViewById(R.id.Txt_CHG_CouncelngNot_Atnd);
-        Txt_CHG_CourtNot_Atnd = findViewById(R.id.Txt_CHG_CourtNot_Atndg);
+        layout_TbleData = (RelativeLayout) findViewById(R.id.lyt_TableData);
+        Txt_DD_Bkd = (TextView) findViewById(R.id.Txt_DD_Booked);
+        Txt_DD_CouncelngNot_Atnd = (TextView) findViewById(R.id.Txt_DD_CouncelngNot_Atnd);
+        Txt_DD_CourtNot_Atnd = (TextView) findViewById(R.id.Txt_DD_CourtNot_Atndg);
+        Txt_CHG_Bkd = (TextView) findViewById(R.id.Txt_ChgBkd);
+        Txt_CHG_CouncelngNot_Atnd = (TextView) findViewById(R.id.Txt_CHG_CouncelngNot_Atnd);
+        Txt_CHG_CourtNot_Atnd = (TextView) findViewById(R.id.Txt_CHG_CourtNot_Atndg);
     }
 
     public Boolean isOnline() {

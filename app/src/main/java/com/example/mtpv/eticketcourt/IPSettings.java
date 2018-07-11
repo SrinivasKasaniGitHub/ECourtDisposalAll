@@ -61,15 +61,15 @@ public class IPSettings extends Activity implements OnClickListener {
     }
 
     private void loadUiComponents() {
-        rg_live_test =  findViewById(R.id.radioGroup_live_test);
-        rbtn_live =  findViewById(R.id.radioButton_live);
-        rbtn_test =  findViewById(R.id.radioButton_test);
+        rg_live_test = (RadioGroup) findViewById(R.id.radioGroup_live_test);
+        rbtn_live = (RadioButton) findViewById(R.id.radioButton_live);
+        rbtn_test = (RadioButton) findViewById(R.id.radioButton_test);
         rbtn_test.setChecked(true);
 
-        et_service_url =  findViewById(R.id.edt_service_ipsettings_xml);
-        et_ftp_url =  findViewById(R.id.edt_ftpurl_xml);
-        btn_save =  findViewById(R.id.btnsubmit_ipsettings_xml);
-        btn_back_ip =  findViewById(R.id.btnback_ipsettings_xml);
+        et_service_url = (AppCompatEditText) findViewById(R.id.edt_service_ipsettings_xml);
+        et_ftp_url = (AppCompatEditText) findViewById(R.id.edt_ftpurl_xml);
+        btn_save = (AppCompatButton) findViewById(R.id.btnsubmit_ipsettings_xml);
+        btn_back_ip = (AppCompatButton) findViewById(R.id.btnback_ipsettings_xml);
 
         btn_save.setOnClickListener(this);
         btn_back_ip.setOnClickListener(this);

@@ -134,7 +134,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_weight="1"
-            android:textSize="@dimen/_7sdp"
+            android:textSize="@dimen/_8sdp"
             android:background="@drawable/background"
             android:text="Update"
             android:textColor="@color/white"

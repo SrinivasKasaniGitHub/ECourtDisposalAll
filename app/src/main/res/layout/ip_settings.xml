@@ -133,9 +133,9 @@
                     android:background="@drawable/background"
                     android:fontFamily="sans-serif"
                     android:padding="5dp"
+                    android:textSize="@dimen/_8sdp"
                     android:text="@string/back"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/edittext_font"
                     android:textStyle="bold" />
 
                 <android.support.v7.widget.AppCompatButton
@@ -147,9 +147,9 @@
                     android:background="@drawable/background"
                     android:fontFamily="sans-serif"
                     android:padding="5dp"
+                    android:textSize="@dimen/_8sdp"
                     android:text="@string/save"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/edittext_font"
                     android:textStyle="bold" />
             </LinearLayout>
 
