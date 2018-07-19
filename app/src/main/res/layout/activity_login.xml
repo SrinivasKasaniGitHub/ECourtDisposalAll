@@ -97,7 +97,7 @@
                         android:id="@+id/edtTxt_pid"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Username/PID"
+                        android:hint="Username / PID"
                         android:inputType="number"
                         android:maxLines="1"
                         android:singleLine="true"

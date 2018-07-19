@@ -49,6 +49,8 @@ import com.example.mtpv.eticketcourt.service.ServiceHelper;
 import com.example.mtpv.eticketcourt.service.PidSecEncrypt;
 import com.wang.avi.AVLoadingIndicatorView;
 
+import examples.Main;
+
 public class MainActivity extends Activity implements LocationListener {
     ImageView ip_Settings;
     TextView compny_Name;
@@ -135,7 +137,7 @@ public class MainActivity extends Activity implements LocationListener {
                 new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent_ipSettings = new Intent(getApplicationContext(), IPSettings.class);
+                Intent intent_ipSettings = new Intent(MainActivity.this, IPSettings.class);
                 startActivity(intent_ipSettings);
             }
         });
@@ -405,7 +407,7 @@ public class MainActivity extends Activity implements LocationListener {
                     editors.putString("CASHLESS_FLAG", cashless_flg);
                     editors.putString("MOBILE_NO_FLAG", mobileNo_flg);
                     editors.apply();
-                    startActivity(new Intent(getApplicationContext(), Dashboard.class));
+                    startActivity(new Intent(MainActivity.this, Dashboard.class));
                     finish();
                 }
             } else {

@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatEditText;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -38,14 +40,14 @@ public class IPSettings extends Activity implements OnClickListener {
 
     //Connecting_sunilsys
     //private String local_network_url = "http://125.16.1.70:8080/eTicketMobileHyd";
-    private String local_network_url = "http://192.168.11.10:8080/eTicketMobileHyd";
+    private String local_network_url = "http://192.168.11.10:8080/TSeTicketMobile/";
 
     //Connecting_madhusys
 
     // private String local_network_url="http://192.168.11.97:8080/eTicketMobileHyd";
     //private String local_network_url="http://192.168.11.10:8080/eTicketMobileHydTest";
     // private String live_service_url = "http://192.168.11.4/eTicketMobileHyd";
-    private String live_service_url = "https://www.echallan.org/eTicketMobileHyd";
+    private String live_service_url = "https://www.echallan.org/TSeTicketMobile";
 
     public static String ftp_fix = "125.16.1.69";
     public static String open_ftp_fix = "125.16.1.69";
@@ -59,6 +61,7 @@ public class IPSettings extends Activity implements OnClickListener {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.ip_settings);
+
         LoadUIComponents();
         preference = getSharedPreferences("preferences", MODE_PRIVATE);
         editor = preference.edit();
@@ -87,10 +90,10 @@ public class IPSettings extends Activity implements OnClickListener {
 
     private void LoadUIComponents() {
         // TODO Auto-generated method stub
-        et_service_url = (EditText) findViewById(R.id.edt_service_ipsettings_xml);
-        et_ftp_url = (EditText) findViewById(R.id.edt_ftpurl_xml);
-        btn_save = (Button) findViewById(R.id.btnsubmit_ipsettings_xml);
-        btn_back_ip = (Button) findViewById(R.id.btnback_ipsettings_xml);
+        et_service_url = (AppCompatEditText) findViewById(R.id.edt_service_ipsettings_xml);
+        et_ftp_url = (AppCompatEditText) findViewById(R.id.edt_ftpurl_xml);
+        btn_save = (AppCompatButton) findViewById(R.id.btnsubmit_ipsettings_xml);
+        btn_back_ip = (AppCompatButton) findViewById(R.id.btnback_ipsettings_xml);
         rg_live_test = (RadioGroup) findViewById(R.id.radioGroup_live_test);
         btn_save.setOnClickListener(this);
         btn_back_ip.setOnClickListener(this);

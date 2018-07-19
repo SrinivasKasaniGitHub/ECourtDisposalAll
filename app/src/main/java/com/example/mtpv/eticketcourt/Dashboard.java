@@ -216,7 +216,7 @@ public class Dashboard extends Activity implements View.OnClickListener {
     TextView versin_txt;
     TextView compny_Name;
     static String current_version = "Y";
-    String unitCode="23";
+    String unitCode;
 
 	/* DATE DETAILS END */
 
@@ -228,6 +228,22 @@ public class Dashboard extends Activity implements View.OnClickListener {
         setContentView(R.layout.dashboard);
 
         LoadUIComponents();
+
+
+        imageView1 = (ImageView)findViewById(R.id.img_logo);
+        unitCode = MainActivity.arr_logindetails[0];
+        unitCode = unitCode.substring(0, 2);
+        switch (unitCode) {
+            case "22":
+                imageView1.setImageDrawable(getResources().getDrawable(R.drawable.cyb_logo_200x200));
+                break;
+            case "24":
+                imageView1.setImageDrawable(getResources().getDrawable(R.drawable.rac_logo_200x200));
+                break;
+            default:
+                imageView1.setImageDrawable(getResources().getDrawable(R.drawable.hyd_logo_200x200));
+                break;
+        }
 
         compny_Name = (TextView) findViewById(R.id.CompanyName);
         Animation marquee = AnimationUtils.loadAnimation(this, R.anim.marquee);
@@ -522,13 +538,12 @@ public class Dashboard extends Activity implements View.OnClickListener {
     ImageView imageView1;
     TextView tv_officer_name, tv_officer_cadre_name, tv_officer_ps, tv_officer_pid;
 
-    @SuppressLint("WrongViewCast")
     private void LoadUIComponents() {
         tv_officer_name = (TextView) findViewById(R.id.officer_Name);
         tv_officer_name.setText(MainActivity.pidName + "(" + MainActivity.cadreName + ")");
         //tv_officer_cadre_name = findViewById(R.id.officer_cadre);
         //tv_officer_cadre_name.setText(MainActivity.cadreName);
-        tv_officer_ps = (TextView) findViewById(R.id.officer_PS);
+        tv_officer_ps = (TextView)findViewById(R.id.officer_PS);
         tv_officer_ps.setText(MainActivity.psName);
         //tv_officer_pid = findViewById(R.id.tv_officer_pid);
         //tv_officer_pid.setText(MainActivity.user_id);
