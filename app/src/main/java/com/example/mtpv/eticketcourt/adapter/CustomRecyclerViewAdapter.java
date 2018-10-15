@@ -67,7 +67,8 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
 
-       
+        holder.setIsRecyclable(false
+        );
 
         final CasesDetailsPojo detailsPojo = casesDetailsPojos_List.get(listPosition);
 
@@ -168,7 +169,7 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
             if (casesDetailsPojos_List.get(listPosition).getDRIVER_AADHAAR().equals("")) {
                 adhar_Num.setVisibility(View.GONE);
                 edt_adhar_Num.setVisibility(View.VISIBLE);
-               // edt_adhar_Num.setImeOptions(EditorInfo.IME_ACTION_DONE);
+                // edt_adhar_Num.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
                 edt_adhar_Num.addTextChangedListener(new TextWatcher() {
                     @Override
@@ -250,7 +251,7 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
 
                 if (isChecked) {
                     detailsPojo.setSelected(true);
-                   // Toast.makeText(context, "checked item" + detailsPojo.getCHALLAN_NUMBER() + "Position" + listPosition, Toast.LENGTH_LONG).show();
+                    // Toast.makeText(context, "checked item" + detailsPojo.getCHALLAN_NUMBER() + "Position" + listPosition, Toast.LENGTH_LONG).show();
                     linearLayout.setVisibility(View.VISIBLE);
 
                     if (null != detailsPojo.getVIOLATION()) {
@@ -432,7 +433,6 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
         public AppCompatEditText edt_driving_License, edt_adhar_Num, edt_mob_Num, edt_driver_Name;
         public ImageView img_Adhar_wrt, img_adhar_wrng;
         private Context context;
-
 
 
         public MyViewHolder(View itemView) {

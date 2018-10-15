@@ -100,6 +100,9 @@ public class CourtCaseDetailsActivity extends Activity {
             case "24":
                 imageView1.setImageDrawable(getResources().getDrawable(R.drawable.rac_logo_200x200));
                 break;
+            case "44":
+                imageView1.setImageDrawable(getResources().getDrawable(R.drawable.wgl_logo));
+                break;
             default:
                 imageView1.setImageDrawable(getResources().getDrawable(R.drawable.hyd_logo_200x200));
                 break;

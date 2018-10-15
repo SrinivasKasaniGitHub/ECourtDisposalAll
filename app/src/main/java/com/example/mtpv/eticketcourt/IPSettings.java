@@ -39,8 +39,8 @@ public class IPSettings extends Activity implements OnClickListener {
     // private String local_network_url="http://192.168.11.4/eTicketMobileHyd";
 
     //Connecting_sunilsys
-    //private String local_network_url = "http://125.16.1.70:8080/eTicketMobileHyd";
-    private String local_network_url = "http://192.168.11.10:8080/TSeTicketMobile/";
+    private String local_network_url = "http://125.16.1.70:8080/TSeTicketMobile_Staging";
+    //private String local_network_url = "http://192.168.11.10:8080/TSeTicketMobile/";
 
     //Connecting_madhusys
 

@@ -39,6 +39,7 @@ public class ServiceHelper {
     static String WHEELER_MEHOD_NAME = "getWheelerDetails";
     static String GET_PS_NAMES_MEHOD_NAME = "getPsNames";
     static String GET_COURT_NAMES = "getCourtsMaster";
+    static String GET_COURT_NAMES_BYUNIT = "getCourtsMasterUnit";
     static String GET_COURT_DIS_NAMES = "getCourtsDisposalMaster";
     static String GET_POINTNAME_BY_PSNAME_MEHOD_NAME = "getPointNamesByPsName";
     public static String OCUPTN_METHOD_NAME = "getOccupations";
@@ -390,6 +391,58 @@ public class ServiceHelper {
         }
     }
 
+    public static void getPsNamesUnit(String unitCode) {
+        try {
+            SoapObject request = new SoapObject(NAMESPACE, "" + GET_PS_NAMES_MEHOD_NAME);
+            request.addProperty("unitCode",unitCode);
+            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+            envelope.dotNet = true;
+            envelope.setOutputSoapObject(request);
+
+            HttpTransportSE httpTransportSE = new HttpTransportSE(MainActivity.URL);
+            httpTransportSE.call(SOAP_ACTION, envelope);
+            Object result = envelope.getResponse();
+            // Opdata_Chalana = "";
+            // Opdata_Chalana = result.toString();
+
+            try {
+                Opdata_Chalana = new com.example.mtpv.eticketcourt.service.PidSecEncrypt().decrypt(result.toString());
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            Log.i("PS_NAMES_RESPONSE :::", "" + Opdata_Chalana);
+            /*
+             * !2399@COURT!2302@MAHANKALI TRPS!2301@GOPALPURAM
+             * TRPS!2304@TRIMULGHERRY TRPS! 2310@BEGUMPET TRPS!2306@PUNJAGUTTA
+             * TRPS!2309@BANJARA HILLS TRPS!2307@S.R.NAGAR TRPS!
+             * 2312@CHIKKADPALLY TRPS!2315@SAIFABAD TRPS!2313@ABIDS
+             * TRPS!2330@GOSHAMAHAL TRPS! 2329@NAMPALLY TRPS!2328@ASIF NAGAR
+             * TRPS!2319@CHARMINAR TRPS!2318@FALAKNUMA TRPS! 2317@MIRCHOWK
+             * TRPS!2322@KACHIGUDA TRPS!2324@SULTAN BAZAR TRPS!2325@MALAKPET
+             * TRPS! 2300@TRAFFIC CELL!2333@TTI GOSHAMAHAL!2303@MARREDPALLY
+             * TRPS!2308@JUBLEE HILLS TRPS! 2323@NALLAKUNTA TRPS!2327@TOLICHOWKI
+             * TRPS!2314@NARAYANAGUDA TRPS!2320@BAHADHURPURA TRPS!
+             * 2398@UNDEFINED!2334@TTI BEGUMPET
+             */
+
+            if (Opdata_Chalana == null) {
+                Log.i("NO_PS_DATA_FOUND", "NO_PS_DATA_FOUND");
+            } else {
+                psNames_master = new String[0];
+                psNames_master = Opdata_Chalana.split("!");
+                for (int i = 0; i < ServiceHelper.psNames_master.length; i++) {
+                    Log.i("**PSNAMES MASTER***", "" + ServiceHelper.psNames_master[i]);
+                }
+            }
+        } catch (SoapFault fault) {
+            Log.i("soaps", "soapfault = " + fault.getMessage());
+        } catch (Exception e) {
+            // TODO: handle exception
+            psNames_master = new String[0];
+        }
+    }
+
     public static void getPsNames() {
         try {
             SoapObject request = new SoapObject(NAMESPACE, "" + GET_PS_NAMES_MEHOD_NAME);
@@ -474,6 +527,43 @@ public class ServiceHelper {
              * TRPS!2314@NARAYANAGUDA TRPS!2320@BAHADHURPURA TRPS!
              * 2398@UNDEFINED!2334@TTI BEGUMPET
              */
+
+            if (Opdata_Chalana == null) {
+                Log.i("NO_PS_DATA_FOUND", "NO_PS_DATA_FOUND");
+            } else {
+                court_details_master = new String[0];
+                court_details_master = Opdata_Chalana.split("!");
+                for (int i = 0; i < ServiceHelper.court_details_master.length; i++) {
+                    Log.i("**PSNAMES MASTER***", "" + ServiceHelper.court_details_master[i]);
+                }
+            }
+        } catch (SoapFault fault) {
+            Log.i("soaps", "soapfault = " + fault.getMessage());
+            court_details_master = new String[0];
+        } catch (Exception e) {
+            // TODO: handle exception
+            court_details_master = new String[0];
+        }
+    }
+
+    public static void getCourtsMasterbyUnit(String pidCode) {
+        try {
+            SoapObject request = new SoapObject(NAMESPACE, "" + GET_COURT_NAMES_BYUNIT);
+            request.addProperty("pidCode",pidCode);
+            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+            envelope.dotNet = true;
+            envelope.setOutputSoapObject(request);
+
+            HttpTransportSE httpTransportSE = new HttpTransportSE(MainActivity.URL);
+            httpTransportSE.call(NAMESPACE + GET_COURT_NAMES_BYUNIT, envelope);
+            Object result = envelope.getResponse();
+
+            try {
+                Opdata_Chalana = new com.example.mtpv.eticketcourt.service.PidSecEncrypt().decrypt(result.toString());
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
 
             if (Opdata_Chalana == null) {
                 Log.i("NO_PS_DATA_FOUND", "NO_PS_DATA_FOUND");
@@ -1034,11 +1124,9 @@ public class ServiceHelper {
             SoapObject request = new SoapObject(NAMESPACE, "" + GET_DDCLOSING_DETAILS);
             request.addProperty("" + utils.ETICKET_REG_NO, "" + eticketRegNo);
             request.addProperty("" + utils.OFFENCE_DT, "" + offenceDT);
-
             SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
             envelope.dotNet = true;
             envelope.setOutputSoapObject(request);
-
             HttpTransportSE httpTransportSE = new HttpTransportSE(MainActivity.URL);
             httpTransportSE.call(NAMESPACE + GET_DDCLOSING_DETAILS, envelope);
             Object result = envelope.getResponse();
@@ -1049,9 +1137,8 @@ public class ServiceHelper {
                 } else {
                     Opdata_Chalana = "NA";
                 }
-
-
                 //Opdata_Chalana = new com.example.mtpv.eticketcourt.service.PidSecEncrypt().decrypt(result.toString().trim());
+
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -1317,7 +1404,7 @@ public class ServiceHelper {
             // if (license_data.toString().trim().equals("anyType{}"))
 
 			/*try {
-				license_data = new com.mtpv.mobilee_ticket_services.PidSecEncrypt().decrypt(result.toString());
+                license_data = new com.mtpv.mobilee_ticket_services.PidSecEncrypt().decrypt(result.toString());
 				Log.i("**getLiceneDetailsDecryptedResponse***", "" + license_data);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

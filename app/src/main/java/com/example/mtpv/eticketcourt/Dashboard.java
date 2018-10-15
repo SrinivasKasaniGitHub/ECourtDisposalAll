@@ -217,6 +217,7 @@ public class Dashboard extends Activity implements View.OnClickListener {
     TextView compny_Name;
     static String current_version = "Y";
     String unitCode;
+    String pidCode;
 
 	/* DATE DETAILS END */
 
@@ -226,19 +227,19 @@ public class Dashboard extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dashboard);
-
         LoadUIComponents();
-
-
         imageView1 = (ImageView)findViewById(R.id.img_logo);
-        unitCode = MainActivity.arr_logindetails[0];
-        unitCode = unitCode.substring(0, 2);
+        pidCode = MainActivity.arr_logindetails[0];
+        unitCode = pidCode.substring(0, 2);
         switch (unitCode) {
             case "22":
                 imageView1.setImageDrawable(getResources().getDrawable(R.drawable.cyb_logo_200x200));
                 break;
             case "24":
                 imageView1.setImageDrawable(getResources().getDrawable(R.drawable.rac_logo_200x200));
+                break;
+            case "44":
+                imageView1.setImageDrawable(getResources().getDrawable(R.drawable.wgl_logo));
                 break;
             default:
                 imageView1.setImageDrawable(getResources().getDrawable(R.drawable.hyd_logo_200x200));
@@ -254,8 +255,8 @@ public class Dashboard extends Activity implements View.OnClickListener {
         version = versin_txt.getText().toString().trim().split("\\-")[1];
         SharedPreferences sharedPreference = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         current_version = sharedPreference.getString("CURRENT_VERSION", "");
-        String pidCode=MainActivity.arr_logindetails[0];
-        unitCode=pidCode.substring(0,1);
+       /* String pidCode=MainActivity.arr_logindetails[0];
+        unitCode=pidCode.substring(0,1);*/
 
         if (current_version.equals("N")) {
 
@@ -1410,7 +1411,7 @@ public class Dashboard extends Activity implements View.OnClickListener {
         @Override
         protected String doInBackground(Void... params) {
             // TODO Auto-generated method stub
-            ServiceHelper.getPsNames();
+            ServiceHelper.getPsNamesUnit(unitCode);
             return null;
         }
 
@@ -1474,7 +1475,9 @@ public class Dashboard extends Activity implements View.OnClickListener {
         @Override
         protected String doInBackground(Void... params) {
             // TODO Auto-generated method stub
-            ServiceHelper.getCourtNames();
+            //ServiceHelper.getCourtNames();
+
+            ServiceHelper.getCourtsMasterbyUnit(pidCode);
             return null;
         }
 
@@ -1701,8 +1704,7 @@ public class Dashboard extends Activity implements View.OnClickListener {
         }
         c_whlr.close();
         db.close();
-
-    }
+        }
 
     /* TO GET QUALIFICATION DETAILS */
     public class Async_getViolationDetails extends AsyncTask<Void, Void, String> {
@@ -2115,7 +2117,6 @@ public class Dashboard extends Activity implements View.OnClickListener {
     }
 
 	/* DATE DETAILS END */
-
     @SuppressWarnings("deprecation")
     @SuppressLint("WorldReadableFiles")
     @Override

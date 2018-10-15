@@ -62,6 +62,10 @@ import android.widget.Toast;
 
 import com.analogics.thermalAPI.Bluetooth_Printer_3inch_ThermalAPI;
 import com.analogics.thermalprinter.AnalogicsThermalPrinter;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.example.mtpv.eticketcourt.service.DBHelper;
 import com.example.mtpv.eticketcourt.service.ServiceHelper;
 import com.example.mtpv.eticketcourt.util.DateUtil;
@@ -186,6 +190,9 @@ public class DDCloseActiviy extends Activity {
                 break;
             case "24":
                 imageView1.setImageDrawable(getResources().getDrawable(R.drawable.rac_logo_200x200));
+                break;
+            case "44":
+                imageView1.setImageDrawable(getResources().getDrawable(R.drawable.wgl_logo));
                 break;
             default:
                 imageView1.setImageDrawable(getResources().getDrawable(R.drawable.hyd_logo_200x200));
@@ -874,8 +881,6 @@ public class DDCloseActiviy extends Activity {
         try {
             db.open();
             cursor_court_Disnames = DBHelper.db.rawQuery("select * from " + db.court_disName_table, null);
-
-
 //            if (cursor_court_Disnames.getCount() == 0) {
 //                showToast("Please download master's !");
 //            } else {
@@ -884,12 +889,10 @@ public class DDCloseActiviy extends Activity {
                 paramsCourtdis = new HashMap<String, String>();
                 while (!cursor_court_Disnames.isAfterLast()) {
                     mArrayListCourtDis.add(cursor_court_Disnames.getString(cursor_court_Disnames.getColumnIndex(db.court_dis_name_settings))); //add the item
-
                     paramsCourtdis.put(cursor_court_Disnames.getString(cursor_court_Disnames.getColumnIndex(db.court_dis_name_settings)), cursor_court_Disnames.getString(cursor_court_Disnames.getColumnIndex(db.court_dis_code_settings)));
                     cursor_court_Disnames.moveToNext();
                     maparrayCourtdis.add(paramsCourtdis);
                 }
-
             }
         } catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -995,7 +998,6 @@ public class DDCloseActiviy extends Activity {
         title.setCompoundDrawablesWithIntrinsicBounds(R.drawable.dialog_logo, 0, R.drawable.dialog_logo, 0);
         title.setPadding(20, 0, 20, 0);
         title.setHeight(70);
-
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DDCloseActiviy.this, AlertDialog.THEME_HOLO_LIGHT);
         alertDialogBuilder.setCustomTitle(title);
         alertDialogBuilder.setIcon(R.drawable.dialog_logo);
@@ -2036,7 +2038,6 @@ public class DDCloseActiviy extends Activity {
             date_convicTo = format.format(new Date(present_year - 1900, (present_month), present_day));
             //btn_courtSoclServceTodate.setText("" + date_convicTo.toUpperCase());
             dayDifference = "";
-
             Date date1;
             Date date2;
 
@@ -2120,7 +2121,7 @@ public class DDCloseActiviy extends Activity {
                 date2 = dates.parse(date_DL_SUS_TO);
                 if (date2.after(date1) || date2.equals(date1)) {
 
-                    btn_DLSUS_ToDate.setText("" + date_DL_SUS_TO.toUpperCase());
+                    btn_DLSUS_ToDate.setText( date_DL_SUS_TO.toUpperCase());
                     //Comparing dates
                     long difference = Math.abs(date1.getTime() - date2.getTime());
                     long differenceDates = difference / (24 * 60 * 60 * 1000);
@@ -2165,7 +2166,7 @@ public class DDCloseActiviy extends Activity {
                     btn_Dl_dob.setText(date_dd_dl_dob.toUpperCase());
 
                 } else {
-                    showToast("Please select Date of Birth Atleast Person Should be Age Greater Than 16");
+                    showToast("Please select Date of Birth Atleast Person Age Should be Greater Than 16");
                     btn_Dl_dob.setText("Select Date");
                 }
             } catch (Exception e) {
@@ -2190,7 +2191,7 @@ public class DDCloseActiviy extends Activity {
             format = new SimpleDateFormat("dd-MMM-yyyy");
             date_DL_SUS_FROM = "";
             date_DL_SUS_FROM = format.format(new Date(present_year - 1900, (present_month), present_day));
-            btn_dateSeltion_DL_Canln.setText("" + date_DL_SUS_FROM.toUpperCase());
+            btn_dateSeltion_DL_Canln.setText(date_DL_SUS_FROM.toUpperCase());
            /* Date date1;
             Date date2;
 
