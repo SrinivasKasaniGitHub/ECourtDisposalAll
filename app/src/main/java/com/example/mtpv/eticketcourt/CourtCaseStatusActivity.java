@@ -303,6 +303,7 @@ public class CourtCaseStatusActivity extends Activity {
         return nwInfo != null && nwInfo.isConnected();
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class Async_getCourtCasesInfo extends AsyncTask<Void, Void, String> {
         @SuppressLint("DefaultLocale")
         @SuppressWarnings("unused")
@@ -341,7 +342,7 @@ public class CourtCaseStatusActivity extends Activity {
                 arrayList_CHG_CourtNot_Atnd = new ArrayList<>();
                /* arrayList_TV_Booked = new ArrayList<>();
                 arrayList_TV_CouncelngNot_Atnd = new ArrayList<>();
-                arrayList_TV_CourtNot_Atnd = new ArrayList<>();*/
+                arrayList_TV_CourtNot_Atnd = new ArrayList<>(); */
 
                JSONObject jsonObject = null;
                 try {
@@ -399,15 +400,17 @@ public class CourtCaseStatusActivity extends Activity {
                             arrayList_TV_CourtNot_Atnd.add(casesDetailsPojo);
                         }
 */
-
                     }
+
                     layout_TbleData.setVisibility(View.VISIBLE);
+
                     Txt_DD_Bkd.setText(Html.fromHtml("<u>" + arrayList_DD_Booked.size() + "</u>"));
                     Txt_DD_CouncelngNot_Atnd.setText(Html.fromHtml("<u>" + arrayList_DD_CouncelngNot_Atnd.size() + "</u>"));
                     Txt_DD_CourtNot_Atnd.setText(Html.fromHtml("<u>" + arrayList_DD_CourtNot_Atnd.size() + "</u>"));
                     Txt_CHG_Bkd.setText(Html.fromHtml("<u>" + arrayList_CHG_Booked.size() + "</u>"));
                     Txt_CHG_CouncelngNot_Atnd.setText(Html.fromHtml("<u>" + arrayList_CHG_CouncelngNot_Atnd.size() + "</u>"));
                     Txt_CHG_CourtNot_Atnd.setText(Html.fromHtml("<u>" + arrayList_CHG_CourtNot_Atnd.size() + "</u>"));
+
                    /* Txt_TV_Bkd.setText(Html.fromHtml("<u>" + arrayList_TV_Booked.size() + "</u>"));
                     Txt_TV_CouncelngNot_Atnd.setText(Html.fromHtml("<u>" + arrayList_TV_CouncelngNot_Atnd.size() + "</u>"));
                     Txt_TV_CourtNot_Atnd.setText(Html.fromHtml("<u>" + arrayList_TV_CourtNot_Atnd.size() + "</u>"));*/

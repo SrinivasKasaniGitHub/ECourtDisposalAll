@@ -39,7 +39,7 @@ public class IPSettings extends Activity implements OnClickListener {
     // private String local_network_url="http://192.168.11.4/eTicketMobileHyd";
 
     //Connecting_sunilsys
-    private String local_network_url = "http://125.16.1.70:8080/TSeTicketMobile_Staging";
+    private String local_network_url = "http://125.16.1.70:8080/TSeTicketMobile";
     //private String local_network_url = "http://192.168.11.10:8080/TSeTicketMobile/";
 
     //Connecting_madhusys
@@ -47,7 +47,8 @@ public class IPSettings extends Activity implements OnClickListener {
     // private String local_network_url="http://192.168.11.97:8080/eTicketMobileHyd";
     //private String local_network_url="http://192.168.11.10:8080/eTicketMobileHydTest";
     // private String live_service_url = "http://192.168.11.4/eTicketMobileHyd";
-    private String live_service_url = "https://www.echallan.org/TSeTicketMobile";
+    //private String live_service_url = "https://www.echallan.org/TSeTicketMobile";
+    private String live_service_url = "https://echallan.tspolice.gov.in/TSeTicketMobile";
 
     public static String ftp_fix = "125.16.1.69";
     public static String open_ftp_fix = "125.16.1.69";
@@ -104,16 +105,17 @@ public class IPSettings extends Activity implements OnClickListener {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.radioButton_live:
-
                         service_type = "live";
                         et_service_url.setText(live_service_url);
                         et_ftp_url.setText(open_ftp_fix);
+                        et_service_url.setEnabled(false);
                         break;
 
                     case R.id.radioButton_test:
                         service_type = "test";
                         et_service_url.setText(local_network_url);
                         et_ftp_url.setText(ftp_fix);
+                        et_service_url.setEnabled(true);
                         break;
 
                     default:
@@ -134,9 +136,11 @@ public class IPSettings extends Activity implements OnClickListener {
 
                 if (et_service_url.getText().toString().trim().equals("")) {
                     showError(et_service_url, "Enter Service URL");
-                } else if (et_ftp_url.getText().toString().trim().equals("")) {
+                }
+               /* else if (et_ftp_url.getText().toString().trim().equals("")) {
                     showError(et_ftp_url, "Enter FTP URL");
-                } else {
+                } */
+                else {
                     preference = getSharedPreferences("preferences", MODE_PRIVATE);
                     editor = preference.edit();
 

@@ -67,8 +67,7 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
 
-        holder.setIsRecyclable(false
-        );
+        holder.setIsRecyclable(false);
 
         final CasesDetailsPojo detailsPojo = casesDetailsPojos_List.get(listPosition);
 

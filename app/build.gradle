@@ -1,12 +1,19 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    signingConfigs {
+        config {
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+            storeFile file('C:/Users/Srinivas/.android/DebugFile/debug.keystore')
+            storePassword 'android'
+        }
+    }
+    compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.mtpv.eticketcourt"
-        minSdkVersion 19
-        targetSdkVersion 25
+        minSdkVersion 21
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -29,28 +36,27 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:cardview-v7:25.3.1'
-    compile 'com.android.support:design:25.3.1'
-    compile 'com.wang.avi:library:2.1.3'
-    compile 'com.github.ganfra:material-spinner:1.1.1'
-    compile 'com.android.support:recyclerview-v7:25.3.1'
-    compile files('libs/ksoap2-android-assembly-2.4-jar-with-dependencies.jar')
-    compile files('libs/sun.misc.BASE64Decoder.jar')
-    compile files('libs/ftp4j-1.6.jar')
-    compile files('libs/common-lang3.jar')
-    compile files('libs/commons-net-3.5.jar')
-    compile files('libs/commons-net-examples-3.5.jar')
-    compile files('libs/commons-validator-1.4.0.jar')
-    compile files('libs/core-3.2.0.jar')
-    compile files('libs/AnalogicsVersa3TBTPrinterAPI.jar')
-    compile files('libs/universal-image-loader-1.9.3.jar')
-    compile 'com.intuit.sdp:sdp-android:1.0.5'
-    compile 'com.android.volley:volley:1.0.0'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    testImplementation 'junit:junit:4.12'
+    implementation 'com.android.support:cardview-v7:28.0.0'
+    implementation 'com.android.support:design:28.0.0'
+    implementation 'com.wang.avi:library:2.1.3'
+    implementation 'com.github.ganfra:material-spinner:1.1.1'
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
+    implementation files('libs/ksoap2-android-assembly-2.4-jar-with-dependencies.jar')
+    implementation files('libs/sun.misc.BASE64Decoder.jar')
+    implementation files('libs/ftp4j-1.6.jar')
+    implementation files('libs/common-lang3.jar')
+    implementation files('libs/commons-net-3.5.jar')
+    implementation files('libs/commons-net-examples-3.5.jar')
+    implementation files('libs/commons-validator-1.4.0.jar')
+    implementation files('libs/core-3.2.0.jar')
+    implementation files('libs/AnalogicsVersa3TBTPrinterAPI.jar')
+    implementation files('libs/universal-image-loader-1.9.3.jar')
+    implementation 'com.intuit.sdp:sdp-android:1.0.5'
+    implementation 'com.android.volley:volley:1.1.0'
 }

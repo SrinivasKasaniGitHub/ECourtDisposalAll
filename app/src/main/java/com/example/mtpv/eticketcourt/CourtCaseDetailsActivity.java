@@ -85,6 +85,7 @@ public class CourtCaseDetailsActivity extends Activity {
     ImageView imageView1;
     TextView tv_officer_name, tv_officer_cadre_name, tv_officer_ps, tv_officer_pid;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
