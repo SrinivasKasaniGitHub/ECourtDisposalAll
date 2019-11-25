@@ -54,7 +54,6 @@ public class CourtCaseDetailsActivity extends Activity {
 
     private static RecyclerView.Adapter custom_CourtCase_DetailsAdapter;
     private RecyclerView.LayoutManager layoutManager;
-
     RecyclerView recyclerView;
     AppCompatButton btn_Update_Case_Details;
     public static ArrayList<CasesDetailsPojo> arrayList_CourtCase_Detilas;
@@ -363,6 +362,7 @@ public class CourtCaseDetailsActivity extends Activity {
         return nwInfo != null;
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class Async_sendCourtCasesInfo extends AsyncTask<Void, Void, String> {
         @SuppressLint("DefaultLocale")
         @SuppressWarnings("unused")
@@ -405,19 +405,12 @@ public class CourtCaseDetailsActivity extends Activity {
             db.open();
             cursor_courtnames = DBHelper.db.rawQuery("select * from " + db.courtName_table, null);
 
-
-//            if (cursor_court_Disnames.getCount() == 0) {
-//                showToast("Please download master's !");
-//            } else {
-
             if (cursor_courtnames.moveToFirst()) {
                 paramsCourt = new HashMap<String, String>();
                 paramsCourt_Address=new HashMap<>();
                 while (!cursor_courtnames.isAfterLast()) {
                     try {
-
                         mArrayListCourtNames.add(cursor_courtnames.getString(cursor_courtnames.getColumnIndex(db.court_name_settings)));
-
                         paramsCourt.put(cursor_courtnames.getString(cursor_courtnames.getColumnIndex(db.court_name_settings)), cursor_courtnames.getString(cursor_courtnames.getColumnIndex(db.court_code_settings)));
                         paramsCourt_Address.put(cursor_courtnames.getString(cursor_courtnames.getColumnIndex(db.court_name_settings)), cursor_courtnames.getString(cursor_courtnames.getColumnIndex(db.court_address_settings)));
                         cursor_courtnames.moveToNext();

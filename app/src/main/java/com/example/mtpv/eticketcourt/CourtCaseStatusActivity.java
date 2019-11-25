@@ -8,6 +8,8 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -40,6 +42,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
 public class CourtCaseStatusActivity extends Activity {
     Button btn_offenceDate_From, btn_offenceDate_To, btn_get_details;
@@ -76,7 +79,7 @@ public class CourtCaseStatusActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_courtcases_status);
 
-        imageView1 = (ImageView)findViewById(R.id.img_logo);
+        imageView1 = findViewById(R.id.img_logo);
         String unitCode = MainActivity.arr_logindetails[0];
         unitCode = unitCode.substring(0, 2);
         switch (unitCode) {
@@ -94,36 +97,36 @@ public class CourtCaseStatusActivity extends Activity {
                 break;
         }
 
-        tv_officer_name = (TextView)findViewById(R.id.officer_Name);
+        tv_officer_name = findViewById(R.id.officer_Name);
         tv_officer_name.setText(MainActivity.pidName + "(" + MainActivity.cadreName + ")");
         //tv_officer_cadre_name = findViewById(R.id.officer_cadre);
         //tv_officer_cadre_name.setText(MainActivity.cadreName);
-        tv_officer_ps = (TextView)findViewById(R.id.officer_PS);
+        tv_officer_ps = findViewById(R.id.officer_PS);
         tv_officer_ps.setText(MainActivity.psName);
         //tv_officer_pid = findViewById(R.id.tv_officer_pid);
         //tv_officer_pid.setText(MainActivity.user_id);
 
-        btn_offenceDate_From = (Button) findViewById(R.id.btn_date_offence_Form);
-        btn_offenceDate_To = (Button) findViewById(R.id.btn_date_offence_To);
-        btn_get_details = (Button) findViewById(R.id.btn_CC_getdetails);
-        layout_TbleData = (RelativeLayout) findViewById(R.id.lyt_TableData);
-        Txt_DD_Bkd = (TextView) findViewById(R.id.Txt_DD_Booked);
-        Txt_DD_CouncelngNot_Atnd = (TextView) findViewById(R.id.Txt_DD_CouncelngNot_Atnd);
-        Txt_DD_CourtNot_Atnd = (TextView) findViewById(R.id.Txt_DD_CourtNot_Atndg);
-        Txt_CHG_Bkd = (TextView) findViewById(R.id.Txt_ChgBkd);
-        Txt_CHG_CouncelngNot_Atnd = (TextView) findViewById(R.id.Txt_CHG_CouncelngNot_Atnd);
-        Txt_CHG_CourtNot_Atnd = (TextView) findViewById(R.id.Txt_CHG_CourtNot_Atndg);
+        btn_offenceDate_From = findViewById(R.id.btn_date_offence_Form);
+        btn_offenceDate_To = findViewById(R.id.btn_date_offence_To);
+        btn_get_details = findViewById(R.id.btn_CC_getdetails);
+        layout_TbleData = findViewById(R.id.lyt_TableData);
+        Txt_DD_Bkd = findViewById(R.id.Txt_DD_Booked);
+        Txt_DD_CouncelngNot_Atnd = findViewById(R.id.Txt_DD_CouncelngNot_Atnd);
+        Txt_DD_CourtNot_Atnd = findViewById(R.id.Txt_DD_CourtNot_Atndg);
+        Txt_CHG_Bkd = findViewById(R.id.Txt_ChgBkd);
+        Txt_CHG_CouncelngNot_Atnd = findViewById(R.id.Txt_CHG_CouncelngNot_Atnd);
+        Txt_CHG_CourtNot_Atnd = findViewById(R.id.Txt_CHG_CourtNot_Atndg);
        /* Txt_TV_Bkd = (TextView) findViewById(R.id.Txt_TopVltnBkd);
         Txt_TV_CouncelngNot_Atnd = (TextView) findViewById(R.id.Txt_TV_CouncelngNot_Atnd);
         Txt_TV_CourtNot_Atnd = (TextView) findViewById(R.id.Txt_TV_CourtNot_Atndg);*/
 
-        compny_Name = (TextView) findViewById(R.id.CompanyName);
+        compny_Name = findViewById(R.id.CompanyName);
         Animation marquee = AnimationUtils.loadAnimation(this, R.anim.marquee);
         compny_Name.startAnimation(marquee);
         cal = Calendar.getInstance();
 
 
-		/* FOR DATE PICKER */
+        /* FOR DATE PICKER */
         present_year = cal.get(Calendar.YEAR);
         present_month = cal.get(Calendar.MONTH);
         present_day = cal.get(Calendar.DAY_OF_MONTH);
@@ -131,13 +134,80 @@ public class CourtCaseStatusActivity extends Activity {
         btn_offenceDate_From.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialog(OFFENCE_FROM_DATE_PICKER);
+                // showDialog(OFFENCE_FROM_DATE_PICKER);
+                Calendar cal = Calendar.getInstance();
+                present_year = cal.get(Calendar.YEAR);
+                present_month = cal.get(Calendar.MONTH);
+                present_day = cal.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(CourtCaseStatusActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @SuppressLint("SimpleDateFormat")
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        format = new SimpleDateFormat("dd-MMM-yyyy");
+                        offence_From_Date = format.format(new Date(year - 1900, (month), dayOfMonth));
+                        btn_offenceDate_From.setText(offence_From_Date.toUpperCase());
+                        btn_offenceDate_To.setText("Select Date");
+                    }
+                }, present_year, present_month, present_day);
+                datePickerDialog.getDatePicker().setSpinnersShown(false);
+                datePickerDialog.getDatePicker().setCalendarViewShown(true);
+                datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+                //Objects.requireNonNull(datePickerDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                datePickerDialog.setTitle("Please Select Date");
+                datePickerDialog.show();
             }
         });
         btn_offenceDate_To.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialog(OFFENCE_TO_DATE_PICKER);
+                //showDialog(OFFENCE_TO_DATE_PICKER);
+                Calendar cal = Calendar.getInstance();
+                present_year = cal.get(Calendar.YEAR);
+                present_month = cal.get(Calendar.MONTH);
+                present_day = cal.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(CourtCaseStatusActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @SuppressLint({"SimpleDateFormat", "SetTextI18n"})
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        format = new SimpleDateFormat("dd-MMM-yyyy");
+                        offence_To_Date = format.format(new Date(year - 1900, (month), dayOfMonth));
+                        Date date1;
+                        Date date2;
+                        SimpleDateFormat dates = new SimpleDateFormat("dd-MMM-yyyy");
+
+                        try {
+                            if (null != offence_From_Date) {
+                                date1 = dates.parse(offence_From_Date);
+                                date2 = dates.parse(offence_To_Date);
+                                if (date2.after(date1) || date2.equals(date1)) {
+                                    btn_offenceDate_To.setText(offence_To_Date.toUpperCase());
+                                } else {
+                                    showToast("Date should be greater than From_Date ");
+                                    btn_offenceDate_To.setText("Select Date");
+                                }
+                            } else {
+                                showToast("Please select From date");
+                            }
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, present_year, present_month, present_day);
+                @SuppressLint("SimpleDateFormat")
+                SimpleDateFormat dates = new SimpleDateFormat("dd-MMM-yyyy");
+                Calendar calendar = Calendar.getInstance();
+                try {
+                    calendar.setTime(dates.parse(offence_From_Date));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                calendar.add(Calendar.DATE, 15);
+                datePickerDialog.getDatePicker().setSpinnersShown(false);
+                datePickerDialog.getDatePicker().setCalendarViewShown(true);
+                datePickerDialog.getDatePicker().setMaxDate(calendar.getTimeInMillis());
+                //Objects.requireNonNull(datePickerDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                datePickerDialog.setTitle("Please Select Date");
+                datePickerDialog.show();
             }
         });
 
@@ -344,7 +414,7 @@ public class CourtCaseStatusActivity extends Activity {
                 arrayList_TV_CouncelngNot_Atnd = new ArrayList<>();
                 arrayList_TV_CourtNot_Atnd = new ArrayList<>(); */
 
-               JSONObject jsonObject = null;
+                JSONObject jsonObject = null;
                 try {
                     jsonObject = new JSONObject(ServiceHelper.Opdata_Chalana);
                     JSONArray jsonArray = jsonObject.getJSONArray("Cases Details");
@@ -374,7 +444,7 @@ public class CourtCaseStatusActivity extends Activity {
                         if ((jb.getString("CHALLAN_TYPE").equals("12") || jb.getString("CHALLAN_TYPE").equals("23")) && jb.getString("PAYMENT_STATUS").equals("U") && jb.getString("COUNC_STATUS").equals("0")) {
                             arrayList_DD_CouncelngNot_Atnd.add(casesDetailsPojo);
                         }
-                        if ((jb.getString("CHALLAN_TYPE").equals("12") || jb.getString("CHALLAN_TYPE").equals("23")) && jb.getString("PAYMENT_STATUS").equals("U") &&  !jb.getString("COUNC_STATUS").equals("0")) {
+                        if ((jb.getString("CHALLAN_TYPE").equals("12") || jb.getString("CHALLAN_TYPE").equals("23")) && jb.getString("PAYMENT_STATUS").equals("U") && !jb.getString("COUNC_STATUS").equals("0")) {
                             arrayList_DD_CourtNot_Atnd.add(casesDetailsPojo);
                         }
 
@@ -432,7 +502,7 @@ public class CourtCaseStatusActivity extends Activity {
         View toastView = toast.getView();
         ViewGroup group = (ViewGroup) toast.getView();
         TextView messageTextView = (TextView) group.getChildAt(0);
-        messageTextView.setPadding(20,0,20, 0);
+        messageTextView.setPadding(20, 0, 20, 0);
         messageTextView.setTextSize(getResources().getDimension(R.dimen._10sdp));
 
         toastView.setBackgroundResource(R.drawable.toast_background);
@@ -443,18 +513,13 @@ public class CourtCaseStatusActivity extends Activity {
     DatePickerDialog.OnDateSetListener offence_FromDate_Dialog = new DatePickerDialog.OnDateSetListener() {
 
         @SuppressWarnings("deprecation")
-        @SuppressLint({"SimpleDateFormat", "DefaultLocale"})
+        @SuppressLint({"SimpleDateFormat", "DefaultLocale", "SetTextI18n"})
         @Override
         public void onDateSet(DatePicker view, int selectedYear, int monthOfYear, int dayOfMonth) {
-            present_year = selectedYear;
-            present_month = monthOfYear;
-            present_day = dayOfMonth;
-
             format = new SimpleDateFormat("dd-MMM-yyyy");
-            offence_From_Date = format.format(new Date(present_year - 1900, (present_month), present_day));
+            offence_From_Date = format.format(new Date(selectedYear - 1900, (monthOfYear), dayOfMonth));
             btn_offenceDate_From.setText(offence_From_Date.toUpperCase());
-
-
+            btn_offenceDate_To.setText("Select Date");
         }
     };
 
@@ -465,18 +530,12 @@ public class CourtCaseStatusActivity extends Activity {
         @SuppressLint({"SimpleDateFormat", "DefaultLocale"})
         @Override
         public void onDateSet(DatePicker view, int selectedYear, int monthOfYear, int dayOfMonth) {
-//pre
-            present_year = selectedYear;
-            present_month = monthOfYear;
-            present_day = dayOfMonth;
-
             format = new SimpleDateFormat("dd-MMM-yyyy");
-            offence_To_Date = format.format(new Date(present_year - 1900, (present_month), present_day));
+            offence_To_Date = format.format(new Date(selectedYear - 1900, (monthOfYear), dayOfMonth));
             Date date1;
             Date date2;
             SimpleDateFormat dates = new SimpleDateFormat("dd-MMM-yyyy");
 
-            //Setting dates
             try {
                 if (null != offence_From_Date) {
                     date1 = dates.parse(offence_From_Date);
@@ -501,25 +560,35 @@ public class CourtCaseStatusActivity extends Activity {
     @SuppressWarnings("deprecation")
     @Override
     protected Dialog onCreateDialog(int id) {
-        //10/02/2017
         switch (id) {
             case OFFENCE_FROM_DATE_PICKER:
+                Calendar cal = Calendar.getInstance();
+                present_year = cal.get(Calendar.YEAR);
+                present_month = cal.get(Calendar.MONTH);
+                present_day = cal.get(Calendar.DAY_OF_MONTH);
                 DatePickerDialog dp_offenceFrom_date;
-                dp_offenceFrom_date = new DatePickerDialog(this, offence_FromDate_Dialog, present_year, present_month,
+                dp_offenceFrom_date = new DatePickerDialog(CourtCaseStatusActivity.this, offence_FromDate_Dialog, present_year, present_month,
                         present_day);
 //                dp_offenceFrom_date.getDatePicker().setMaxDate(System.currentTimeMillis());
                 return dp_offenceFrom_date;
             case OFFENCE_TO_DATE_PICKER:
+                Calendar calt = Calendar.getInstance();
+                present_year = calt.get(Calendar.YEAR);
+                present_month = calt.get(Calendar.MONTH);
+                present_day = calt.get(Calendar.DAY_OF_MONTH);
                 DatePickerDialog dp_offenceTo_date;
-                /* FOR DATE PICKER */
-
-                present_year = cal.get(Calendar.YEAR);
-                present_month = cal.get(Calendar.MONTH);
-                present_day = cal.get(Calendar.DAY_OF_MONTH);
-
                 dp_offenceTo_date = new DatePickerDialog(this, offence_ToDate_Dialog, present_year, present_month,
                         present_day);
-//                dp_offenceTo_date.getDatePicker().setMaxDate(System.currentTimeMillis());
+                @SuppressLint("SimpleDateFormat")
+                SimpleDateFormat dates = new SimpleDateFormat("dd-MMM-yyyy");
+                Calendar calendar = Calendar.getInstance();
+                try {
+                    calendar.setTime(dates.parse(offence_From_Date));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                calendar.add(Calendar.DATE, 31);
+                dp_offenceTo_date.getDatePicker().setMaxDate(calendar.getTimeInMillis());
                 return dp_offenceTo_date;
             case PROGRESS_DIALOG:
                 ProgressDialog pd = ProgressDialog.show(this, "", "Please Wait...", true);

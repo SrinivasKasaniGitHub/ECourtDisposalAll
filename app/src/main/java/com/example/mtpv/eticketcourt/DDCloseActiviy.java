@@ -66,9 +66,11 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.example.mtpv.eticketcourt.Pojos.CourtCaseDisposal;
 import com.example.mtpv.eticketcourt.service.DBHelper;
 import com.example.mtpv.eticketcourt.service.ServiceHelper;
 import com.example.mtpv.eticketcourt.util.DateUtil;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -95,7 +97,7 @@ import fr.ganfra.materialspinner.MaterialSpinner;
 public class DDCloseActiviy extends Activity {
 
     TextView compny_Name;
-    AppCompatImageView imgView_CourtOrderCopy, imgView_DLCopy;
+    AppCompatImageView imgView_CourtOrderCopy, imgView_DLCopy, minor_img_CourtCopy, owner_img_CourtCopy;
     ArrayList<String> mArrayListCourtNames = new ArrayList<>();
     ArrayList<String> mArrayListCourtDis = new ArrayList<>();
     HashMap<String, String> paramsCourt = new HashMap<>();
@@ -108,18 +110,23 @@ public class DDCloseActiviy extends Activity {
     int present_day;
     SimpleDateFormat format;
     Date date_From;
-    String present_date_toSend, date_courtAtnd, date_convFRom, date_convicTo, date_DL_SUS_FROM, date_DL_SUS_TO, date_dd_dl_dob;
+    String present_date_toSend, date_courtAtnd, date_convFRom, date_convicTo, date_DL_SUS_FROM, date_DL_SUS_TO, date_dd_dl_dob,
+            owner_date_convFRom, owner_date_convicTo, ownerConDays;
     EditText et_dp_regno;
-    EditText edtTxt_STC_No, edtTxt_FineAmnt, edtTxtConDays, edtTxtRisDays, edtTxt_Remarks;
+    EditText edtTxt_STC_No, edtTxt_FineAmnt, edtTxtConDays, edtTxtRisDays, edtTxt_FirNo, edtTxt_PSName, edtTxt_Remarks;
+    EditText owner_edtTxt_STC_NO, owner_edtTxt_FineAmnt, owner_edtTxt_RisingDays, owner_edtTxt_Contct_NO;
     Button btn_dp_date_selection, btn_courtAttenddate, btn_courtConFromdate, btn_courtConTo, btn_courtSoclServceFromdate,
-            btn_courtSoclServceTodate, btn_DLSUS_FromDate, btn_DLSUS_ToDate, btn_dateSeltion_DL_Canln;
+            btn_courtSoclServceTodate, btn_DLSUS_FromDate, btn_DLSUS_ToDate, btn_dateSeltion_DL_Canln, btn_DrExpDate;
+    Button owner_btn_CrtAtndDate, owner_btn_courtConFromdate, owner_btn_courtConTo, owner_btn_courtSoclServceFromdate,
+            owner_btn_courtSoclServceTodate;
     Button btn_dp_get_onlinedetials;
     Button btn_payment;
     AppCompatButton btn_Dl_dob;
     String btn_strng_dl_DOB;
     final int PRESENT_DATE_PICKER = 1;
     final int PROGRESS_DIALOG = 2;
-    final int PRESENT_COURT_ATTEND_DATE = 5;
+    final int PRESENT_COURT_ATTEND_DATE = 5, OWNER_COURT_ATTEND_DATE = 25, OWNER_COURT_CONVI_FROM = 26, OWNER_COURT_CONVI_TO = 27,
+            OWNER_COURT_SCL_SRC_TO = 28, OWNER_COURT_SCL_SRC_FROM = 29;
     final int PRESENT_COURT_CONVI_FROM = 6;
     final int PRESENT_COURT_CONVI_TO = 7;
     final int PRESENT_COURT_SCL_SRC_FROM = 8;
@@ -147,17 +154,20 @@ public class DDCloseActiviy extends Activity {
     TextView Reg_No, Mobile_No, Offender_Date, Challan_No, Aadhar_No, Dl_No;
     EditText edtTxt_Mob_No, edtTxt_Aadhar_No, edtTxt_DlNo, edtTxt_DL_SUSDAYS;
     ArrayList<String> courtNames;
-    MaterialSpinner courtspinner;
+    MaterialSpinner courtspinner, owner_courtSpinner, owner_courtDisSpinner;
     ArrayList<String> courtDisNames;
     MaterialSpinner courtDisspinner;
     RadioGroup rdoGrp_VehcleRlse, rdoGrp_DLSUSCAN;
     RadioButton rdoBtnYes_VehcleRlse, rdoBtn_DLSUS;
     RadioButton rdoBtnNo_VehcleRlse, rdoBtn_DLCAN, rdoBtnNONE;
     LinearLayout lytConFrom, lytConTo, lytConDays, lytFineAmnt, lytSoclFrom, lytSclSerTo, lytRisingDays, lytSUSDAYS, lytDLCanDate,
-            lytDLSusFrom, lytDLSusTo, lytImages;
+            lytDLSusFrom, lytDLSusTo, lytFirNo, lytPSName, lyt_DrvrExpredDate, lytImages;
+
+    LinearLayout owner_Lyt_Pay_details, owner_lytConvtdFrom, owner_lytConvtdTo, owner_lytFineAmnt, owner_lytSoclFrom, owner_lytSclSerTo,
+            owner_lytRisingDays, owner_lytImages;
     DBHelper db;
     Cursor c, cursor_courtnames, cursor_court_Disnames, printer_cursor;
-    String selectedCourtCode, selectedCourtDisCode;
+    String selectedCourtCode, selectedCourtDisCode, owner_selectedCourtCode, owner_selectedCourtDisCode;
     String vehcleRelse = "Y";
     String dl_SUS = "N";
     String dl_CAN = "N";
@@ -169,19 +179,21 @@ public class DDCloseActiviy extends Activity {
 
     DateUtil dateUtil;
     byte[] byteArray;
-    String img_dataCourtCopy, img_dataDLCopy = null;
+    String img_dataCourtCopy, img_dataDLCopy = null, minor_ImgData = null, driver_ImgData = null;
     String selection_Pic_Flag = "";
     String tckt_UPdated_Flag = "N";
 
     ImageView imageView1;
     TextView tv_officer_name, tv_officer_cadre_name, tv_officer_ps, tv_officer_pid;
+    boolean minor_Dvng_Flag = false;
+    CourtCaseDisposal caseDisposal;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ddclosing);
 
-        imageView1 = (ImageView)findViewById(R.id.img_logo);
+        imageView1 = (ImageView) findViewById(R.id.img_logo);
         String unitCode = MainActivity.arr_logindetails[0];
         unitCode = unitCode.substring(0, 2);
         switch (unitCode) {
@@ -199,11 +211,11 @@ public class DDCloseActiviy extends Activity {
                 break;
         }
 
-        tv_officer_name =(TextView) findViewById(R.id.officer_Name);
+        tv_officer_name = (TextView) findViewById(R.id.officer_Name);
         tv_officer_name.setText(MainActivity.pidName + "(" + MainActivity.cadreName + ")");
         //tv_officer_cadre_name = findViewById(R.id.officer_cadre);
         //tv_officer_cadre_name.setText(MainActivity.cadreName);
-        tv_officer_ps = (TextView)findViewById(R.id.officer_PS);
+        tv_officer_ps = (TextView) findViewById(R.id.officer_PS);
         tv_officer_ps.setText(MainActivity.psName);
         //tv_officer_pid = findViewById(R.id.tv_officer_pid);
         //tv_officer_pid.setText(MainActivity.user_id);
@@ -229,8 +241,13 @@ public class DDCloseActiviy extends Activity {
         lytDLSusFrom = (LinearLayout) findViewById(R.id.lytDLSusFrom);
         lytDLCanDate = (LinearLayout) findViewById(R.id.lytDLCanDate);
         lytDLSusTo = (LinearLayout) findViewById(R.id.lytDLSusTo);
+        lytFirNo = findViewById(R.id.lytFirNo);
+        lytPSName = findViewById(R.id.lytPSName);
+        lyt_DrvrExpredDate = findViewById(R.id.lyt_DrvrExpredDate);
         lytImages = (LinearLayout) findViewById(R.id.lytImages);
         imgView_CourtOrderCopy = (AppCompatImageView) findViewById(R.id.img_CourtCopy);
+        owner_img_CourtCopy = findViewById(R.id.owner_img_CourtCopy);
+        minor_img_CourtCopy = findViewById(R.id.minor_img_CourtCopy);
         imgView_DLCopy = (AppCompatImageView) findViewById(R.id.img_DLCopy);
         compny_Name = (TextView) findViewById(R.id.CompanyName);
         Animation marquee = AnimationUtils.loadAnimation(this, R.anim.marquee);
@@ -243,8 +260,8 @@ public class DDCloseActiviy extends Activity {
         edtTxt_Remarks = (EditText) findViewById(R.id.edtTxt_Remarks);
         edtTxt_DL_SUSDAYS = (EditText) findViewById(R.id.edtTxt_DL_SUSDAYS);
         edtTxt_DL_SUSDAYS.setKeyListener(null);
-
-
+        edtTxt_FirNo = findViewById(R.id.edtTxt_FirNo);
+        edtTxt_PSName = findViewById(R.id.edtTxt_PSName);
         btn_dp_date_selection = (Button) findViewById(R.id.btn_dateselection_dp_xml);
         btn_courtAttenddate = (Button) findViewById(R.id.btn_dateselection_dp_xml1);
         btn_courtConFromdate = (Button) findViewById(R.id.btn_dateselection_dp_xml3);
@@ -255,6 +272,7 @@ public class DDCloseActiviy extends Activity {
         btn_DLSUS_FromDate = (Button) findViewById(R.id.btn_dateSeltion_DL_SusFrom);
         btn_DLSUS_ToDate = (Button) findViewById(R.id.btn_dateSeltion_DL_SusTo);
         btn_dateSeltion_DL_Canln = (Button) findViewById(R.id.btn_dateSeltion_DL_Canln);
+        btn_DrExpDate = findViewById(R.id.btn_DrExpDate);
         btn_payment = (Button) findViewById(R.id.btn_payment);
         btn_Dl_dob = (AppCompatButton) findViewById(R.id.btn_Dl_dob);
         dd_lyt = (RelativeLayout) findViewById(R.id.Lyt_DD_Details);
@@ -270,6 +288,8 @@ public class DDCloseActiviy extends Activity {
         Dl_No = (TextView) findViewById(R.id.Txt_DlNo);
         courtspinner = (MaterialSpinner) findViewById(R.id.courtSpinner);
         courtDisspinner = (MaterialSpinner) findViewById(R.id.courtDisSpinner);
+        owner_courtSpinner = findViewById(R.id.owner_courtSpinner);
+        owner_courtDisSpinner = findViewById(R.id.owner_courtDisSpinner);
 
         rdoGrp_VehcleRlse = (RadioGroup) findViewById(R.id.rdoGrp_VehcleRlse);
         rdoBtnYes_VehcleRlse = (RadioButton) findViewById(R.id.rdoBtnYes_VehcleRlse);
@@ -281,6 +301,27 @@ public class DDCloseActiviy extends Activity {
         rdoBtn_DLSUS = (RadioButton) findViewById(R.id.rdoBtnDLSUS);
         rdoBtn_DLCAN = (RadioButton) findViewById(R.id.rdoBtnDLCAN);
         rdoBtnNONE = (RadioButton) findViewById(R.id.rdoBtnNONE);
+
+        owner_Lyt_Pay_details = findViewById(R.id.owner_Lyt_Pay_details);
+        owner_lytConvtdFrom = findViewById(R.id.owner_lytConvtdFrom);
+        owner_lytConvtdTo = findViewById(R.id.owner_lytConvtdTo);
+        owner_lytFineAmnt = findViewById(R.id.owner_lytFineAmnt);
+        owner_lytSoclFrom = findViewById(R.id.owner_lytSoclFrom);
+        owner_lytSclSerTo = findViewById(R.id.owner_lytSclSerTo);
+        owner_lytRisingDays = findViewById(R.id.owner_lytRisingDays);
+        owner_lytImages = findViewById(R.id.owner_lytImages);
+        owner_btn_CrtAtndDate = findViewById(R.id.owner_btn_CrtAtndDate);
+        owner_edtTxt_STC_NO = findViewById(R.id.owner_edtTxt_STC_NO);
+        owner_edtTxt_Contct_NO = findViewById(R.id.owner_edtTxt_Contct_NO);
+        owner_edtTxt_FineAmnt = findViewById(R.id.owner_edtTxt_FineAmnt);
+        owner_edtTxt_RisingDays = findViewById(R.id.owner_edtTxt_RisingDays);
+        owner_btn_courtConFromdate = findViewById(R.id.owner_btn_courtConFromdate);
+        owner_btn_courtConTo = findViewById(R.id.owner_btn_courtConTo);
+        owner_btn_courtSoclServceFromdate = findViewById(R.id.owner_btn_courtSoclServceFromdate);
+        owner_btn_courtSoclServceTodate = findViewById(R.id.owner_btn_courtSoclServceTodate);
+
+        edtTxt_DL_SUSDAYS.setEnabled(false);
+        edtTxtConDays.setEnabled(false);
 
 
         rdoGrp_VehcleRlse.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -306,7 +347,6 @@ public class DDCloseActiviy extends Activity {
         rdoGrp_DLSUSCAN.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-
                 switch (checkedId) {
                     case R.id.rdoBtnDLSUS:
                         dl_SUS = "";
@@ -381,6 +421,36 @@ public class DDCloseActiviy extends Activity {
 
             }
         });
+
+        //owner_courtSpinner
+
+        ArrayAdapter<String> owner_dataAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, mArrayListCourtNames);
+        owner_dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        owner_courtSpinner.setAdapter(owner_dataAdapter);
+
+        owner_courtSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String courtDis = owner_courtSpinner.getSelectedItem().toString();
+
+                Log.i("court map size : ", "" + paramsCourt.size());
+                for (String mapCourtName : paramsCourt.keySet()) {
+                    if (courtDis.equals(mapCourtName)) {
+                        owner_selectedCourtCode = paramsCourt.get(mapCourtName);
+                        //Toast.makeText(getApplicationContext(), "COURT NAME : " + mapCourtName + " COURT CODE : " + selectedCourtCode, Toast.LENGTH_LONG).show();
+                        break;
+                    }
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         ArrayAdapter<String> dataAdapter1 = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, mArrayListCourtDis);
         dataAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -392,23 +462,22 @@ public class DDCloseActiviy extends Activity {
                 for (String mapCourtName : paramsCourtdis.keySet()) {
                     if (courtDis.equals(mapCourtName)) {
                         selectedCourtDisCode = paramsCourtdis.get(mapCourtName);
-                        // Toast.makeText(getApplicationContext(), "COURT NAME : " + mapCourtName + " COURT CODE : " + selectedCourtCode, Toast.LENGTH_LONG).show();
                         break;
                     }
-
                 }
-                if ("1".equals(selectedCourtDisCode)) {
-
+                if ("1".equals(selectedCourtDisCode) || "15".equals(selectedCourtDisCode)) {
                     lytConFrom.setVisibility(View.GONE);
                     lytConTo.setVisibility(View.GONE);
                     lytConDays.setVisibility(View.GONE);
                     lytSoclFrom.setVisibility(View.GONE);
                     lytSclSerTo.setVisibility(View.GONE);
                     lytRisingDays.setVisibility(View.GONE);
+                    lytFirNo.setVisibility(View.GONE);
+                    lytPSName.setVisibility(View.GONE);
+                    lyt_DrvrExpredDate.setVisibility(View.GONE);
                     lytFineAmnt.setVisibility(View.VISIBLE);
                     rdoBtnNONE.setChecked(true);
                     clearData();
-
 
                 } else if ("5".equals(selectedCourtDisCode)) {
                     lytConFrom.setVisibility(View.GONE);
@@ -417,13 +486,20 @@ public class DDCloseActiviy extends Activity {
                     lytSclSerTo.setVisibility(View.GONE);
                     lytRisingDays.setVisibility(View.VISIBLE);
                     lytConDays.setVisibility(View.GONE);
+                    lytFirNo.setVisibility(View.GONE);
+                    lytPSName.setVisibility(View.GONE);
+                    lyt_DrvrExpredDate.setVisibility(View.GONE);
                     lytFineAmnt.setVisibility(View.VISIBLE);
                     rdoBtnNONE.setChecked(true);
+                    clearData();
 
                 } else if ("7".equals(selectedCourtDisCode)) {
                     lytConFrom.setVisibility(View.GONE);
                     lytConTo.setVisibility(View.GONE);
                     lytConDays.setVisibility(View.GONE);
+                    lytFirNo.setVisibility(View.GONE);
+                    lytPSName.setVisibility(View.GONE);
+                    lyt_DrvrExpredDate.setVisibility(View.GONE);
                     lytFineAmnt.setVisibility(View.VISIBLE);
                     lytSoclFrom.setVisibility(View.VISIBLE);
                     lytSclSerTo.setVisibility(View.VISIBLE);
@@ -431,7 +507,7 @@ public class DDCloseActiviy extends Activity {
                     rdoBtnNONE.setChecked(true);
                     clearData();
 
-                } else if ("3".equals(selectedCourtDisCode)) {
+                } else if ("3".equals(selectedCourtDisCode) || "17".equals(selectedCourtDisCode)) {
                     lytConFrom.setVisibility(View.VISIBLE);
                     lytConTo.setVisibility(View.VISIBLE);
                     lytConDays.setVisibility(View.VISIBLE);
@@ -439,10 +515,13 @@ public class DDCloseActiviy extends Activity {
                     lytSoclFrom.setVisibility(View.GONE);
                     lytSclSerTo.setVisibility(View.GONE);
                     lytRisingDays.setVisibility(View.GONE);
+                    lytFirNo.setVisibility(View.GONE);
+                    lytPSName.setVisibility(View.GONE);
+                    lyt_DrvrExpredDate.setVisibility(View.GONE);
                     rdoBtnNONE.setChecked(true);
                     clearData();
 
-                } else if ("2".equals(selectedCourtDisCode)) {  // ONLY IMPRISONMENT
+                } else if ("2".equals(selectedCourtDisCode) || "16".equals(selectedCourtDisCode)) {  // ONLY IMPRISONMENT
                     lytConFrom.setVisibility(View.VISIBLE);
                     lytConTo.setVisibility(View.VISIBLE);
                     lytConDays.setVisibility(View.VISIBLE);
@@ -450,6 +529,9 @@ public class DDCloseActiviy extends Activity {
                     lytSoclFrom.setVisibility(View.GONE);
                     lytSclSerTo.setVisibility(View.GONE);
                     lytRisingDays.setVisibility(View.GONE);
+                    lytFirNo.setVisibility(View.GONE);
+                    lytPSName.setVisibility(View.GONE);
+                    lyt_DrvrExpredDate.setVisibility(View.GONE);
                     rdoBtnNONE.setChecked(true);
                     clearData();
 
@@ -461,6 +543,9 @@ public class DDCloseActiviy extends Activity {
                     lytSoclFrom.setVisibility(View.GONE);
                     lytSclSerTo.setVisibility(View.GONE);
                     lytRisingDays.setVisibility(View.VISIBLE);
+                    lytFirNo.setVisibility(View.GONE);
+                    lytPSName.setVisibility(View.GONE);
+                    lyt_DrvrExpredDate.setVisibility(View.GONE);
                     rdoBtnNONE.setChecked(true);
                     clearData();
 
@@ -469,15 +554,16 @@ public class DDCloseActiviy extends Activity {
                     lytConTo.setVisibility(View.GONE);
                     lytConDays.setVisibility(View.GONE);
                     lytFineAmnt.setVisibility(View.GONE);
-                    lytSoclFrom.setVisibility(View.GONE);
-                    lytSclSerTo.setVisibility(View.GONE);
-                    lytRisingDays.setVisibility(View.VISIBLE);
+                    lytSoclFrom.setVisibility(View.VISIBLE);
+                    lytSclSerTo.setVisibility(View.VISIBLE);
+                    lytRisingDays.setVisibility(View.GONE);
+                    lytFirNo.setVisibility(View.GONE);
+                    lytPSName.setVisibility(View.GONE);
+                    lyt_DrvrExpredDate.setVisibility(View.GONE);
                     rdoBtnNONE.setChecked(true);
                     clearData();
 
-
                 } else if ("9".equals(selectedCourtDisCode)) {  //DL SUSPENSION AND FINE
-
                     lytConFrom.setVisibility(View.GONE);
                     lytConTo.setVisibility(View.GONE);
                     lytConDays.setVisibility(View.GONE);
@@ -486,13 +572,14 @@ public class DDCloseActiviy extends Activity {
                     lytSclSerTo.setVisibility(View.GONE);
                     lytRisingDays.setVisibility(View.GONE);
                     rdoBtn_DLSUS.setChecked(true);
+                    lytFirNo.setVisibility(View.GONE);
+                    lytPSName.setVisibility(View.GONE);
+                    lyt_DrvrExpredDate.setVisibility(View.GONE);
                     rdoBtn_DLCAN.setKeyListener(null);
                     rdoBtnNONE.setKeyListener(null);
                     clearData();
 
-
                 } else if ("10".equals(selectedCourtDisCode)) {  // DL SUSPENSION AND IMPRISONMENT
-
                     lytConFrom.setVisibility(View.VISIBLE);
                     lytConTo.setVisibility(View.VISIBLE);
                     lytConDays.setVisibility(View.VISIBLE);
@@ -500,16 +587,15 @@ public class DDCloseActiviy extends Activity {
                     lytSoclFrom.setVisibility(View.GONE);
                     lytSclSerTo.setVisibility(View.GONE);
                     lytRisingDays.setVisibility(View.GONE);
+                    lytFirNo.setVisibility(View.GONE);
+                    lytPSName.setVisibility(View.GONE);
+                    lyt_DrvrExpredDate.setVisibility(View.GONE);
                     rdoBtn_DLSUS.setChecked(true);
-
                     rdoBtn_DLCAN.setKeyListener(null);
                     rdoBtnNONE.setKeyListener(null);
-
-
                     clearData();
 
                 } else if ("11".equals(selectedCourtDisCode)) {  // DL CANCELLATION AND FINE
-
                     lytConFrom.setVisibility(View.GONE);
                     lytConTo.setVisibility(View.GONE);
                     lytConDays.setVisibility(View.GONE);
@@ -517,6 +603,9 @@ public class DDCloseActiviy extends Activity {
                     lytSoclFrom.setVisibility(View.GONE);
                     lytSclSerTo.setVisibility(View.GONE);
                     lytRisingDays.setVisibility(View.GONE);
+                    lytFirNo.setVisibility(View.GONE);
+                    lytPSName.setVisibility(View.GONE);
+                    lyt_DrvrExpredDate.setVisibility(View.GONE);
                     rdoBtn_DLCAN.setChecked(true);
                     rdoBtn_DLSUS.setKeyListener(null);
                     rdoBtnNONE.setKeyListener(null);
@@ -531,11 +620,27 @@ public class DDCloseActiviy extends Activity {
                     lytSoclFrom.setVisibility(View.GONE);
                     lytSclSerTo.setVisibility(View.GONE);
                     lytRisingDays.setVisibility(View.GONE);
+                    lytFirNo.setVisibility(View.GONE);
+                    lytPSName.setVisibility(View.GONE);
+                    lyt_DrvrExpredDate.setVisibility(View.GONE);
                     rdoBtn_DLCAN.setChecked(true);
                     rdoBtn_DLSUS.setKeyListener(null);
                     rdoBtnNONE.setKeyListener(null);
                     clearData();
 
+                } else if ("13".equals(selectedCourtDisCode)) {
+                    lytConFrom.setVisibility(View.GONE);
+                    lytConTo.setVisibility(View.GONE);
+                    lytConDays.setVisibility(View.GONE);
+                    lytSoclFrom.setVisibility(View.VISIBLE);
+                    lytSclSerTo.setVisibility(View.VISIBLE);
+                    lytRisingDays.setVisibility(View.GONE);
+                    lytFirNo.setVisibility(View.GONE);
+                    lytPSName.setVisibility(View.GONE);
+                    lyt_DrvrExpredDate.setVisibility(View.GONE);
+                    lytFineAmnt.setVisibility(View.VISIBLE);
+                    rdoBtnNONE.setChecked(true);
+                    clearData();
                 } else {
                     lytConFrom.setVisibility(View.GONE);
                     lytConTo.setVisibility(View.GONE);
@@ -544,11 +649,11 @@ public class DDCloseActiviy extends Activity {
                     lytSoclFrom.setVisibility(View.GONE);
                     lytSclSerTo.setVisibility(View.GONE);
                     lytRisingDays.setVisibility(View.GONE);
+                    rdoBtnNONE.setChecked(true);
+                    rdoBtn_DLSUS.setKeyListener(null);
+                    rdoBtn_DLCAN.setKeyListener(null);
                     clearData();
-
-
                 }
-
             }
 
             @Override
@@ -556,8 +661,159 @@ public class DDCloseActiviy extends Activity {
 
             }
         });
+
+        ArrayAdapter<String> owner_dataAdapter1 = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, mArrayListCourtDis);
+        owner_dataAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        owner_courtDisSpinner.setAdapter(owner_dataAdapter1);
+        owner_courtDisSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String courtDis = owner_courtDisSpinner.getSelectedItem().toString();
+                for (String mapCourtName : paramsCourtdis.keySet()) {
+                    if (courtDis.equals(mapCourtName)) {
+                        owner_selectedCourtDisCode = paramsCourtdis.get(mapCourtName);
+                        break;
+                    }
+                }
+
+                if ("1".equals(owner_selectedCourtDisCode) || "15".equals(owner_selectedCourtDisCode)) {
+                    clearOwnerData();
+                    owner_lytConvtdFrom.setVisibility(View.GONE);
+                    owner_lytConvtdTo.setVisibility(View.GONE);
+                    owner_lytSoclFrom.setVisibility(View.GONE);
+                    owner_lytSclSerTo.setVisibility(View.GONE);
+                    owner_lytRisingDays.setVisibility(View.GONE);
+                    owner_lytFineAmnt.setVisibility(View.VISIBLE);
+
+                } else if ("5".equals(owner_selectedCourtDisCode)) {
+
+                    owner_lytConvtdFrom.setVisibility(View.GONE);
+                    owner_lytConvtdTo.setVisibility(View.GONE);
+                    owner_lytSoclFrom.setVisibility(View.GONE);
+                    owner_lytSclSerTo.setVisibility(View.GONE);
+                    owner_lytRisingDays.setVisibility(View.VISIBLE);
+                    owner_lytFineAmnt.setVisibility(View.VISIBLE);
+                    clearOwnerData();
+
+                } else if ("7".equals(owner_selectedCourtDisCode)) {
+
+                    owner_lytConvtdFrom.setVisibility(View.GONE);
+                    owner_lytConvtdTo.setVisibility(View.GONE);
+                    owner_lytSoclFrom.setVisibility(View.VISIBLE);
+                    owner_lytSclSerTo.setVisibility(View.VISIBLE);
+                    owner_lytRisingDays.setVisibility(View.VISIBLE);
+                    owner_lytFineAmnt.setVisibility(View.VISIBLE);
+                    clearOwnerData();
+
+                } else if ("3".equals(owner_selectedCourtDisCode) || "17".equals(owner_selectedCourtDisCode)) {
+
+                    owner_lytConvtdFrom.setVisibility(View.VISIBLE);
+                    owner_lytConvtdTo.setVisibility(View.VISIBLE);
+                    owner_lytSoclFrom.setVisibility(View.GONE);
+                    owner_lytSclSerTo.setVisibility(View.GONE);
+                    owner_lytRisingDays.setVisibility(View.GONE);
+                    owner_lytFineAmnt.setVisibility(View.VISIBLE);
+                    clearOwnerData();
+
+                } else if ("2".equals(owner_selectedCourtDisCode) || "16".equals(owner_selectedCourtDisCode)) {  // ONLY IMPRISONMENT
+
+                    owner_lytConvtdFrom.setVisibility(View.VISIBLE);
+                    owner_lytConvtdTo.setVisibility(View.VISIBLE);
+                    owner_lytSoclFrom.setVisibility(View.GONE);
+                    owner_lytSclSerTo.setVisibility(View.GONE);
+                    owner_lytRisingDays.setVisibility(View.GONE);
+                    owner_lytFineAmnt.setVisibility(View.GONE);
+
+                } else if ("4".equals(owner_selectedCourtDisCode)) {
+
+                    owner_lytConvtdFrom.setVisibility(View.GONE);
+                    owner_lytConvtdTo.setVisibility(View.GONE);
+                    owner_lytSoclFrom.setVisibility(View.GONE);
+                    owner_lytSclSerTo.setVisibility(View.GONE);
+                    owner_lytRisingDays.setVisibility(View.VISIBLE);
+                    owner_lytFineAmnt.setVisibility(View.GONE);
+                    clearOwnerData();
+
+                } else if ("8".equals(owner_selectedCourtDisCode)) {  //ONLY SOCIAL SERVICE
+
+                    owner_lytConvtdFrom.setVisibility(View.GONE);
+                    owner_lytConvtdTo.setVisibility(View.GONE);
+                    owner_lytSoclFrom.setVisibility(View.VISIBLE);
+                    owner_lytSclSerTo.setVisibility(View.VISIBLE);
+                    owner_lytRisingDays.setVisibility(View.GONE);
+                    owner_lytFineAmnt.setVisibility(View.GONE);
+                    clearOwnerData();
+
+
+                } else if ("9".equals(owner_selectedCourtDisCode)) {  //DL SUSPENSION AND FINE
+
+                    owner_lytConvtdFrom.setVisibility(View.GONE);
+                    owner_lytConvtdTo.setVisibility(View.GONE);
+                    owner_lytSoclFrom.setVisibility(View.GONE);
+                    owner_lytSclSerTo.setVisibility(View.GONE);
+                    owner_lytRisingDays.setVisibility(View.GONE);
+                    owner_lytFineAmnt.setVisibility(View.GONE);
+                    clearOwnerData();
+
+                } else if ("10".equals(owner_selectedCourtDisCode)) {  // DL SUSPENSION AND IMPRISONMENT
+
+                    owner_lytConvtdFrom.setVisibility(View.GONE);
+                    owner_lytConvtdTo.setVisibility(View.GONE);
+                    owner_lytSoclFrom.setVisibility(View.GONE);
+                    owner_lytSclSerTo.setVisibility(View.GONE);
+                    owner_lytRisingDays.setVisibility(View.GONE);
+                    owner_lytFineAmnt.setVisibility(View.GONE);
+                    clearOwnerData();
+
+                } else if ("11".equals(owner_selectedCourtDisCode)) {  // DL CANCELLATION AND FINE
+
+                    owner_lytConvtdFrom.setVisibility(View.GONE);
+                    owner_lytConvtdTo.setVisibility(View.GONE);
+                    owner_lytSoclFrom.setVisibility(View.GONE);
+                    owner_lytSclSerTo.setVisibility(View.GONE);
+                    owner_lytRisingDays.setVisibility(View.GONE);
+                    owner_lytFineAmnt.setVisibility(View.GONE);
+                    clearOwnerData();
+
+                } else if ("12".equals(owner_selectedCourtDisCode)) {  // DL CANCELLATION AND IMPRISON
+
+                    clearOwnerData();
+                    owner_lytConvtdFrom.setVisibility(View.GONE);
+                    owner_lytConvtdTo.setVisibility(View.GONE);
+                    owner_lytSoclFrom.setVisibility(View.GONE);
+                    owner_lytSclSerTo.setVisibility(View.GONE);
+                    owner_lytRisingDays.setVisibility(View.GONE);
+                    owner_lytFineAmnt.setVisibility(View.GONE);
+
+                } else if ("13".equals(owner_selectedCourtDisCode)) {
+
+                    owner_lytConvtdFrom.setVisibility(View.GONE);
+                    owner_lytConvtdTo.setVisibility(View.GONE);
+                    owner_lytSoclFrom.setVisibility(View.VISIBLE);
+                    owner_lytSclSerTo.setVisibility(View.VISIBLE);
+                    owner_lytRisingDays.setVisibility(View.GONE);
+                    owner_lytFineAmnt.setVisibility(View.VISIBLE);
+                    clearOwnerData();
+                } else {
+                    owner_lytConvtdFrom.setVisibility(View.GONE);
+                    owner_lytConvtdTo.setVisibility(View.GONE);
+                    owner_lytSoclFrom.setVisibility(View.GONE);
+                    owner_lytSclSerTo.setVisibility(View.GONE);
+                    owner_lytRisingDays.setVisibility(View.GONE);
+                    owner_lytFineAmnt.setVisibility(View.GONE);
+                    clearOwnerData();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
         db = new DBHelper(getApplicationContext());
-      
 
         btn_dp_date_selection.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -571,9 +827,16 @@ public class DDCloseActiviy extends Activity {
             @Override
             public void onClick(View v) {
                 showDialog(PRESENT_COURT_ATTEND_DATE);
-                // btn_courtAttenddate.setText("" + present_date_toSend.toUpperCase());
             }
         });
+
+        owner_btn_CrtAtndDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog(OWNER_COURT_ATTEND_DATE);
+            }
+        });
+
 
         btn_courtConFromdate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -591,6 +854,21 @@ public class DDCloseActiviy extends Activity {
             }
         });
 
+        owner_btn_courtConFromdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog(OWNER_COURT_CONVI_FROM);
+            }
+        });
+
+        owner_btn_courtConTo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog(OWNER_COURT_CONVI_TO);
+                //btn_courtConTo.setText("" + present_date_toSend.toUpperCase());
+            }
+        });
+
         btn_courtSoclServceFromdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -599,15 +877,26 @@ public class DDCloseActiviy extends Activity {
             }
         });
 
-        btn_courtSoclServceTodate.setOnClickListener(
-                new View.OnClickListener() {
+        owner_btn_courtSoclServceFromdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog(OWNER_COURT_SCL_SRC_FROM);
+            }
+        });
+        owner_btn_courtSoclServceTodate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog(OWNER_COURT_SCL_SRC_TO);
+            }
+        });
 
-                    @Override
-                    public void onClick(View v) {
-                        showDialog(PRESENT_COURT_SCL_SRC_TO);
-                        //btn_courtConTo.setText("" + present_date_toSend.toUpperCase());
-                    }
-                });
+        btn_courtSoclServceTodate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog(PRESENT_COURT_SCL_SRC_TO);
+                //btn_courtConTo.setText("" + present_date_toSend.toUpperCase());
+            }
+        });
         btn_DLSUS_FromDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -649,6 +938,23 @@ public class DDCloseActiviy extends Activity {
                 selectImage();
             }
         });
+
+        minor_img_CourtCopy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selection_Pic_Flag = "3";
+                selectImage();
+            }
+        });
+
+        owner_img_CourtCopy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selection_Pic_Flag = "4";
+                selectImage();
+            }
+        });
+
 
         btn_dp_get_onlinedetials.setOnClickListener(new View.OnClickListener() {
 
@@ -719,16 +1025,9 @@ public class DDCloseActiviy extends Activity {
                 } else if (driver_Mobile.trim().equals("")) {
                     edtTxt_Mob_No.setError(Html.fromHtml("<font color='white'>Enter Mobile Number </font>"));
                     edtTxt_Mob_No.requestFocus();
-                } else if (driver_Mobile.length() <= 9 || driver_Mobile.length() >= 11) {
+                } else if (driver_Mobile.length() != 10) {
                     edtTxt_Mob_No.setError(Html.fromHtml("<font color='white'>Enter Valid Mobile Number </font>"));
                     edtTxt_Mob_No.requestFocus();
-                } else if (driver_Adhar.trim().equals("") && driver_LCNCE.trim().equals("")) {
-                    showToast("Please enter either Aadhar or Dl No");
-                } else if (!driver_Adhar.equals("") && driver_Adhar.length() != 12) {
-                    if ((driver_Adhar.length() <= 11 || driver_Adhar.length() >= 13)) {
-                        edtTxt_Aadhar_No.setError(Html.fromHtml("<font color='white'>Enter valid Aadhar Number </font>"));
-                        edtTxt_Aadhar_No.requestFocus();
-                    }
                 } else if (dl_SUS_Status.equals("Y") && (!driver_LCNCE.equals("null")) && (driver_LCNCE.length() <= 3)) {
                     edtTxt_DlNo.setError(Html.fromHtml("<font color='white'>Enter valid Dl Number </font>"));
                     edtTxt_DlNo.requestFocus();
@@ -745,28 +1044,50 @@ public class DDCloseActiviy extends Activity {
                 } else if (dl_CAN.equals("Y") && btn_dateSeltion_DL_Canln.getText().toString().equals("Select Date")) {
                     showToast("Please Select DL Cancellation Date!");
                 } else if (dl_CAN.equals("Y") && img_dataCourtCopy == null) {
-                    showToast("Please Select/ Capture the Megistrate Copy");
+                    showToast("Please Select/ Capture the Magistrate Copy");
                 } else if (dl_CAN.equals("Y") && img_dataDLCopy == null) {
                     showToast("Please Select/Capture DL Copy!");
-                }
-
-//                else if ((!driver_LCNCE.equals("")) && (driver_LCNCE.length() <= 3) && driver_Adhar.equals("")) {
-//                    edtTxt_DlNo.setError(Html.fromHtml("<font color='white'>Enter valid Dl Number </font>"));
-//                    edtTxt_DlNo.requestFocus();
-//                }
-
-                else if (btn_courtAttenddate.getText().toString().equals("Select Date")) {
+                } else if (btn_courtAttenddate.getText().toString().equals("Select Date")) {
                     showToast("Select Court Attended Date");
                 } else if (sTS_No.trim().equals("")) {
                     edtTxt_STC_No.setError(Html.fromHtml("<font color='white'>Enter STC No</font>"));
                     edtTxt_STC_No.requestFocus();
-                } else if (dl_SusDays.trim().equals("") && dl_SUS.equals("Y")) {
+                }/* else if (dl_SusDays.trim().equals("") && dl_SUS.equals("Y")) {
                     edtTxt_DL_SUSDAYS.setError(Html.fromHtml("<font color='white'>Enter Suspention Days</font>"));
                     edtTxt_DL_SUSDAYS.requestFocus();
-                } else if (court_Disposal_code == null) {
+                }*/ else if (court_Disposal_code == null) {
                     showToast("Select court Disposal Name");
-                } else if (court_Disposal_code.equals("3")) {
-
+                } else if (owner_selectedCourtCode == null && minor_Dvng_Flag) {
+                    showToast("Select Owner Court Name");
+                } else if (owner_btn_CrtAtndDate.getText().toString().equals("Select Date") && minor_Dvng_Flag) {
+                    showToast("Select Owner Court Attended Date");
+                } else if (owner_edtTxt_STC_NO.getText().toString().isEmpty() && minor_Dvng_Flag) {
+                    owner_edtTxt_STC_NO.setError("Please enter the Owner STC No!");
+                    owner_edtTxt_STC_NO.requestFocus();
+                } else if (!owner_edtTxt_Contct_NO.getText().toString().isEmpty() && minor_Dvng_Flag && owner_edtTxt_Contct_NO.getText().toString().length() != 10) {
+                    owner_edtTxt_Contct_NO.setError("Please enter the Owner Contact No!");
+                    owner_edtTxt_Contct_NO.requestFocus();
+                } else if (owner_selectedCourtDisCode == null && minor_Dvng_Flag) {
+                    showToast("Select Owner Disposal Name");
+                } else if (owner_edtTxt_FineAmnt.isShown() && owner_edtTxt_FineAmnt.getText().toString().equals("")) {
+                    owner_edtTxt_FineAmnt.setError("Please Enter Owner Fine Amount !");
+                    owner_edtTxt_FineAmnt.requestFocus();
+                } else if (owner_btn_courtConFromdate.isShown() && owner_btn_courtConFromdate.getText().toString().equals("Select Date")) {
+                    showToast("Select Owner Conviction From Date!");
+                } else if (owner_btn_courtConTo.isShown() && owner_btn_courtConTo.getText().toString().equals("Select Date")) {
+                    showToast("Select Owner Conviction To Date!");
+                } else if (owner_btn_courtSoclServceFromdate.isShown() && owner_btn_courtSoclServceFromdate.getText().toString().equals("Select Date")) {
+                    showToast("Select Owner Social Service From Date!");
+                } else if (owner_btn_courtSoclServceTodate.isShown() && owner_btn_courtSoclServceTodate.getText().toString().equals("Select Date")) {
+                    showToast("Select Owner Social Service To Date!");
+                } else if (owner_edtTxt_RisingDays.isShown()&& owner_edtTxt_RisingDays.getText().toString().isEmpty()){
+                    owner_edtTxt_RisingDays.setError("Please enter the Owner Rising Days!");
+                    owner_edtTxt_RisingDays.requestFocus();
+                }else if (minor_Dvng_Flag && driver_ImgData == null) {
+                    showToast("Please Select/Capture Owner Magistrate Copy!");
+                } else if (minor_Dvng_Flag && minor_ImgData == null) {
+                    showToast("Please Select/Capture Driver Magistrate Copy!");
+                } else if ("3".equals(court_Disposal_code) || "17".equals(court_Disposal_code)) {
                     if (btn_courtConFromdate.getText().toString().equals("Select Date")) {
                         showToast("Please select Court Convicted From date");
                     } else if (fineAmnt.trim().equals("")) {
@@ -779,15 +1100,14 @@ public class DDCloseActiviy extends Activity {
                         new Async_getCourtClosingUpdateTicketInfo().execute();
                     }
 
-
-                } else if (court_Disposal_code.equals("1") || court_Disposal_code.equals("11") || court_Disposal_code.equals("9")) {
+                } else if (Objects.requireNonNull(court_Disposal_code).equals("1") || court_Disposal_code.equals("11") || court_Disposal_code.equals("9")
+                        || court_Disposal_code.equals("15")) {
 
                     if (fineAmnt.trim().equals("")) {
                         edtTxt_FineAmnt.setError(Html.fromHtml("<font color='white'>Enter Fine Amount </font>"));
                         edtTxt_FineAmnt.requestFocus();
                     } else {
                         new Async_getCourtClosingUpdateTicketInfo().execute();
-
                     }
 
                 } else if (court_Disposal_code.equals("5")) {
@@ -809,21 +1129,47 @@ public class DDCloseActiviy extends Activity {
                 } else if (court_Disposal_code.equals("7")) {
 
                     if (btn_courtSoclServceFromdate.getText().toString().equals("Select Date")) {
-                        showToast("Please select Court Convicted From date");
+                        showToast("Please select Court Social Service From date");
                     } else if (fineAmnt.trim().equals("")) {
                         edtTxt_FineAmnt.setError(Html.fromHtml("<font color='white'>Enter Fine Amount </font>"));
                         edtTxt_FineAmnt.requestFocus();
                     } else if (btn_courtSoclServceTodate.getText().toString().equals("Select Date")) {
-                        showToast("Please select Court Convicted To date");
+                        showToast("Please select Court Social Service To date");
                     } else if (rising_days.trim().equals("")) {
                         edtTxtRisDays.setError(Html.fromHtml("<font color='white'>Enter Convicted Days </font>"));
                         edtTxtRisDays.requestFocus();
                     } else {
                         new Async_getCourtClosingUpdateTicketInfo().execute();
 
+
                     }
 
-                } else if (court_Disposal_code.equals("2") || court_Disposal_code.equals("12") || court_Disposal_code.equals("10")) {
+                } else if (court_Disposal_code.equals("13")) {
+
+                    if (btn_courtSoclServceFromdate.getText().toString().equals("Select Date")) {
+                        showToast("Please select Court Social Service From date");
+                    } else if (fineAmnt.trim().equals("")) {
+                        edtTxt_FineAmnt.setError(Html.fromHtml("<font color='white'>Enter Fine Amount </font>"));
+                        edtTxt_FineAmnt.requestFocus();
+                    } else if (btn_courtSoclServceTodate.getText().toString().equals("Select Date")) {
+                        showToast("Please select Court Social Service To date");
+                    } else {
+                        new Async_getCourtClosingUpdateTicketInfo().execute();
+
+                    }
+
+                } else if (court_Disposal_code.equals("8")) {
+
+                    if (btn_courtSoclServceFromdate.getText().toString().equals("Select Date")) {
+                        showToast("Please select Court Social Service From date");
+                    } else if (btn_courtSoclServceTodate.getText().toString().equals("Select Date")) {
+                        showToast("Please select Court Social Service To date");
+                    } else {
+                        new Async_getCourtClosingUpdateTicketInfo().execute();
+
+                    }
+
+                } else if (court_Disposal_code.equals("2") || court_Disposal_code.equals("12") || court_Disposal_code.equals("10") || court_Disposal_code.equals("16")) {
 
                     if (btn_courtConFromdate.getText().toString().equals("Select Date")) {
                         showToast("Please select Court Convicted From date");
@@ -836,7 +1182,7 @@ public class DDCloseActiviy extends Activity {
                         new Async_getCourtClosingUpdateTicketInfo().execute();
                     }
 
-                } else if (court_Disposal_code.equals("4") || court_Disposal_code.equals("8")) {
+                } else if (court_Disposal_code.equals("4")) {
 
                     if (rising_days.trim().equals("")) {
                         edtTxtRisDays.setError(Html.fromHtml("<font color='white'>Enter the Days </font>"));
@@ -845,12 +1191,12 @@ public class DDCloseActiviy extends Activity {
                         new Async_getCourtClosingUpdateTicketInfo().execute();
                     }
 
+                } else {
+                    new Async_getCourtClosingUpdateTicketInfo().execute();
                 }
 
             }
         });
-
-
     }
 
     public void clearData() {
@@ -858,17 +1204,32 @@ public class DDCloseActiviy extends Activity {
         edtTxtConDays.setText("");
         edtTxtRisDays.setText("");
         edtTxt_DL_SUSDAYS.setText("");
+        edtTxt_FirNo.setText("");
+        edtTxt_PSName.setText("");
         btn_courtConFromdate.setText("Select Date");
-
         btn_courtConTo.setText("Select Date");
         btn_courtSoclServceFromdate.setText("Select Date");
         btn_courtSoclServceTodate.setText("Select Date");
         btn_DLSUS_FromDate.setText("Select Date");
         btn_DLSUS_ToDate.setText("Select Date");
+        btn_DrExpDate.setText("Select Date");
         imgView_CourtOrderCopy.setImageResource(R.drawable.courtorder);
         imgView_DLCopy.setImageResource(R.drawable.dlcopy);
         img_dataCourtCopy = null;
         img_dataDLCopy = null;
+    }
+
+    public void clearOwnerData() {
+        owner_edtTxt_FineAmnt.setText("");
+        owner_edtTxt_RisingDays.setText("");
+        owner_btn_courtConFromdate.setText("Select Date");
+        owner_btn_courtConTo.setText("Select Date");
+        owner_btn_courtSoclServceFromdate.setText("Select Date");
+        owner_btn_courtSoclServceTodate.setText("Select Date");
+        owner_img_CourtCopy.setImageResource(R.drawable.courtorder);
+        minor_img_CourtCopy.setImageResource(R.drawable.courtorder);
+        minor_ImgData = null;
+        driver_ImgData = null;
     }
 
     public Boolean isOnline() {
@@ -881,10 +1242,6 @@ public class DDCloseActiviy extends Activity {
         try {
             db.open();
             cursor_court_Disnames = DBHelper.db.rawQuery("select * from " + db.court_disName_table, null);
-//            if (cursor_court_Disnames.getCount() == 0) {
-//                showToast("Please download master's !");
-//            } else {
-
             if (cursor_court_Disnames.moveToFirst()) {
                 paramsCourtdis = new HashMap<String, String>();
                 while (!cursor_court_Disnames.isAfterLast()) {
@@ -944,11 +1301,71 @@ public class DDCloseActiviy extends Activity {
                     driver_DL_DOB = btn_Dl_dob.getText().toString();
                 }
 
-                ServiceHelper.getCourtClosingUpdateTicketInfo(chall_No, vEHICLE_NUMBER, driver_LCNCE.toUpperCase(), driver_DL_DOB, driver_Adhar, edtTxt_STC_No.getText().toString(),
+                caseDisposal = new CourtCaseDisposal();
+                caseDisposal.setEticketNo(chall_No);
+                caseDisposal.setRegnNo(vEHICLE_NUMBER);
+                caseDisposal.setPidCD(MainActivity.user_id);
+                caseDisposal.setPidName(MainActivity.arr_logindetails[1]);
+                caseDisposal.setReleaseDT("");
+                caseDisposal.setChallanType(chall_Type);
+                caseDisposal.setViolations(violations);
+                caseDisposal.setUnitCode(unit_CODE);
+                caseDisposal.setPsCode(ps_CODE);
+                caseDisposal.setOfficerPid(pid_CODE);
+                caseDisposal.setOffenceDate(offence_Date);
+                caseDisposal.setVehRelease("Y");
+                caseDisposal.setDdRemarks(edtTxt_Remarks.getText().toString().trim());
+                caseDisposal.setMinorFlag(minor_Dvng_Flag ? "Y" : "N");
+
+                caseDisposal.setDriver_dlNO(driver_LCNCE.toUpperCase());
+                caseDisposal.setDriver_dlDob(driver_DL_DOB);
+                caseDisposal.setDriver_aadhaarNO(driver_Adhar);
+                caseDisposal.setDriver_mobileNo(driver_Mobile);
+                caseDisposal.setDriver_stcNO(edtTxt_STC_No.getText().toString().trim());
+                caseDisposal.setDriver_courtCD(selectedCourtCode);
+                caseDisposal.setDriver_courtDispCD(selectedCourtDisCode);
+                caseDisposal.setDriver_imprisFrom(date_convFRom);
+                caseDisposal.setDriver_imprisTo(date_convicTo);
+                caseDisposal.setDriver_imprisDays(edtTxtConDays.getText().toString().trim());
+                caseDisposal.setDriver_courtFine(edtTxt_FineAmnt.getText().toString().trim());
+                caseDisposal.setDriver_risingDetails(edtTxtRisDays.getText().toString().trim());
+                caseDisposal.setDriver_coutrAttnDT(date_courtAtnd);
+                caseDisposal.setDriver_dlRelease("");
+                caseDisposal.setDriver_dlSusp(dl_SUS);
+                caseDisposal.setDriver_dlCancel(dl_CAN);
+                caseDisposal.setDriver_SuspensionFromDate(date_DL_SUS_FROM);
+                caseDisposal.setDriver_SuspensionToDate(date_DL_SUS_TO);
+                caseDisposal.setDriver_noOfDaysSuspended(dl_SusDays);
+                caseDisposal.setDriver_imgMegistrateCopy(img_dataCourtCopy);
+                caseDisposal.setDriver_imgDlCopy(img_dataDLCopy);
+
+                if (minor_Dvng_Flag) {
+                    caseDisposal.setOwner_COURT_FINE(owner_edtTxt_FineAmnt.getText().toString().trim());
+                    caseDisposal.setOwner_CONVICTION_DETAILS(ownerConDays);
+                    caseDisposal.setOwner_CONTACT_NO(owner_edtTxt_Contct_NO.getText().toString().trim());
+                    caseDisposal.setOwner_CONVICTION_FROM_DT(owner_date_convFRom);
+                    caseDisposal.setOwner_CONVICTION_TO_DT(owner_date_convicTo);
+                    caseDisposal.setOwner_COURT_CASE_NO(owner_edtTxt_STC_NO.getText().toString().trim());
+                    caseDisposal.setOwner_RISING_DETAILS(owner_edtTxt_RisingDays.getText().toString().trim());
+                    caseDisposal.setOwner_COURT_CD(owner_selectedCourtCode);
+                    caseDisposal.setOwner_DISPOSAL_CD(owner_selectedCourtDisCode);
+                    caseDisposal.setOwner_COURT_PC(pid_CODE);
+                    caseDisposal.setOwner_D_OF_PAY(owner_btn_CrtAtndDate.getText().toString());
+                    caseDisposal.setOwner_LICENSE_NO("");
+                    caseDisposal.setDriver_imgMegistrateCopy(minor_ImgData);
+                    caseDisposal.setDriver_imgDlCopy(driver_ImgData);
+                    // }
+                }
+                Gson gson = new Gson();
+                String disposal_Data = gson.toJson(caseDisposal);
+                ServiceHelper.getCourtDisposalTicketInfo(disposal_Data);
+
+                /*ServiceHelper.getCourtClosingUpdateTicketInfo(chall_No, vEHICLE_NUMBER, driver_LCNCE.toUpperCase(), driver_DL_DOB, driver_Adhar, edtTxt_STC_No.getText().toString(),
                         selectedCourtDisCode, edtTxtConDays.getText().toString(), date_convFRom, date_convicTo, edtTxt_FineAmnt.getText().toString(),
                         edtTxtRisDays.getText().toString(), selectedCourtCode, date_courtAtnd, vehcleRelse, "Y", edtTxt_Remarks.getText().toString(),
                         MainActivity.user_id, MainActivity.arr_logindetails[1], "", driver_Mobile, dl_SUS, dl_CAN, date_DL_SUS_FROM, date_DL_SUS_TO,
-                        img_dataCourtCopy, img_dataDLCopy, dl_SusDays, chall_Type, violations, unit_CODE, ps_CODE, pid_CODE, offence_Date);
+                        img_dataCourtCopy, img_dataDLCopy, dl_SusDays, chall_Type, violations, unit_CODE, ps_CODE, pid_CODE, offence_Date);*/
+
             } catch (Exception e) {
                 e.printStackTrace();
                 showToast("Please check network and try again!");
@@ -1075,6 +1492,7 @@ public class DDCloseActiviy extends Activity {
             if (null != ServiceHelper.Opdata_Chalana && !ServiceHelper.Opdata_Chalana.equals("NA")) {
 
                 try {
+                    Log.d("DDClose_Data", "" + ServiceHelper.Opdata_Chalana);
                     JSONObject jsonObject = new JSONObject(ServiceHelper.Opdata_Chalana);
                     JSONArray jsonArray = jsonObject.getJSONArray("Challan Details");
                     for (int i = 0; i < jsonArray.length(); i++) {
@@ -1082,12 +1500,13 @@ public class DDCloseActiviy extends Activity {
                         if (jsonObject1.toString().isEmpty() || jsonObject1.length() == 0) {
                             showToast("No data Found");
                         } else {
-                            dd_lyt.setVisibility(View.VISIBLE);
+                            dd_lyt.setVisibility(View.GONE);
                             pay_dd_lyt.setVisibility(View.VISIBLE);
                             lytConFrom.setVisibility(View.GONE);
                             lytConTo.setVisibility(View.GONE);
                             lytConDays.setVisibility(View.GONE);
                             lytFineAmnt.setVisibility(View.GONE);
+                            owner_Lyt_Pay_details.setVisibility(View.GONE);
                             vEHICLE_NUMBER = jsonObject1.getString("VEHICLE NUMBER");
                             chall_No = jsonObject1.getString("CHALLAN NUMBER");
                             chall_Type = jsonObject1.getString("CHALLAN_TYPE");
@@ -1100,6 +1519,13 @@ public class DDCloseActiviy extends Activity {
                             unit_CODE = jsonObject1.getString("UNIT_CODE");
                             pid_CODE = jsonObject1.getString("PID_CODE");
                             ps_CODE = jsonObject1.getString("PS_CODE");
+                            String offence_codes = jsonObject1.getString("OFFENCE_CODES");
+                            minor_Dvng_Flag = offence_codes.contains("30");
+                            if (minor_Dvng_Flag) {
+                                owner_Lyt_Pay_details.setVisibility(View.VISIBLE);
+                            } else {
+                                owner_Lyt_Pay_details.setVisibility(View.GONE);
+                            }
                             Reg_No.setText(vEHICLE_NUMBER);
                             Challan_No.setText(chall_No);
                             Offender_Date.setText(offence_Date);
@@ -1153,512 +1579,6 @@ public class DDCloseActiviy extends Activity {
         }
     }
 
-    /*private class Aysnc_Print_Data extends AsyncTask<Void, Void, String> {
-
-        @Override
-        protected String doInBackground(Void... params) {
-            // TODO Auto-generated method stub
-            // printResponse();
-            if (bluetoothAdapter == null) {
-                runOnUiThread(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        showToast("Bluetooth NOT support");
-                    }
-                });
-            } else {
-                if (bluetoothAdapter.isEnabled()) {
-                    if (bluetoothAdapter.isDiscovering()) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                showToast("Bluetooth is currently in device discovery process.");
-                            }
-                        });
-                    } else {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                showToast("Bluetooth is Enabled");
-                            }
-                        });
-
-                        if (!print_Data.equals("")) {
-
-
-                            try {
-
-                                Bluetooth_Printer_3inch_ThermalAPI printer = new Bluetooth_Printer_3inch_ThermalAPI();
-
-                                String print_data = printer.font_Courier_41("" + print_Data);
-                                actual_printer.openBT(address);
-
-                                actual_printer.printData(print_data);
-                                Thread.sleep(5000);
-                                actual_printer.closeBT();
-                            } catch (Exception e) {
-                                runOnUiThread(new Runnable() {
-
-                                    @Override
-                                    public void run() {
-                                                                             showToast("Check Your Device is Working Condition!");
-                                    }
-                                });
-
-                            }
-
-                        } else {
-
-                            if (address.equals("btaddr")) {
-                                runOnUiThread(new Runnable() {
-
-                                    @Override
-                                    public void run() {
-                                        // TODO Auto-generated method stub
-                                        showToast("Check Bluetooth Details!");
-                                    }
-                                });
-
-                            } else if (bluetoothAdapter.isEnabled()) {
-
-                                if (online_report_status.equals("yes")) {
-                                    Log.i("ONLINE PRINT", "ONLINE PRINT");
-
-                                    try {
-                                        Log.i("ONLINE PRINT", "ONLINE PRINT");
-
-                                        Bluetooth_Printer_3inch_ThermalAPI printer = new Bluetooth_Printer_3inch_ThermalAPI();
-
-                                        String print_data = printer.font_Courier_41("" + print_Data);
-                                        actual_printer.openBT(address);
-
-                                        actual_printer.printData(print_data);
-                                        Thread.sleep(5000);
-                                        actual_printer.closeBT();
-                                    } catch (Exception e) {
-                                        runOnUiThread(new Runnable() {
-
-                                            @Override
-                                            public void run() {
-                                                showToast("Check Your Device is Working Condition!");
-                                            }
-                                        });
-
-                                    }
-                                } else {
-                                    if (print_apptype.size() > 0) {
-                                        if ((print_apptype.get(selected_type).toString().trim()
-                                                .equals("" + getResources().getString(R.string.dup_drunk_drive)))
-                                                && (!print_respose.get(selected_type).equals(""))) {
-                                            try {
-
-                                                Bluetooth_Printer_3inch_ThermalAPI printer = new Bluetooth_Printer_3inch_ThermalAPI();
-
-                                                String print_data = printer
-                                                        .font_Courier_41("" + print_respose.get(selected_type));
-                                                actual_printer.openBT(address);
-
-                                                actual_printer.printData(print_data);
-                                                Thread.sleep(5000);
-                                                actual_printer.closeBT();
-                                            } catch (Exception e) {
-                                                runOnUiThread(new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        showToast("Check Your Device is Working Condition!");
-                                                    }
-                                                });
-                                            }
-
-                                        } else if ((print_apptype.get(selected_type).toString().trim()
-                                                .equals("" + getResources().getString(R.string.dup_spot_challan)))
-                                                && (!print_respose.get(selected_type).equals(""))) {
-                                            try {
-
-                                                Bluetooth_Printer_3inch_ThermalAPI printer = new Bluetooth_Printer_3inch_ThermalAPI();
-
-                                                String print_data = printer
-                                                        .font_Courier_41("" + print_respose.get(selected_type));
-                                                actual_printer.openBT(address);
-
-                                                actual_printer.printData(print_data);
-                                                Thread.sleep(5000);
-                                                actual_printer.closeBT();
-                                            } catch (Exception e) {
-                                                // TODO: handle exception
-                                                runOnUiThread(new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        showToast("Check Your Device is Working Condition!");
-                                                    }
-                                                });
-                                            }
-                                        } else if ((print_apptype.get(selected_type).toString().trim()
-                                                .equals("" + getResources().getString(R.string.dup_vhcle_hstry)))
-                                                && (!print_respose.get(selected_type).equals(""))) {
-
-                                            try {
-                                                Bluetooth_Printer_3inch_ThermalAPI printer = new Bluetooth_Printer_3inch_ThermalAPI();
-
-                                                String print_data = printer
-                                                        .font_Courier_41("" + print_respose.get(selected_type));
-                                                actual_printer.openBT(address);
-
-                                                actual_printer.printData(print_data);
-                                                Thread.sleep(5000);
-                                                actual_printer.closeBT();
-                                            } catch (Exception e) {
-                                                runOnUiThread(new Runnable() {
-
-                                                    @Override
-                                                    public void run() {
-                                                        // TODO Auto-generated
-                                                        // method stub
-                                                        showToast("Check Your Device is Working Condition!");
-                                                    }
-                                                });
-                                            }
-                                        } else if ((print_apptype.get(selected_type).toString().trim()
-                                                .equals("" + getResources().getString(R.string.towing_one_line)))
-                                                && (!print_respose.get(selected_type).equals(""))) {
-
-                                            try {
-
-                                                Bluetooth_Printer_3inch_ThermalAPI printer = new Bluetooth_Printer_3inch_ThermalAPI();
-
-                                                String print_data = printer
-                                                        .font_Courier_41("" + print_respose.get(selected_type));
-                                                actual_printer.openBT(address);
-
-                                                actual_printer.printData(print_data);
-                                                Thread.sleep(5000);
-                                                actual_printer.closeBT();
-                                            } catch (Exception e) {
-                                                runOnUiThread(new Runnable() {
-
-                                                    @Override
-                                                    public void run() {
-                                                        // TODO Auto-generated
-                                                        // method stub
-                                                        showToast("Check Your Device is Working Condition!");
-                                                    }
-                                                });
-                                            }
-                                        } else if ((print_apptype.get(selected_type).toString().trim().equals(
-                                                "" + getResources().getString(R.string.release_documents_one_line)))
-                                                && (!print_respose.get(selected_type).equals(""))) {
-
-                                            try {
-                                                Bluetooth_Printer_3inch_ThermalAPI printer = new Bluetooth_Printer_3inch_ThermalAPI();
-
-                                                String print_data = printer
-                                                        .font_Courier_41("" + print_respose.get(selected_type));
-                                                actual_printer.openBT(address);
-
-                                                actual_printer.printData(print_data);
-                                                Thread.sleep(5000);
-                                                actual_printer.closeBT();
-                                            } catch (Exception e) {
-                                                runOnUiThread(new Runnable() {
-
-                                                    @Override
-                                                    public void run() {
-
-                                                        showToast("Check Your Device is Working Condition!");
-                                                    }
-                                                });
-                                            }
-                                        }
-                                    }
-
-                                }
-
-                            }
-                        }
-                    }
-                } else {
-                    Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                    startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-
-                    if (address.equals("btaddr")) {
-                        runOnUiThread(new Runnable() {
-
-                            @Override
-                            public void run() {
-                                // TODO Auto-generated method stub
-                                showToast("Check Bluetooth Details!");
-                            }
-                        });
-                    } else if (bluetoothAdapter.isEnabled()) {
-
-                        Log.i("SECOND  CASE", print_apptype.get(selected_type).toString().trim() + ""
-                                + getResources().getString(R.string.dup_drunk_drive));
-
-                        if (!print_Data.equals("")) {
-
-
-                            try {
-                                    *//*
-                                     * String printdata =
-									 * bth_printer.font_Courier_41(""+
-									 * ServiceHelper.Opdata_Chalana);
-									 * actual_printer.Call_PrintertoPrint("" +
-									 * address, "" + printdata);
-									 *//*
-                                Bluetooth_Printer_3inch_ThermalAPI printer = new Bluetooth_Printer_3inch_ThermalAPI();
-
-                                String print_data = printer.font_Courier_41("" + print_Data);
-                                actual_printer.openBT(address);
-
-                                actual_printer.printData(print_data);
-                                Thread.sleep(5000);
-                                actual_printer.closeBT();
-                            } catch (Exception e) {
-                                runOnUiThread(new Runnable() {
-
-                                    @Override
-                                    public void run() {
-                                        // TODO Auto-generated method stub
-                                        showToast("Check Your Device is Working Condition!");
-                                    }
-                                });
-                            }
-
-                        } else {
-
-                            if (online_report_status.equals("yes")) {
-                                Log.i("ONLINE PRINT", "ONLINE PRINT");
-
-                                try {
-                                    *//*
-                                     * String printdata =
-									 * bth_printer.font_Courier_41(""+
-									 * ServiceHelper.Opdata_Chalana);
-									 * actual_printer.Call_PrintertoPrint("" +
-									 * address, "" + printdata);
-									 *//*
-
-                                    Bluetooth_Printer_3inch_ThermalAPI printer = new Bluetooth_Printer_3inch_ThermalAPI();
-
-                                    String print_data = printer.font_Courier_41("" + print_Data);
-                                    actual_printer.openBT(address);
-
-                                    actual_printer.printData(print_data);
-                                    Thread.sleep(5000);
-                                    actual_printer.closeBT();
-                                } catch (Exception e) {
-                                    runOnUiThread(new Runnable() {
-
-                                        @Override
-                                        public void run() {
-                                            // TODO Auto-generated method stub
-                                            showToast("Check Your Device is Working Condition!");
-                                        }
-                                    });
-                                }
-                            } else {
-                                if (print_apptype.size() > 0) {
-                                    if ((print_apptype.get(selected_type).toString().trim()
-                                            .equals("" + getResources().getString(R.string.dup_drunk_drive)))
-                                            && (!print_respose.get(selected_type).equals(""))) {
-                                        try {
-                                            *//*
-                                             * String printdata =
-											 * bth_printer.font_Courier_41(""+
-											 * print_respose.get(selected_type))
-											 * ; actual_printer.
-											 * Call_PrintertoPrint(""+ address,
-											 * "" + printdata);
-											 *//*
-
-                                            Bluetooth_Printer_3inch_ThermalAPI printer = new Bluetooth_Printer_3inch_ThermalAPI();
-
-                                            String print_data = printer
-                                                    .font_Courier_41("" + print_respose.get(selected_type));
-                                            actual_printer.openBT(address);
-
-                                            actual_printer.printData(print_data);
-                                            Thread.sleep(5000);
-                                            actual_printer.closeBT();
-                                        } catch (Exception e) {
-                                            runOnUiThread(new Runnable() {
-
-                                                @Override
-                                                public void run() {
-                                                    // TODO Auto-generated
-                                                    // method stub
-                                                    showToast("Check Your Device is Working Condition!");
-                                                }
-                                            });
-                                        }
-
-                                    } else if ((print_apptype.get(selected_type).toString().trim()
-                                            .equals("" + getResources().getString(R.string.dup_spot_challan)))
-                                            && (!print_respose.get(selected_type).equals(""))) {
-
-                                        try {
-                                            *//*
-                                             * String printdata =
-											 * bth_printer.font_Courier_41(""+
-											 * print_respose.get(selected_type))
-											 * ; actual_printer.
-											 * Call_PrintertoPrint(""+ address,
-											 * "" + printdata);
-											 *//*
-
-                                            Bluetooth_Printer_3inch_ThermalAPI printer = new Bluetooth_Printer_3inch_ThermalAPI();
-
-                                            String print_data = printer
-                                                    .font_Courier_41("" + print_respose.get(selected_type));
-                                            actual_printer.openBT(address);
-
-                                            actual_printer.printData(print_data);
-                                            Thread.sleep(5000);
-                                            actual_printer.closeBT();
-                                        } catch (Exception e) {
-                                            runOnUiThread(new Runnable() {
-
-                                                @Override
-                                                public void run() {
-                                                    // TODO Auto-generated
-                                                    // method stub
-                                                    showToast("Check Your Device is Working Condition!");
-                                                }
-                                            });
-                                        }
-
-                                    } else if ((print_apptype.get(selected_type).toString().trim()
-                                            .equals("" + getResources().getString(R.string.dup_vhcle_hstry)))
-                                            && (!print_respose.get(selected_type).equals(""))) {
-
-                                        try {
-                                            *//*
-                                             * String printdata =
-											 * bth_printer.font_Courier_41(""+
-											 * print_respose.get(selected_type))
-											 * ; actual_printer.
-											 * Call_PrintertoPrint(""+ address,
-											 * "" + printdata);
-											 *//*
-                                            Bluetooth_Printer_3inch_ThermalAPI printer = new Bluetooth_Printer_3inch_ThermalAPI();
-
-                                            String print_data = printer
-                                                    .font_Courier_41("" + print_respose.get(selected_type));
-                                            actual_printer.openBT(address);
-
-                                            actual_printer.printData(print_data);
-                                            Thread.sleep(5000);
-                                            actual_printer.closeBT();
-                                        } catch (Exception e) {
-                                            runOnUiThread(new Runnable() {
-
-                                                @Override
-                                                public void run() {
-                                                    // TODO Auto-generated
-                                                    // method stub
-                                                    showToast("Check Your Device is Working Condition!");
-                                                }
-                                            });
-                                        }
-                                    } else if ((print_apptype.get(selected_type).toString().trim()
-                                            .equals("" + getResources().getString(R.string.towing_one_line)))
-                                            && (!print_respose.get(selected_type).equals(""))) {
-
-                                        try {
-                                            *//*
-                                             * String printdata =
-											 * bth_printer.font_Courier_41(""+
-											 * print_respose.get(selected_type))
-											 * ; actual_printer.
-											 * Call_PrintertoPrint(""+ address,
-											 * "" + printdata);
-											 *//*
-
-                                            Bluetooth_Printer_3inch_ThermalAPI printer = new Bluetooth_Printer_3inch_ThermalAPI();
-
-                                            String print_data = printer
-                                                    .font_Courier_41("" + print_respose.get(selected_type));
-                                            actual_printer.openBT(address);
-
-                                            actual_printer.printData(print_data);
-                                            Thread.sleep(5000);
-                                            actual_printer.closeBT();
-                                        } catch (Exception e) {
-                                            runOnUiThread(new Runnable() {
-
-                                                @Override
-                                                public void run() {
-                                                    // TODO Auto-generated
-                                                    // method stub
-                                                    showToast("Check Your Device is Working Condition!");
-                                                }
-                                            });
-                                        }
-                                    } else if ((print_apptype.get(selected_type).toString().trim()
-                                            .equals("" + getResources().getString(R.string.release_documents_one_line)))
-                                            && (!print_respose.get(selected_type).equals(""))) {
-
-                                        try {
-                                            *//*
-                                             * String printdata =
-											 * bth_printer.font_Courier_41(""+
-											 * print_respose.get(selected_type))
-											 * ; actual_printer.
-											 * Call_PrintertoPrint(""+ address,
-											 * "" + printdata);
-											 *//*
-                                            Bluetooth_Printer_3inch_ThermalAPI printer = new Bluetooth_Printer_3inch_ThermalAPI();
-
-                                            String print_data = printer
-                                                    .font_Courier_41("" + print_respose.get(selected_type));
-                                            actual_printer.openBT(address);
-
-                                            actual_printer.printData(print_data);
-                                            Thread.sleep(5000);
-                                            actual_printer.closeBT();
-                                        } catch (Exception e) {
-                                            runOnUiThread(new Runnable() {
-
-                                                @Override
-                                                public void run() {
-                                                    // TODO Auto-generated
-                                                    // method stub
-                                                    showToast("Check Your Device is Working Condition!");
-                                                }
-                                            });
-                                        }
-                                    }
-                                }
-
-                            }
-
-                        }
-                    }
-                }
-
-            }
-            return null;
-        }
-
-        @SuppressWarnings("deprecation")
-        @Override
-        protected void onPreExecute() {
-            // TODO Auto-generated method stub
-            super.onPreExecute();
-            showDialog(PROGRESS_DIALOG);
-        }
-
-        @SuppressWarnings("deprecation")
-        @Override
-        protected void onPostExecute(String result) {
-            // TODO Auto-generated method stub
-            super.onPostExecute(result);
-            removeDialog(PROGRESS_DIALOG);
-
-        }
-    }
-*/
     protected void selectImage() {
         // TODO Auto-generated method stub
         if (selection_Pic_Flag.equals("1")) {
@@ -1698,6 +1618,76 @@ public class DDCloseActiviy extends Activity {
             });
             builder.show();
         } else if (selection_Pic_Flag.equals("2")) {
+            final CharSequence[] options = {"Open Camera", "Choose from Gallery", "Cancel"};
+            AlertDialog.Builder builder = new AlertDialog.Builder(DDCloseActiviy.this);
+            builder.setTitle("Add Photo!");
+            builder.setItems(options, new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int item) {
+                    if (options[item].equals("Open Camera")) {
+                        if (Build.VERSION.SDK_INT <= 23) {
+                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            File f = new File(Environment.getExternalStorageDirectory(), "temp.jpg");
+                            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+                            startActivityForResult(intent, 1);
+                        } else {
+                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            File f = new File(Environment.getExternalStorageDirectory(), "temp.jpg");
+                            intent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(DDCloseActiviy.this,
+                                    BuildConfig.APPLICATION_ID + ".provider", f));
+                            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                            startActivityForResult(intent, 1);
+                        }
+                    } else if (options[item].equals("Choose from Gallery")) {
+
+                        Intent intent = new Intent(Intent.ACTION_PICK,
+                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(intent, 2);
+                    } else if (options[item].equals("Cancel")) {
+                        dialog.dismiss();
+
+                    }
+                }
+            });
+            builder.show();
+
+        } else if (selection_Pic_Flag.equals("3")) {
+            final CharSequence[] options = {"Open Camera", "Choose from Gallery", "Cancel"};
+            AlertDialog.Builder builder = new AlertDialog.Builder(DDCloseActiviy.this);
+            builder.setTitle("Add Photo!");
+            builder.setItems(options, new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int item) {
+                    if (options[item].equals("Open Camera")) {
+                        if (Build.VERSION.SDK_INT <= 23) {
+                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            File f = new File(Environment.getExternalStorageDirectory(), "temp.jpg");
+                            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+                            startActivityForResult(intent, 1);
+                        } else {
+                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            File f = new File(Environment.getExternalStorageDirectory(), "temp.jpg");
+                            intent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(DDCloseActiviy.this,
+                                    BuildConfig.APPLICATION_ID + ".provider", f));
+                            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                            startActivityForResult(intent, 1);
+                        }
+                    } else if (options[item].equals("Choose from Gallery")) {
+
+                        Intent intent = new Intent(Intent.ACTION_PICK,
+                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(intent, 2);
+                    } else if (options[item].equals("Cancel")) {
+                        dialog.dismiss();
+
+                    }
+                }
+            });
+            builder.show();
+
+        } else if (selection_Pic_Flag.equals("4")) {
             final CharSequence[] options = {"Open Camera", "Choose from Gallery", "Cancel"};
             AlertDialog.Builder builder = new AlertDialog.Builder(DDCloseActiviy.this);
             builder.setTitle("Add Photo!");
@@ -1812,6 +1802,48 @@ public class DDCloseActiviy extends Activity {
                             mutableBitmap.compress(Bitmap.CompressFormat.JPEG, 20, bytes);
                             byteArray = bytes.toByteArray();
                             img_dataDLCopy = Base64.encodeToString(byteArray, Base64.NO_WRAP);
+                        } else if ("3".equals(selection_Pic_Flag) && bitmap != null) {
+                            outFile = new FileOutputStream(file);
+                            Bitmap mutableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+                            Display d = getWindowManager().getDefaultDisplay();
+                            int x = d.getWidth();
+                            int y = d.getHeight();
+                            Bitmap scaledBitmap = Bitmap.createScaledBitmap(mutableBitmap, y, x, true);
+                            Matrix matrix = new Matrix();
+                            matrix.postRotate(90);
+                            mutableBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
+                            mutableBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outFile);
+                            outFile.flush();
+                            outFile.close();
+                            new SingleMediaScanner(this, file);
+                            minor_img_CourtCopy.setRotation(0);
+                            minor_img_CourtCopy.setImageBitmap(mutableBitmap);
+                            //imgView_DLCopy.setRotation(-90);
+                            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                            mutableBitmap.compress(Bitmap.CompressFormat.JPEG, 20, bytes);
+                            byteArray = bytes.toByteArray();
+                            minor_ImgData = Base64.encodeToString(byteArray, Base64.NO_WRAP);
+                        } else if ("4".equals(selection_Pic_Flag) && bitmap != null) {
+                            outFile = new FileOutputStream(file);
+                            Bitmap mutableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+                            Display d = getWindowManager().getDefaultDisplay();
+                            int x = d.getWidth();
+                            int y = d.getHeight();
+                            Bitmap scaledBitmap = Bitmap.createScaledBitmap(mutableBitmap, y, x, true);
+                            Matrix matrix = new Matrix();
+                            matrix.postRotate(90);
+                            mutableBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
+                            mutableBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outFile);
+                            outFile.flush();
+                            outFile.close();
+                            new SingleMediaScanner(this, file);
+                            owner_img_CourtCopy.setRotation(0);
+                            owner_img_CourtCopy.setImageBitmap(mutableBitmap);
+                            //imgView_DLCopy.setRotation(-90);
+                            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                            mutableBitmap.compress(Bitmap.CompressFormat.JPEG, 20, bytes);
+                            byteArray = bytes.toByteArray();
+                            driver_ImgData = Base64.encodeToString(byteArray, Base64.NO_WRAP);
                         } else {
                             showToast("Image Cannot be Loaded !");
                         }
@@ -1819,22 +1851,26 @@ public class DDCloseActiviy extends Activity {
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                         img_dataCourtCopy = "";
+                        minor_ImgData = null;
 
 
                     } catch (IOException e) {
                         e.printStackTrace();
                         img_dataCourtCopy = "";
+                        minor_ImgData = null;
 
 
                     } catch (Exception e) {
                         e.printStackTrace();
                         img_dataCourtCopy = "";
+                        minor_ImgData = null;
 
                     }
 
                 } catch (Exception e) {
                     e.printStackTrace();
                     img_dataCourtCopy = "";
+                    minor_ImgData = null;
                 }
 
             } else if (requestCode == 2) {
@@ -1868,16 +1904,38 @@ public class DDCloseActiviy extends Activity {
                             mutableBitmap.compress(Bitmap.CompressFormat.JPEG, 20, bytes);
                             byteArray = bytes.toByteArray();
                             img_dataDLCopy = Base64.encodeToString(byteArray, Base64.NO_WRAP);
+                        } else if ("3".equals(selection_Pic_Flag) && thumbnail != null) {
+                            Bitmap mutableBitmap = thumbnail.copy(Bitmap.Config.ARGB_8888, true);
+                            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                            mutableBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+                            minor_img_CourtCopy.setRotation(0);
+                            minor_img_CourtCopy.setImageBitmap(mutableBitmap);
+                            mutableBitmap.compress(Bitmap.CompressFormat.JPEG, 20, bytes);
+                            byteArray = bytes.toByteArray();
+                            minor_ImgData = Base64.encodeToString(byteArray, Base64.NO_WRAP);
+                        } else if ("4".equals(selection_Pic_Flag) && thumbnail != null) {
+                            Bitmap mutableBitmap = thumbnail.copy(Bitmap.Config.ARGB_8888, true);
+                            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                            mutableBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+                            owner_img_CourtCopy.setRotation(0);
+                            owner_img_CourtCopy.setImageBitmap(mutableBitmap);
+                            mutableBitmap.compress(Bitmap.CompressFormat.JPEG, 20, bytes);
+                            byteArray = bytes.toByteArray();
+                            driver_ImgData = Base64.encodeToString(byteArray, Base64.NO_WRAP);
                         } else {
                             showToast("Image Cannot be Loaded !");
                         }
                     } else {
                         img_dataCourtCopy = "";
+                        minor_ImgData = null;
+                        driver_ImgData = null;
                         showToast("Image Cannot be Loaded !");
                     }
                 } catch (Exception e) {
                     img_dataCourtCopy = "";
                     img_dataDLCopy = "";
+                    minor_ImgData = null;
+                    driver_ImgData = null;
 
                 }
             }
@@ -1890,7 +1948,7 @@ public class DDCloseActiviy extends Activity {
         View toastView = toast.getView();
         ViewGroup group = (ViewGroup) toast.getView();
         TextView messageTextView = (TextView) group.getChildAt(0);
-        messageTextView.setPadding(20,0,20, 0);
+        messageTextView.setPadding(20, 0, 20, 0);
         messageTextView.setTextSize(getResources().getDimension(R.dimen._10sdp));
 
         toastView.setBackgroundResource(R.drawable.toast_background);
@@ -1918,7 +1976,6 @@ public class DDCloseActiviy extends Activity {
             format = new SimpleDateFormat("dd-MMM-yyyy");
             present_date_toSend = format.format(new Date(present_year - 1900, (present_month), present_day));
             btn_dp_date_selection.setText("" + present_date_toSend.toUpperCase());
-            Log.i("DAY REPORT : ", "" + present_date_toSend);
 
         }
     };
@@ -1934,6 +1991,23 @@ public class DDCloseActiviy extends Activity {
             format = new SimpleDateFormat("dd-MMM-yyyy");
             date_courtAtnd = format.format(new Date(present_year - 1900, (present_month), present_day));
             btn_courtAttenddate.setText(date_courtAtnd.toUpperCase());
+
+        }
+
+    };
+
+    DatePickerDialog.OnDateSetListener owner_CrtAtndDt = new DatePickerDialog.OnDateSetListener() {
+        @SuppressWarnings("deprecation")
+        @SuppressLint({"SimpleDateFormat", "DefaultLocale"})
+        @Override
+        public void onDateSet(DatePicker view, int selectedYear, int monthOfYear, int dayOfMonth) {
+            present_year = selectedYear;
+            present_month = monthOfYear;
+            present_day = dayOfMonth;
+
+            format = new SimpleDateFormat("dd-MMM-yyyy");
+            String date_courtAtnd = format.format(new Date(present_year - 1900, (present_month), present_day));
+            owner_btn_CrtAtndDate.setText(date_courtAtnd.toUpperCase());
 
         }
 
@@ -2006,6 +2080,71 @@ public class DDCloseActiviy extends Activity {
         }
     };
 
+    DatePickerDialog.OnDateSetListener ownerConFromDt = new DatePickerDialog.OnDateSetListener() {
+
+        @SuppressWarnings("deprecation")
+        @SuppressLint({"SimpleDateFormat", "DefaultLocale"})
+        @Override
+        public void onDateSet(DatePicker view, int selectedYear, int monthOfYear, int dayOfMonth) {
+            present_year = selectedYear;
+            present_month = monthOfYear;
+            present_day = dayOfMonth;
+            format = new SimpleDateFormat("dd-MMM-yyyy");
+            owner_date_convFRom = "";
+            owner_date_convFRom = format.format(new Date(present_year - 1900, (present_month), present_day));
+            owner_btn_courtConFromdate.setText(owner_date_convFRom.toUpperCase());
+            owner_btn_courtConTo.setText("Select Date");
+            try {
+                date_From = null;
+                date_From = format.parse(owner_date_convFRom);
+            } catch (ParseException e) {
+                e.printStackTrace();
+
+            }
+        }
+    };
+
+    DatePickerDialog.OnDateSetListener ownerConFromTo = new DatePickerDialog.OnDateSetListener() {
+
+        @SuppressWarnings("deprecation")
+        @SuppressLint({"SimpleDateFormat", "DefaultLocale"})
+        @Override
+        public void onDateSet(DatePicker view, int selectedYear, int monthOfYear, int dayOfMonth) {
+            present_year = selectedYear;
+            present_month = monthOfYear;
+            present_day = dayOfMonth;
+
+            format = new SimpleDateFormat("dd-MMM-yyyy");
+            owner_date_convicTo = format.format(new Date(present_year - 1900, (present_month), present_day));
+            dayDifference = "";
+            Date date1;
+            Date date2;
+            SimpleDateFormat dates = new SimpleDateFormat("dd-MMM-yyyy");
+
+            //Setting dates
+            try {
+                date1 = dates.parse(owner_date_convFRom);
+                date2 = dates.parse(owner_date_convicTo);
+                if (date2.after(date1) || date2.equals(date1)) {
+                    owner_btn_courtConTo.setText(owner_date_convicTo.toUpperCase());
+
+                    //Comparing dates
+                    long difference = Math.abs(date1.getTime() - date2.getTime());
+                    long differenceDates = difference / (24 * 60 * 60 * 1000);
+
+                    //Convert long to String
+                    ownerConDays = Long.toString(differenceDates);
+                } else {
+                    showToast("Date should be greater than From_Date ");
+                    owner_btn_courtConTo.setText("Select Date");
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+        }
+    };
+
 
     DatePickerDialog.OnDateSetListener md_scl_servceFrom = new DatePickerDialog.OnDateSetListener() {
 
@@ -2036,27 +2175,19 @@ public class DDCloseActiviy extends Activity {
 
             format = new SimpleDateFormat("dd-MMM-yyyy");
             date_convicTo = format.format(new Date(present_year - 1900, (present_month), present_day));
-            //btn_courtSoclServceTodate.setText("" + date_convicTo.toUpperCase());
             dayDifference = "";
             Date date1;
             Date date2;
-
             SimpleDateFormat dates = new SimpleDateFormat("dd-MMM-yyyy");
-
-
             //Setting dates
             try {
-
-
                 date1 = dates.parse(date_convFRom);
                 date2 = dates.parse(date_convicTo);
                 if (date2.after(date1) || date2.equals(date1)) {
-
                     btn_courtSoclServceTodate.setText("" + date_convicTo.toUpperCase());
                     //Comparing dates
                     long difference = Math.abs(date1.getTime() - date2.getTime());
                     long differenceDates = difference / (24 * 60 * 60 * 1000);
-
                     //Convert long to String
                     dayDifference = Long.toString(differenceDates);
                     edtTxtRisDays.setText(dayDifference);
@@ -2065,7 +2196,6 @@ public class DDCloseActiviy extends Activity {
                     btn_courtSoclServceTodate.setText("Select Date");
                     edtTxtRisDays.setText("");
                 }
-
             } catch (ParseException e) {
                 e.printStackTrace();
                 showToast("Please select the dates!");
@@ -2074,6 +2204,61 @@ public class DDCloseActiviy extends Activity {
         }
     };
 
+
+    DatePickerDialog.OnDateSetListener ownerSSFromDt = new DatePickerDialog.OnDateSetListener() {
+
+        @SuppressWarnings("deprecation")
+        @SuppressLint({"SimpleDateFormat", "DefaultLocale"})
+        @Override
+        public void onDateSet(DatePicker view, int selectedYear, int monthOfYear, int dayOfMonth) {
+            present_year = selectedYear;
+            present_month = monthOfYear;
+            present_day = dayOfMonth;
+            format = new SimpleDateFormat("dd-MMM-yyyy");
+            owner_date_convFRom = "";
+            owner_date_convFRom = format.format(new Date(present_year - 1900, (present_month), present_day));
+            owner_btn_courtSoclServceFromdate.setText(owner_date_convFRom.toUpperCase());
+            owner_btn_courtSoclServceTodate.setText("Select Date");
+        }
+    };
+
+    DatePickerDialog.OnDateSetListener ownerSSFromTo = new DatePickerDialog.OnDateSetListener() {
+
+        @SuppressWarnings("deprecation")
+        @SuppressLint({"SimpleDateFormat", "DefaultLocale"})
+        @Override
+        public void onDateSet(DatePicker view, int selectedYear, int monthOfYear, int dayOfMonth) {
+            present_year = selectedYear;
+            present_month = monthOfYear;
+            present_day = dayOfMonth;
+            format = new SimpleDateFormat("dd-MMM-yyyy");
+            owner_date_convicTo = "";
+            owner_date_convicTo = format.format(new Date(present_year - 1900, (present_month), present_day));
+            dayDifference = "";
+            Date date1;
+            Date date2;
+            SimpleDateFormat dates = new SimpleDateFormat("dd-MMM-yyyy");
+            //Setting dates
+            try {
+                date1 = dates.parse(owner_date_convFRom);
+                date2 = dates.parse(owner_date_convicTo);
+                if (date2.after(date1) || date2.equals(date1)) {
+                    owner_btn_courtSoclServceTodate.setText(owner_date_convicTo.toUpperCase());
+                    //Comparing dates
+                    long difference = Math.abs(date1.getTime() - date2.getTime());
+                    long differenceDates = difference / (24 * 60 * 60 * 1000);
+                    //Convert long to String
+                    ownerConDays = Long.toString(differenceDates);
+                } else {
+                    showToast("Date should be greater than From_Date ");
+                    owner_btn_courtSoclServceTodate.setText("Select Date");
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+        }
+    };
 
     DatePickerDialog.OnDateSetListener md_DL_SUS_FROM = new DatePickerDialog.OnDateSetListener() {
 
@@ -2121,7 +2306,7 @@ public class DDCloseActiviy extends Activity {
                 date2 = dates.parse(date_DL_SUS_TO);
                 if (date2.after(date1) || date2.equals(date1)) {
 
-                    btn_DLSUS_ToDate.setText( date_DL_SUS_TO.toUpperCase());
+                    btn_DLSUS_ToDate.setText(date_DL_SUS_TO.toUpperCase());
                     //Comparing dates
                     long difference = Math.abs(date1.getTime() - date2.getTime());
                     long differenceDates = difference / (24 * 60 * 60 * 1000);
@@ -2192,39 +2377,6 @@ public class DDCloseActiviy extends Activity {
             date_DL_SUS_FROM = "";
             date_DL_SUS_FROM = format.format(new Date(present_year - 1900, (present_month), present_day));
             btn_dateSeltion_DL_Canln.setText(date_DL_SUS_FROM.toUpperCase());
-           /* Date date1;
-            Date date2;
-
-            SimpleDateFormat dates = new SimpleDateFormat("dd-MMM-yyyy");
-
-            try {
-                date_From = format.parse(date_DL_SUS_FROM);
-                Calendar cal_For_DL_Can = Calendar.getInstance();
-                cal_For_DL_Can.setTime(date_From);
-                cal_For_DL_Can.set(Calendar.YEAR, 100);
-                int present_year_For_DL_Can = cal_For_DL_Can.get(Calendar.YEAR);
-                int present_month_For_DL_Can = cal_For_DL_Can.get(Calendar.MONTH);
-                int present_day_For_DL_Can = cal_For_DL_Can.get(Calendar.DAY_OF_MONTH);
-                format = new SimpleDateFormat("dd-MMM-yyyy");
-                String date_DL_SUS_FROM_for_DL_CAn = format.format(new Date(present_year_For_DL_Can - 1900, (present_month_For_DL_Can), present_day_For_DL_Can));
-                date1 = dates.parse(date_DL_SUS_FROM);
-                date2 = dates.parse(date_DL_SUS_FROM_for_DL_CAn);
-                if (date2.after(date1) || date2.equals(date1)) {
-
-                    btn_DLSUS_ToDate.setText("" + date_DL_SUS_TO.toUpperCase());
-                    //Comparing dates
-                    long difference = Math.abs(date1.getTime() - date2.getTime());
-                    long differenceDates = difference / (24 * 60 * 60 * 1000);
-
-                    //Convert long to String
-                    dayDifference = Long.toString(differenceDates);
-                }
-
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }*/
-
-
         }
     };
 
@@ -2247,6 +2399,13 @@ public class DDCloseActiviy extends Activity {
 
                 dp_courtAtnd_date.getDatePicker().setMaxDate(System.currentTimeMillis());
                 return dp_courtAtnd_date;
+            case OWNER_COURT_ATTEND_DATE: //owner_CrtAtndDt
+                dateReset();
+                DatePickerDialog courtAtnd_date = new DatePickerDialog(this, owner_CrtAtndDt, present_year, present_month,
+                        present_day);
+
+                courtAtnd_date.getDatePicker().setMaxDate(System.currentTimeMillis());
+                return courtAtnd_date;
             case PRESENT_COURT_CONVI_FROM:
                 dateReset();
                 DatePickerDialog dp_courtConFrom_date = new DatePickerDialog(this, md3, present_year, present_month,
@@ -2262,6 +2421,22 @@ public class DDCloseActiviy extends Activity {
 
                 //dp_courtConTo_date.getDatePicker().setMaxDate(System.currentTimeMillis());
                 return dp_courtConTo_date;
+
+            case OWNER_COURT_CONVI_FROM:
+                dateReset();
+                DatePickerDialog owner_courtConFrm_date = new DatePickerDialog(this, ownerConFromDt, present_year, present_month,
+                        present_day);
+
+                //dp_courtConTo_date.getDatePicker().setMaxDate(System.currentTimeMillis());
+                return owner_courtConFrm_date;
+
+            case OWNER_COURT_CONVI_TO:
+                dateReset();
+                DatePickerDialog owner_courtConTo_date = new DatePickerDialog(this, ownerConFromTo, present_year, present_month,
+                        present_day);
+
+                //dp_courtConTo_date.getDatePicker().setMaxDate(System.currentTimeMillis());
+                return owner_courtConTo_date;
             case PROGRESS_DIALOG:
                 ProgressDialog pd = ProgressDialog.show(this, "", "Please Wait...", true);
                 pd.setContentView(R.layout.custom_progress_dialog);
@@ -2284,6 +2459,21 @@ public class DDCloseActiviy extends Activity {
                 // dp_SCL_SRC_TO.getDatePicker().setMaxDate(System.currentTimeMillis());
                 return dp_SCL_SRC_TO;
 
+            case OWNER_COURT_SCL_SRC_FROM:
+                dateReset();
+                DatePickerDialog owner_SCL_SRC_FROM = new DatePickerDialog(this, ownerSSFromDt, present_year, present_month,
+                        present_day);
+
+                owner_SCL_SRC_FROM.getDatePicker().setMaxDate(System.currentTimeMillis());
+                return owner_SCL_SRC_FROM;
+
+            case OWNER_COURT_SCL_SRC_TO:
+                dateReset();
+                DatePickerDialog owner_SCL_SRC_TO = new DatePickerDialog(this, ownerSSFromTo, present_year, present_month,
+                        present_day);
+
+                // dp_SCL_SRC_TO.getDatePicker().setMaxDate(System.currentTimeMillis());
+                return owner_SCL_SRC_TO;
 
             case PRESENT_DL_SUS_FROM:
                 dateReset();

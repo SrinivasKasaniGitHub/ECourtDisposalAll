@@ -1,9 +1,7 @@
  <resources>
     <string name="app_name">TS e-Court</string>
 
-
     // Login
-
     <string name="User_Name">User Name</string>
     <string name="Password">Password</string>
     <string name="PoweredBy"><u>Developed By:</u></string>
@@ -16,7 +14,7 @@
     <string name="towing">Crane \n41 CP ACT</string>
     <string name="towing_one_line">Crane 41 CP ACT</string>
     <string name="reports">Reports</string>
-    <string name="app_version">Version-3.0.1</string>
+    <string name="app_version">Version-3.1.5</string>
     <string name="regNo">Regn.No</string>
     <string name="engine">Engine No</string>
     <string name="chasis">Chasis No</string>
@@ -70,7 +68,6 @@
     <string name="detained_items_permit">Permit</string>
     <string name="counselling_date">Counselling Date</string>
     <string name="alcohol_reading">Enter Alcohol Reading</string>
-    <!-- <string name="age">Age&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</string> -->
     <string name="age">Enter Age</string>
     <string name="mole_mark">Enter Identification Mark(Mole)</string>
     <string name="occupation">Occupation</string>

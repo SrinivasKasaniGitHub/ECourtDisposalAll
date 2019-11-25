@@ -6,27 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include
-        android:id="@+id/header_layout"
-        layout="@layout/header_layout" />
-
-    <include
-        android:id="@+id/footer_layout"
-        layout="@layout/footer_layout" />
-
-    <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/DDdat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/header_layout"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:gravity="center_horizontal"
-        android:text="@string/dd_infomation"
-        android:textColor="@color/EditTxt_color"
-        android:textSize="@dimen/Ip_settings_font"
-        android:visibility="gone" />
-
     <LinearLayout
         android:id="@+id/rl_dp_report_type_xml"
         android:layout_width="match_parent"
@@ -39,14 +18,16 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            tools:ignore="DisableBaselineAlignment">
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/TxtInptUserName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:hintTextAppearance="@style/styleInputLayout">
+                app:hintTextAppearance="@style/styleInputLayout"
+                tools:ignore="NestedWeights">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/edt_regno_dp_xml"
@@ -83,34 +64,12 @@
                 android:layout_marginEnd="5dp"
                 android:padding="7dp"
                 android:text="@string/select_date" />
+
+
         </LinearLayout>
 
     </LinearLayout>
 
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/btngetdetails_dp_xml"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/rl_dp_report_type_xml"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/background"
-        android:gravity="center"
-        android:text="@string/get"
-        android:textSize="@dimen/_8sdp"
-        android:textColor="@color/white" />
-
-    <View
-        android:id="@+id/view"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_below="@id/btngetdetails_dp_xml"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/colorAccent" />
-
-    <!--DD Details-->
     <RelativeLayout
         android:id="@+id/Lyt_DD_Details"
         android:layout_width="match_parent"
@@ -119,7 +78,7 @@
         android:layout_marginTop="10dp"
         android:visibility="gone">
 
-        <android.support.v7.widget.AppCompatTextView
+       <!-- <android.support.v7.widget.AppCompatTextView
             android:id="@+id/TxtDD"
             style="@style/styleTextView"
             android:layout_width="match_parent"
@@ -133,6 +92,306 @@
             android:layout_below="@+id/TxtDD"
             android:padding="3dp"
             android:weightSum="2">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="2dp"
+                card_view:cardCornerRadius="2dp"
+                card_view:cardElevation="5dp"
+                card_view:contentPadding="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/TxtDD1"
+                    android:padding="3dp"
+                    android:weightSum="2">
+
+                    &lt;!&ndash;Left Side&ndash;&gt;
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:weightSum="2">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:weightSum="2">
+
+                                <android.support.v7.widget.AppCompatTextView
+                                    style="@style/styleTextViewlyt_DD"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_weight="1"
+                                    android:text="@string/regn_no" />
+
+                                <android.support.v7.widget.AppCompatTextView
+                                    android:id="@+id/Txt_Regno"
+                                    style="@style/styleTextViewlyt_DD_fromserver"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_weight="1"
+                                    android:text="" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:weightSum="2">
+
+                                <android.support.v7.widget.AppCompatTextView
+                                    style="@style/styleTextViewlyt_DD"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_weight="1"
+                                    android:text="@string/mobile_no" />
+
+                                <android.support.v7.widget.AppCompatEditText
+                                    android:id="@+id/edtTxt_Mobile_no"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:hint="Mobile_No"
+                                    android:inputType="number"
+                                    android:maxLength="10"
+                                    android:maxLines="1"
+                                    android:visibility="gone" />
+
+                                <android.support.v7.widget.AppCompatTextView
+                                    android:id="@+id/Txt_Mobile_no"
+                                    style="@style/styleTextViewlyt_DD_fromserver"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_weight="1"
+                                    android:text=""
+                                    android:visibility="gone" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:weightSum="2">
+
+                                <android.support.v7.widget.AppCompatTextView
+                                    style="@style/styleTextViewlyt_DD"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_weight="1"
+                                    android:text="@string/offence_date" />
+
+                                <android.support.v7.widget.AppCompatTextView
+                                    android:id="@+id/Txt_Offender_date"
+                                    style="@style/styleTextViewlyt_DD_fromserver"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_weight="1"
+                                    android:text="" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    &lt;!&ndash;Right Side&ndash;&gt;
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:weightSum="2">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:weightSum="2">
+
+                                <android.support.v7.widget.AppCompatTextView
+                                    style="@style/styleTextViewlyt_DD"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_weight="1"
+                                    android:text="@string/challan_no" />
+
+                                <android.support.v7.widget.AppCompatTextView
+                                    android:id="@+id/Txt_Chaln_No"
+
+                                    style="@style/styleTextViewlyt_DD_fromserver"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_weight="1"
+                                    android:text=" " />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:visibility="gone"
+                                android:weightSum="2">
+
+                                <android.support.v7.widget.AppCompatEditText
+                                    android:id="@+id/edtTxt_Adhar_no"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:hint="Aadhar_No"
+                                    android:inputType="number"
+                                    android:maxLength="12"
+                                    android:maxLines="1"
+                                    android:visibility="gone" />
+
+                                <android.support.v7.widget.AppCompatTextView
+                                    android:id="@+id/txt_Adhar_No"
+                                    style="@style/styleTextViewlyt_DD_fromserver"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_weight="1"
+                                    android:text=""
+                                    android:visibility="gone" />
+
+                                <android.support.v7.widget.AppCompatTextView
+                                    style="@style/styleTextViewlyt_DD"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_weight="1"
+                                    android:text="@string/aadhar_no" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:weightSum="2">
+
+                                <android.support.v7.widget.AppCompatTextView
+                                    style="@style/styleTextViewlyt_DD"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_weight="1"
+                                    android:text="@string/dl_no" />
+
+                                <android.support.v7.widget.AppCompatEditText
+                                    android:id="@+id/edtTxt_Dl_no"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:hint="DL_No"
+                                    android:inputType="text|textCapCharacters"
+                                    android:maxLength="35"
+                                    android:visibility="gone" />
+
+                                <android.support.v7.widget.AppCompatTextView
+                                    android:id="@+id/Txt_DlNo"
+                                    style="@style/styleTextViewlyt_DD_fromserver"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_weight="1"
+                                    android:text=""
+                                    android:visibility="gone" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:weightSum="2">
+
+                                <android.support.v7.widget.AppCompatTextView
+                                    android:id="@+id/appCompatTextView"
+                                    style="@style/styleTextViewlyt_DD"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_weight="0.7"
+                                    android:text="DL DOB " />
+
+                                <android.support.v7.widget.AppCompatButton
+                                    android:id="@+id/btn_Dl_dob"
+                                    android:layout_width="0dp"
+                                    android:layout_height="40dp"
+                                    android:layout_weight="1.3"
+                                    android:background="@color/dd_btn_blue_color"
+                                    android:text="Select Date"
+                                    android:textColor="@color/navi_color"
+                                    android:textSize="18sp" />
+
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>-->
+
+
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/footer_layout"
+        android:layout_below="@+id/view2"
+        android:fillViewport="true"
+        android:isScrollContainer="true">
+
+        <RelativeLayout
+            android:id="@+id/Lyt_Pay_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:padding="10dp"
+            android:visibility="gone">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/TxtDD"
+                style="@style/styleTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/challan_details" />
+
+            <LinearLayout
+                android:id="@+id/lyt_Data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/TxtDD"
+                android:padding="3dp"
+                android:weightSum="2">
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
@@ -199,16 +458,6 @@
                                     android:layout_weight="1"
                                     android:text="@string/mobile_no" />
 
-                                <android.support.v7.widget.AppCompatTextView
-                                    android:id="@+id/Txt_Mobile_no"
-                                    style="@style/styleTextViewlyt_DD_fromserver"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="5dp"
-                                    android:layout_weight="1"
-                                    android:text=""
-                                    android:visibility="gone" />
-
                                 <android.support.v7.widget.AppCompatEditText
                                     android:id="@+id/edtTxt_Mobile_no"
                                     android:layout_width="match_parent"
@@ -219,6 +468,17 @@
                                     android:maxLength="10"
                                     android:maxLines="1"
                                     android:visibility="gone" />
+
+                                <android.support.v7.widget.AppCompatTextView
+                                    android:id="@+id/Txt_Mobile_no"
+                                    style="@style/styleTextViewlyt_DD_fromserver"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_weight="1"
+                                    android:text=""
+                                    android:visibility="gone" />
+
                             </LinearLayout>
 
                             <LinearLayout
@@ -289,25 +549,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
+                                android:visibility="gone"
                                 android:weightSum="2">
-
-                                <android.support.v7.widget.AppCompatTextView
-                                    style="@style/styleTextViewlyt_DD"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="5dp"
-                                    android:layout_weight="1"
-                                    android:text="@string/aadhar_no" />
-
-                                <android.support.v7.widget.AppCompatTextView
-                                    android:id="@+id/txt_Adhar_No"
-                                    style="@style/styleTextViewlyt_DD_fromserver"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="5dp"
-                                    android:layout_weight="1"
-                                    android:text=""
-                                    android:visibility="gone" />
 
                                 <android.support.v7.widget.AppCompatEditText
                                     android:id="@+id/edtTxt_Adhar_no"
@@ -319,6 +562,24 @@
                                     android:maxLength="12"
                                     android:maxLines="1"
                                     android:visibility="gone" />
+
+                                <android.support.v7.widget.AppCompatTextView
+                                    android:id="@+id/txt_Adhar_No"
+                                    style="@style/styleTextViewlyt_DD_fromserver"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_weight="1"
+                                    android:text=""
+                                    android:visibility="gone" />
+
+                                <android.support.v7.widget.AppCompatTextView
+                                    style="@style/styleTextViewlyt_DD"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_weight="1"
+                                    android:text="@string/aadhar_no" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -335,6 +596,16 @@
                                     android:layout_weight="1"
                                     android:text="@string/dl_no" />
 
+                                <android.support.v7.widget.AppCompatEditText
+                                    android:id="@+id/edtTxt_Dl_no"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:hint="DL_No"
+                                    android:inputType="text|textCapCharacters"
+                                    android:maxLength="35"
+                                    android:visibility="gone" />
+
                                 <android.support.v7.widget.AppCompatTextView
                                     android:id="@+id/Txt_DlNo"
                                     style="@style/styleTextViewlyt_DD_fromserver"
@@ -345,15 +616,6 @@
                                     android:text=""
                                     android:visibility="gone" />
 
-                                <android.support.v7.widget.AppCompatEditText
-                                    android:id="@+id/edtTxt_Dl_no"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:hint="DL_No"
-                                    android:inputType="text|textCapCharacters"
-                                    android:maxLength="35"
-                                    android:visibility="gone" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -380,6 +642,8 @@
                                     android:text="Select Date"
                                     android:textColor="@color/navi_color"
                                     android:textSize="18sp" />
+
+
                             </LinearLayout>
 
                         </LinearLayout>
@@ -389,55 +653,34 @@
 
             </android.support.v7.widget.CardView>
 
-        </LinearLayout>
-
-    </RelativeLayout>
-
-    <!--DD Details End-->
-
-    <View
-        android:id="@+id/view2"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_below="@id/Lyt_DD_Details"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/colorAccent"
-        android:visibility="gone" />
-
-    <ScrollView
-        android:id="@+id/scrollView"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_above="@+id/footer_layout"
-        android:layout_below="@+id/view2"
-        android:fillViewport="true"
-        android:isScrollContainer="true">
-
-        <RelativeLayout
-            android:id="@+id/Lyt_Pay_details"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:padding="10dp"
-            android:visibility="gone">
+            </LinearLayout>
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/lyt_Data"
+                android:layout_marginTop="@dimen/_8sdp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
+                    <android.support.v7.widget.AppCompatTextView
+                        style="@style/styleTextViewlyt_DD"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/_14sdp"
+                        android:text="Driver Info"
+                        android:background="@color/bg"
+                        android:gravity="center_horizontal"/>
+
                     <!--Single Item start-->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:weightSum="3">
+                        android:weightSum="3"
+                        android:layout_marginTop="@dimen/_5sdp">
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -491,17 +734,17 @@
                             android:layout_weight="1.2"
                             android:orientation="horizontal">
 
-                            <android.support.v7.widget.AppCompatTextView
-                                style="@style/styleTextViewlyt_DD"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Court Attended date" />
-
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="end"
                                 android:text=":" />
+
+                            <android.support.v7.widget.AppCompatTextView
+                                style="@style/styleTextViewlyt_DD"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Court Attended date" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -553,7 +796,7 @@
                                 android:layout_height="wrap_content"
                                 android:hint="STC No"
                                 android:inputType="number|textCapCharacters"
-                                android:maxLength="16"/>
+                                android:maxLength="16" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -638,8 +881,7 @@
                                 android:layout_height="wrap_content"
                                 android:hint="Fine Amount"
                                 android:inputType="number"
-                                android:maxLength="5">
-                            </android.support.v7.widget.AppCompatEditText>
+                                android:maxLength="5"></android.support.v7.widget.AppCompatEditText>
                         </LinearLayout>
 
                     </LinearLayout>
@@ -906,6 +1148,7 @@
 
                     </LinearLayout>
 
+                    <!--Single Item start-->
                     <LinearLayout
                         android:id="@+id/lytConvtdDays"
                         android:layout_width="match_parent"
@@ -1239,6 +1482,132 @@
 
                     </LinearLayout>
 
+                    <!--Single Item start-->
+                    <LinearLayout
+                        android:id="@+id/lytFirNo"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:visibility="gone"
+                        android:weightSum="3">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1.2">
+
+                            <android.support.v7.widget.AppCompatTextView
+                                style="@style/styleTextViewlyt_DD"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Fir No" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1.8">
+
+                            <android.support.v7.widget.AppCompatEditText
+                                android:id="@+id/edtTxt_FirNo"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Fir Number"
+                                android:inputType="number"
+                                android:maxLength="5"></android.support.v7.widget.AppCompatEditText>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <!--Single Item start-->
+                    <LinearLayout
+                        android:id="@+id/lytPSName"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:visibility="gone"
+                        android:weightSum="3">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1.2">
+
+                            <android.support.v7.widget.AppCompatTextView
+                                style="@style/styleTextViewlyt_DD"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Enter PS Name" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1.8">
+
+                            <android.support.v7.widget.AppCompatEditText
+                                android:id="@+id/edtTxt_PSName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Enter PS Name"
+                                android:inputType="number"
+                                android:maxLength="5">
+
+                            </android.support.v7.widget.AppCompatEditText>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <!--Single Item start-->
+                    <LinearLayout
+                        android:id="@+id/lyt_DrvrExpredDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:visibility="gone"
+                        android:weightSum="3">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1.2"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:text=":" />
+
+                            <android.support.v7.widget.AppCompatTextView
+                                style="@style/styleTextViewlyt_DD"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Driver Expired date" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1.8">
+
+                            <Button
+                                android:id="@+id/btn_DrExpDate"
+                                style="@style/dd_custom_blue_btn_style"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="5dp"
+                                android:text="Select Date" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
                     <!--Single Images Item start-->
                     <LinearLayout
                         android:id="@+id/lytImages"
@@ -1256,14 +1625,6 @@
                             android:orientation="vertical"
                             android:padding="0dp">
 
-                            <android.support.v7.widget.AppCompatTextView
-                                android:id="@+id/txt_court"
-                                style="@style/styleTextViewlyt_DD_imageTxt"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_horizontal"
-                                android:text="Court Order Copy" />
-
                             <RelativeLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
@@ -1276,6 +1637,14 @@
 
                             </RelativeLayout>
 
+                            <android.support.v7.widget.AppCompatTextView
+                                android:id="@+id/txt_court"
+                                style="@style/styleTextViewlyt_DD_imageTxt"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:text="Court Order Copy" />
+
                         </LinearLayout>
 
                         <LinearLayout
@@ -1285,14 +1654,6 @@
                             android:layout_weight="1"
                             android:orientation="vertical"
                             android:padding="0dp">
-
-                            <android.support.v7.widget.AppCompatTextView
-                                style="@style/styleTextViewlyt_DD_imageTxt"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:gravity="center"
-                                android:text="DL Copy" />
 
                             <RelativeLayout
                                 android:layout_width="wrap_content"
@@ -1304,6 +1665,14 @@
                                     android:layout_height="wrap_content"
                                     android:src="@drawable/dlcopy" />
                             </RelativeLayout>
+
+                            <android.support.v7.widget.AppCompatTextView
+                                style="@style/styleTextViewlyt_DD_imageTxt"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:gravity="center"
+                                android:text="DL Copy" />
 
                         </LinearLayout>
 
@@ -1346,6 +1715,554 @@
 
                     </LinearLayout>
 
+                    <!--Owner Details-->
+                    <LinearLayout
+                        android:id="@+id/owner_Lyt_Pay_details"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="@color/colorAccent" />
+
+                        <android.support.v7.widget.AppCompatTextView
+                            style="@style/styleTextViewlyt_DD"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/_14sdp"
+                            android:text="Owner Info"
+                            android:background="@color/bg"
+                            android:gravity="center_horizontal"/>
+
+                        <!--Single Item start-->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:weightSum="3"
+                            android:layout_marginTop="@dimen/_5sdp">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1.2">
+
+                                <android.support.v7.widget.AppCompatTextView
+                                    style="@style/styleTextViewlyt_DD"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Name of the court" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.8">
+
+                                <fr.ganfra.materialspinner.MaterialSpinner
+                                    android:id="@+id/owner_courtSpinner"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="55dp"
+                                    app:ms_alignLabels="true"
+                                    app:ms_arrowColor="@color/black"
+                                    app:ms_arrowSize="20dp"
+                                    app:ms_baseColor="@color/black"
+                                    app:ms_enableErrorLabel="false"
+                                    app:ms_enableFloatingLabel="false"
+                                    app:ms_errorColor="@color/red"
+                                    app:ms_floatingLabelColor="@color/black"
+                                    app:ms_floatingLabelText="Select Court Name"
+                                    app:ms_hint="Select Court Name"
+                                    app:ms_hintColor="@color/black"
+                                    app:ms_multiline="false" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <!--Single Item start-->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center"
+                            android:weightSum="3">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1.2"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="end"
+                                    android:text=":" />
+
+                                <android.support.v7.widget.AppCompatTextView
+                                    style="@style/styleTextViewlyt_DD"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Court Attended date" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1.8">
+
+                                <Button
+                                    android:id="@+id/owner_btn_CrtAtndDate"
+                                    style="@style/dd_custom_blue_btn_style"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginRight="5dp"
+                                    android:text="Select Date" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <!--Single Item start-->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center"
+                            android:weightSum="3">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1.2">
+
+                                <android.support.v7.widget.AppCompatTextView
+                                    style="@style/styleTextViewlyt_DD"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="STC No" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1.8">
+
+                                <android.support.v7.widget.AppCompatEditText
+                                    android:id="@+id/owner_edtTxt_STC_NO"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="STC No"
+                                    android:inputType="number|textCapCharacters"
+                                    android:maxLength="16" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+
+                        <!--Single Item start-->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center"
+                            android:weightSum="3">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1.2">
+
+                                <android.support.v7.widget.AppCompatTextView
+                                    style="@style/styleTextViewlyt_DD"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Mobile No" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1.8">
+
+                                <android.support.v7.widget.AppCompatEditText
+                                    android:id="@+id/owner_edtTxt_Contct_NO"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="Contact No"
+                                    android:inputType="number"
+                                    android:maxLength="10" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+
+                        <!--Single Item start-->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center"
+                            android:weightSum="3">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1.2">
+
+                                <android.support.v7.widget.AppCompatTextView
+                                    style="@style/styleTextViewlyt_DD"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Disposal Type" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1.8">
+
+                                <fr.ganfra.materialspinner.MaterialSpinner
+                                    android:id="@+id/owner_courtDisSpinner"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="55dp"
+                                    app:ms_alignLabels="true"
+                                    app:ms_arrowColor="@color/black"
+                                    app:ms_arrowSize="20dp"
+                                    app:ms_baseColor="@color/black"
+                                    app:ms_enableErrorLabel="false"
+                                    app:ms_enableFloatingLabel="false"
+                                    app:ms_errorColor="@color/red"
+                                    app:ms_floatingLabelColor="@color/black"
+                                    app:ms_floatingLabelText="Select CourtDisposal Name"
+                                    app:ms_highlightColor="@color/red"
+                                    app:ms_hint="Select CourtDisposal Name"
+                                    app:ms_hintColor="@color/black"
+                                    app:ms_multiline="false" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <!--Single Item start-->
+                        <LinearLayout
+                            android:id="@+id/owner_lytFineAmnt"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center"
+                            android:weightSum="3">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1.2">
+
+                                <android.support.v7.widget.AppCompatTextView
+                                    style="@style/styleTextViewlyt_DD"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Fine Amount" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1.8">
+
+                                <android.support.v7.widget.AppCompatEditText
+                                    android:id="@+id/owner_edtTxt_FineAmnt"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="Fine Amount"
+                                    android:inputType="number"
+                                    android:maxLength="5">
+                                </android.support.v7.widget.AppCompatEditText>
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <!--Single Item start-->
+                        <LinearLayout
+                            android:id="@+id/owner_lytConvtdFrom"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center"
+                            android:visibility="gone"
+                            android:weightSum="3">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1.2">
+
+                                <android.support.v7.widget.AppCompatTextView
+                                    style="@style/styleTextViewlyt_DD"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Conviction from" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1.8">
+
+                                <Button
+                                    android:id="@+id/owner_btn_courtConFromdate"
+                                    style="@style/dd_custom_blue_btn_style"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginRight="5dp"
+                                    android:layout_weight="1"
+                                    android:text="Select Date" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <!--Single Item start-->
+                        <LinearLayout
+                            android:id="@+id/owner_lytConvtdTo"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center"
+                            android:visibility="gone"
+                            android:weightSum="3">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1.2">
+
+                                <android.support.v7.widget.AppCompatTextView
+                                    style="@style/styleTextViewlyt_DD"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Conviction To" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1.8">
+
+                                <Button
+                                    android:id="@+id/owner_btn_courtConTo"
+                                    style="@style/dd_custom_blue_btn_style"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginRight="5dp"
+                                    android:layout_weight="1"
+                                    android:text="Select Date" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <!--Single Item start-->
+                        <LinearLayout
+                            android:id="@+id/owner_lytSoclFrom"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center"
+                            android:visibility="gone"
+                            android:weightSum="3">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1.2">
+
+                                <android.support.v7.widget.AppCompatTextView
+                                    style="@style/styleTextViewlyt_DD"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Social Service from" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1.8">
+
+                                <Button
+                                    android:id="@+id/owner_btn_courtSoclServceFromdate"
+                                    style="@style/dd_custom_blue_btn_style"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginRight="5dp"
+                                    android:layout_weight="1"
+                                    android:text="Select Date" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <!--Single Item start-->
+                        <LinearLayout
+                            android:id="@+id/owner_lytSclSerTo"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center"
+                            android:visibility="gone"
+                            android:weightSum="3">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1.2">
+
+                                <android.support.v7.widget.AppCompatTextView
+                                    style="@style/styleTextViewlyt_DD"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Social Service To" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1.8">
+
+                                <Button
+                                    android:id="@+id/owner_btn_courtSoclServceTodate"
+                                    style="@style/dd_custom_blue_btn_style"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginRight="5dp"
+                                    android:layout_weight="1"
+                                    android:text="Select Date" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <!--Single Item start-->
+                        <LinearLayout
+                            android:id="@+id/owner_lytRisingDays"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center"
+                            android:visibility="gone"
+                            android:weightSum="3">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1.2">
+
+                                <android.support.v7.widget.AppCompatTextView
+                                    style="@style/styleTextViewlyt_DD"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Rising Details" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1.8">
+
+                                <android.support.v7.widget.AppCompatEditText
+                                    android:id="@+id/owner_edtTxt_RisingDays"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="Rising days"
+                                    android:inputType="number"
+                                    android:maxLength="5">
+
+                                </android.support.v7.widget.AppCompatEditText>
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <!--Single Images Item start-->
+                        <LinearLayout
+                            android:id="@+id/owner_lytImages"
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:layout_gravity="center"
+                            android:visibility="visible"
+                            android:weightSum="2"
+                            android:layout_marginTop="@dimen/_8sdp">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1"
+                                android:orientation="vertical"
+                                android:padding="0dp">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                    <android.support.v7.widget.AppCompatImageView
+                                        android:id="@+id/minor_img_CourtCopy"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:src="@drawable/courtorder" />
+
+                                </RelativeLayout>
+
+                                <android.support.v7.widget.AppCompatTextView
+                                    android:id="@+id/owner_txt_court"
+                                    style="@style/styleTextViewlyt_DD_imageTxt"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_horizontal"
+                                    android:text="Driver Court Copy" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1"
+                                android:orientation="vertical"
+                                android:padding="0dp">
+
+                                <RelativeLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent">
+
+                                    <android.support.v7.widget.AppCompatImageView
+                                        android:id="@+id/owner_img_CourtCopy"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:src="@drawable/courtorder" />
+                                </RelativeLayout>
+
+                                <android.support.v7.widget.AppCompatTextView
+                                    style="@style/styleTextViewlyt_DD_imageTxt"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:gravity="center"
+                                    android:text="Owner Court Copy" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
                     <!--Single Item start-->
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -1372,41 +2289,63 @@
 
     </ScrollView>
 
-    <!--<RelativeLayout
-        android:id="@+id/footer_lyt"
+    <View
+        android:id="@+id/view2"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/footer_size"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/background">
+        android:layout_height="2dp"
+        android:layout_below="@id/Lyt_DD_Details"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/colorAccent"
+        android:visibility="gone" />
 
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/pwd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:fontFamily="sans-serif"
-            android:text="@string/PoweredBy"
-            android:textColor="#ffffff" />
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@id/btngetdetails_dp_xml"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/colorAccent" />
 
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/CompanyName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/pwd"
-            android:layout_centerHorizontal="true"
-            android:ellipsize="marquee"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:fontFamily="sans-serif"
-            android:lines="1"
-            android:marqueeRepeatLimit="marquee_forever"
-            android:padding="5dp"
-            android:scrollHorizontally="true"
-            android:text="@string/CompanyName"
-            android:textColor="#ffffff"
-            android:textSize="@dimen/footer_text_size"
-            android:textStyle="bold" />
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btngetdetails_dp_xml"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl_dp_report_type_xml"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/background"
+        android:gravity="center"
+        android:text="@string/get"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_8sdp" />
 
-    </RelativeLayout>-->
+    <!--DD Details-->
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/DDdat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header_layout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        android:text="@string/dd_infomation"
+        android:textColor="@color/EditTxt_color"
+        android:textSize="@dimen/Ip_settings_font"
+        android:visibility="gone" />
+
+    <!--DD Details End-->
+
+    <include
+        android:id="@+id/footer_layout"
+        layout="@layout/footer_layout" />
+
+    <include
+        android:id="@+id/header_layout"
+        layout="@layout/header_layout" />
 
 </RelativeLayout>
