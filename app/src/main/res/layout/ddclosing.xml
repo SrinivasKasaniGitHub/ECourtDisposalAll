@@ -375,7 +375,7 @@
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:padding="10dp"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/TxtDD"
@@ -734,11 +734,6 @@
                             android:layout_weight="1.2"
                             android:orientation="horizontal">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="end"
-                                android:text=":" />
 
                             <android.support.v7.widget.AppCompatTextView
                                 style="@style/styleTextViewlyt_DD"
@@ -1722,7 +1717,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_2sdp"
                         android:orientation="vertical"
-                        android:visibility="gone">
+                        android:visibility="visible">
 
                         <View
                             android:layout_width="match_parent"

@@ -1,6 +1,7 @@
 package com.example.mtpv.eticketcourt;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -52,6 +53,7 @@ import com.wang.avi.AVLoadingIndicatorView;
 import examples.Main;
 
 public class MainActivity extends Activity implements LocationListener {
+
     ImageView ip_Settings;
     TextView compny_Name;
     Button btn_login;
@@ -234,10 +236,9 @@ public class MainActivity extends Activity implements LocationListener {
     }
 
     public void userlogin() {
+
         String pidcode = et_pid.getText().toString();
         String password = et_pid_pwd.getText().toString();
-
-        // initializing null values
         String PS_CODE = null;
         String PS_NAME = null;
         String CADRE_CODE = null;
@@ -257,44 +258,33 @@ public class MainActivity extends Activity implements LocationListener {
         SQLiteDatabase db = openOrCreateDatabase(DBHelper.DATABASE_NAME, MODE_PRIVATE, null);
         db.execSQL(DBHelper.CREATE_USER_TABLE);
         db.execSQL("delete from " + DBHelper.USER_TABLE);
-        db.insert(DBHelper.USER_TABLE, null, values); // Inserting Row
-        System.out.println("*********************OFFICER TABLE Insertion Successfully **********************");
+        db.insert(DBHelper.USER_TABLE, null, values);
         if (et_pid.getText().toString().trim().equals("")) {
             et_pid.setError("Enter PID");
             et_pid.requestFocus();
-
         } else if (et_pid_pwd.getText().toString().trim().equals("")) {
             et_pid_pwd.setError("Enter password");
             et_pid_pwd.requestFocus();
-
         } else {
-
             if ((!services_url.equals("url1")) && (!ftps_url.equals("url2"))) {
-
                 if (isOnline()) {
                     user_id = "" + et_pid.getText().toString().trim();
                     user_pwd = "" + et_pid_pwd.getText().toString().trim();
-
                     getLocation();
-
                     try {
                         e_user_id = PidSecEncrypt.encryptmd5(user_id);
                         e_user_tmp = PidSecEncrypt.encryptmd5(user_pwd);
-
                     } catch (Exception e) {
-                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
 
                 } else {
                     showToast("Please check your network connection !");
                 }
-
                 LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
                 if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                     new Async_task_login().execute();
                 } else {
-                    //showGPSDisabledAlertToUser();
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
                     alertDialogBuilder.setMessage("GPS is Disabled in your Device \nPlease Enable LOCATION ?")
                             .setCancelable(false)
@@ -322,13 +312,12 @@ public class MainActivity extends Activity implements LocationListener {
     public Boolean isOnline() {
         ConnectivityManager conManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo nwInfo = conManager.getActiveNetworkInfo();
-        if (nwInfo != null && nwInfo.isConnected()) {
-            return true;
-        }
-        return false;
+        return nwInfo != null && nwInfo.isConnected();
     }
 
     public static String pidName, cadreName, psName;
+
+    @SuppressLint("StaticFieldLeak")
     private class Async_task_login extends AsyncTask<Void, Void, String> {
 
         @Override
@@ -414,6 +403,7 @@ public class MainActivity extends Activity implements LocationListener {
                 showToast("Login Failed!");
             }
         }
+
     }
 
     public void getLocation() {
@@ -521,6 +511,7 @@ public class MainActivity extends Activity implements LocationListener {
 
     String getDeviceID(TelephonyManager phonyManager) {
 
+        @SuppressLint({"MissingPermission", "HardwareIds"})
         String id = phonyManager.getDeviceId();
         if (id == null) {
             id = "not available";
@@ -627,4 +618,5 @@ public class MainActivity extends Activity implements LocationListener {
         toastView.setBackgroundResource(R.drawable.toast_background);
         toast.show();
     }
+
 }

@@ -1,0 +1,1040 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="#F9F9F9"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/rl_dp_report_type_xml"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/DDdat"
+        android:padding="20dp"
+        android:weightSum="2">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_weight="1"
+            tools:ignore="DisableBaselineAlignment">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/TxtInptUserName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:hintTextAppearance="@style/styleInputLayout"
+                tools:ignore="NestedWeights">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edt_Regno"
+                    style="@style/styleEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/e_ticket_regn_no"
+                    android:inputType="text|textCapCharacters"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black" />
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/offence_date"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/DD_Txt_font" />
+
+            <Button
+                android:id="@+id/btn_OffenceDate"
+                style="@style/dd_custom_blue_btn_style"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:padding="7dp"
+                android:text="@string/select_date" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/Lyt_DD_Details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view"
+        android:layout_marginTop="10dp"
+        android:visibility="gone">
+
+        <!-- <android.support.v7.widget.AppCompatTextView
+             android:id="@+id/TxtDD"
+             style="@style/styleTextView"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:gravity="center_horizontal"
+             android:text="@string/challan_details" />
+
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_below="@+id/TxtDD"
+             android:padding="3dp"
+             android:weightSum="2">
+
+             <android.support.v7.widget.CardView
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center"
+                 android:layout_margin="2dp"
+                 card_view:cardCornerRadius="2dp"
+                 card_view:cardElevation="5dp"
+                 card_view:contentPadding="2dp">
+
+                 <LinearLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_below="@+id/TxtDD1"
+                     android:padding="3dp"
+                     android:weightSum="2">
+
+                     &lt;!&ndash;Left Side&ndash;&gt;
+                     <LinearLayout
+                         android:layout_width="0dp"
+                         android:layout_height="wrap_content"
+                         android:layout_weight="1">
+
+                         <LinearLayout
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:orientation="vertical"
+                             android:weightSum="2">
+
+                             <LinearLayout
+                                 android:layout_width="match_parent"
+                                 android:layout_height="wrap_content"
+                                 android:orientation="horizontal"
+                                 android:weightSum="2">
+
+                                 <android.support.v7.widget.AppCompatTextView
+                                     style="@style/styleTextViewlyt_DD"
+                                     android:layout_width="match_parent"
+                                     android:layout_height="wrap_content"
+                                     android:layout_marginTop="5dp"
+                                     android:layout_weight="1"
+                                     android:text="@string/regn_no" />
+
+                                 <android.support.v7.widget.AppCompatTextView
+                                     android:id="@+id/Txt_Regno"
+                                     style="@style/styleTextViewlyt_DD_fromserver"
+                                     android:layout_width="match_parent"
+                                     android:layout_height="wrap_content"
+                                     android:layout_marginTop="5dp"
+                                     android:layout_weight="1"
+                                     android:text="" />
+                             </LinearLayout>
+
+                             <LinearLayout
+                                 android:layout_width="match_parent"
+                                 android:layout_height="wrap_content"
+                                 android:weightSum="2">
+
+                                 <android.support.v7.widget.AppCompatTextView
+                                     style="@style/styleTextViewlyt_DD"
+                                     android:layout_width="match_parent"
+                                     android:layout_height="wrap_content"
+                                     android:layout_marginTop="5dp"
+                                     android:layout_weight="1"
+                                     android:text="@string/mobile_no" />
+
+                                 <android.support.v7.widget.AppCompatEditText
+                                     android:id="@+id/edtTxt_Mobile_no"
+                                     android:layout_width="match_parent"
+                                     android:layout_height="wrap_content"
+                                     android:layout_weight="1"
+                                     android:hint="Mobile_No"
+                                     android:inputType="number"
+                                     android:maxLength="10"
+                                     android:maxLines="1"
+                                     android:visibility="gone" />
+
+                                 <android.support.v7.widget.AppCompatTextView
+                                     android:id="@+id/Txt_Mobile_no"
+                                     style="@style/styleTextViewlyt_DD_fromserver"
+                                     android:layout_width="match_parent"
+                                     android:layout_height="wrap_content"
+                                     android:layout_marginTop="5dp"
+                                     android:layout_weight="1"
+                                     android:text=""
+                                     android:visibility="gone" />
+
+                             </LinearLayout>
+
+                             <LinearLayout
+                                 android:layout_width="match_parent"
+                                 android:layout_height="wrap_content"
+                                 android:weightSum="2">
+
+                                 <android.support.v7.widget.AppCompatTextView
+                                     style="@style/styleTextViewlyt_DD"
+                                     android:layout_width="match_parent"
+                                     android:layout_height="wrap_content"
+                                     android:layout_marginTop="5dp"
+                                     android:layout_weight="1"
+                                     android:text="@string/offence_date" />
+
+                                 <android.support.v7.widget.AppCompatTextView
+                                     android:id="@+id/Txt_Offender_date"
+                                     style="@style/styleTextViewlyt_DD_fromserver"
+                                     android:layout_width="match_parent"
+                                     android:layout_height="wrap_content"
+                                     android:layout_marginTop="5dp"
+                                     android:layout_weight="1"
+                                     android:text="" />
+                             </LinearLayout>
+
+                         </LinearLayout>
+
+                     </LinearLayout>
+
+                     &lt;!&ndash;Right Side&ndash;&gt;
+                     <LinearLayout
+                         android:layout_width="0dp"
+                         android:layout_height="wrap_content"
+                         android:layout_weight="1">
+
+                         <LinearLayout
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:orientation="vertical"
+                             android:weightSum="2">
+
+                             <LinearLayout
+                                 android:layout_width="match_parent"
+                                 android:layout_height="wrap_content"
+                                 android:orientation="horizontal"
+                                 android:weightSum="2">
+
+                                 <android.support.v7.widget.AppCompatTextView
+                                     style="@style/styleTextViewlyt_DD"
+                                     android:layout_width="match_parent"
+                                     android:layout_height="wrap_content"
+                                     android:layout_marginTop="5dp"
+                                     android:layout_weight="1"
+                                     android:text="@string/challan_no" />
+
+                                 <android.support.v7.widget.AppCompatTextView
+                                     android:id="@+id/Txt_Chaln_No"
+
+                                     style="@style/styleTextViewlyt_DD_fromserver"
+                                     android:layout_width="match_parent"
+                                     android:layout_height="wrap_content"
+                                     android:layout_marginTop="5dp"
+                                     android:layout_weight="1"
+                                     android:text=" " />
+                             </LinearLayout>
+
+                             <LinearLayout
+                                 android:layout_width="match_parent"
+                                 android:layout_height="wrap_content"
+                                 android:orientation="horizontal"
+                                 android:visibility="gone"
+                                 android:weightSum="2">
+
+                                 <android.support.v7.widget.AppCompatEditText
+                                     android:id="@+id/edtTxt_Adhar_no"
+                                     android:layout_width="match_parent"
+                                     android:layout_height="wrap_content"
+                                     android:layout_weight="1"
+                                     android:hint="Aadhar_No"
+                                     android:inputType="number"
+                                     android:maxLength="12"
+                                     android:maxLines="1"
+                                     android:visibility="gone" />
+
+                                 <android.support.v7.widget.AppCompatTextView
+                                     android:id="@+id/txt_Adhar_No"
+                                     style="@style/styleTextViewlyt_DD_fromserver"
+                                     android:layout_width="match_parent"
+                                     android:layout_height="wrap_content"
+                                     android:layout_marginTop="5dp"
+                                     android:layout_weight="1"
+                                     android:text=""
+                                     android:visibility="gone" />
+
+                                 <android.support.v7.widget.AppCompatTextView
+                                     style="@style/styleTextViewlyt_DD"
+                                     android:layout_width="match_parent"
+                                     android:layout_height="wrap_content"
+                                     android:layout_marginTop="5dp"
+                                     android:layout_weight="1"
+                                     android:text="@string/aadhar_no" />
+                             </LinearLayout>
+
+                             <LinearLayout
+                                 android:layout_width="match_parent"
+                                 android:layout_height="wrap_content"
+                                 android:orientation="horizontal"
+                                 android:weightSum="2">
+
+                                 <android.support.v7.widget.AppCompatTextView
+                                     style="@style/styleTextViewlyt_DD"
+                                     android:layout_width="match_parent"
+                                     android:layout_height="wrap_content"
+                                     android:layout_marginTop="5dp"
+                                     android:layout_weight="1"
+                                     android:text="@string/dl_no" />
+
+                                 <android.support.v7.widget.AppCompatEditText
+                                     android:id="@+id/edtTxt_Dl_no"
+                                     android:layout_width="match_parent"
+                                     android:layout_height="wrap_content"
+                                     android:layout_weight="1"
+                                     android:hint="DL_No"
+                                     android:inputType="text|textCapCharacters"
+                                     android:maxLength="35"
+                                     android:visibility="gone" />
+
+                                 <android.support.v7.widget.AppCompatTextView
+                                     android:id="@+id/Txt_DlNo"
+                                     style="@style/styleTextViewlyt_DD_fromserver"
+                                     android:layout_width="match_parent"
+                                     android:layout_height="wrap_content"
+                                     android:layout_marginTop="5dp"
+                                     android:layout_weight="1"
+                                     android:text=""
+                                     android:visibility="gone" />
+
+                             </LinearLayout>
+
+                             <LinearLayout
+                                 android:layout_width="match_parent"
+                                 android:layout_height="wrap_content"
+                                 android:orientation="horizontal"
+                                 android:weightSum="2">
+
+                                 <android.support.v7.widget.AppCompatTextView
+                                     android:id="@+id/appCompatTextView"
+                                     style="@style/styleTextViewlyt_DD"
+                                     android:layout_width="0dp"
+                                     android:layout_height="wrap_content"
+                                     android:layout_marginTop="5dp"
+                                     android:layout_weight="0.7"
+                                     android:text="DL DOB " />
+
+                                 <android.support.v7.widget.AppCompatButton
+                                     android:id="@+id/btn_Dl_dob"
+                                     android:layout_width="0dp"
+                                     android:layout_height="40dp"
+                                     android:layout_weight="1.3"
+                                     android:background="@color/dd_btn_blue_color"
+                                     android:text="Select Date"
+                                     android:textColor="@color/navi_color"
+                                     android:textSize="18sp" />
+
+
+                             </LinearLayout>
+
+                         </LinearLayout>
+
+                     </LinearLayout>
+                 </LinearLayout>
+
+             </android.support.v7.widget.CardView>
+
+         </LinearLayout>-->
+
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@id/Lyt_DD_Details"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/colorAccent"
+        android:visibility="gone" />
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/footer_layout"
+        android:layout_below="@+id/view2"
+        android:fillViewport="true"
+        android:isScrollContainer="true">
+
+        <LinearLayout
+            android:id="@+id/Lyt_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_5sdp"
+            android:focusable="true"
+            android:orientation="vertical"
+            android:focusableInTouchMode="true"
+            android:visibility="visible">
+
+            <!--Challan Info-->
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="@dimen/_3sdp"
+                android:background="#F1F1F1"
+                app:cardCornerRadius="@dimen/_5sdp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        style="@style/styleTextViewlyt_DD"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#CED2DE"
+                        android:gravity="center_horizontal"
+                        android:padding="@dimen/_10sdp"
+                        android:text="Challan Info"
+                        android:textSize="@dimen/_14sdp" />
+
+
+                    <!--Single Item start-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="5dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <android.support.v7.widget.AppCompatTextView
+                            style="@style/styleTextViewlyt_DD"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.35"
+                            android:text="@string/regn_no" />
+
+                        <android.support.v7.widget.AppCompatTextView
+                            style="@style/styleTextViewlyt_DD"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.05"
+                            android:text=":" />
+
+                        <android.support.v7.widget.AppCompatTextView
+                            android:id="@+id/txt_CRegNo"
+                            style="@style/styleTextViewlyt_DD_fromserver"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.60"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <!--Single Item start-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="5dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <android.support.v7.widget.AppCompatTextView
+                            style="@style/styleTextViewlyt_DD"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.35"
+                            android:text="@string/challan_no" />
+
+                        <android.support.v7.widget.AppCompatTextView
+                            style="@style/styleTextViewlyt_DD"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.05"
+                            android:text=":" />
+
+                        <android.support.v7.widget.AppCompatTextView
+                            android:id="@+id/txt_CChalnNo"
+                            style="@style/styleTextViewlyt_DD_fromserver"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.60"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <!--Single Item start-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="5dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <android.support.v7.widget.AppCompatTextView
+                            style="@style/styleTextViewlyt_DD"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.35"
+                            android:text="Officer Name" />
+
+                        <android.support.v7.widget.AppCompatTextView
+                            style="@style/styleTextViewlyt_DD"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.05"
+                            android:text=":" />
+
+                        <android.support.v7.widget.AppCompatTextView
+                            android:id="@+id/txt_BkdOfficerName"
+                            style="@style/styleTextViewlyt_DD_fromserver"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.60"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <!--Single Item start-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="5dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <android.support.v7.widget.AppCompatTextView
+                            style="@style/styleTextViewlyt_DD"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.35"
+                            android:text="BookedPS Name" />
+
+                        <android.support.v7.widget.AppCompatTextView
+                            style="@style/styleTextViewlyt_DD"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.05"
+                            android:text=":" />
+
+                        <android.support.v7.widget.AppCompatTextView
+                            android:id="@+id/txt_BkdPSName"
+                            style="@style/styleTextViewlyt_DD_fromserver"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.60"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <!--Single Item start-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="5dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <android.support.v7.widget.AppCompatTextView
+                            style="@style/styleTextViewlyt_DD"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.35"
+                            android:text="Point Name" />
+
+                        <android.support.v7.widget.AppCompatTextView
+                            style="@style/styleTextViewlyt_DD"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.05"
+                            android:text=":" />
+
+                        <android.support.v7.widget.AppCompatTextView
+                            android:id="@+id/txt_BkdPntName"
+                            style="@style/styleTextViewlyt_DD_fromserver"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.60"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <!--Single Item start-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="5dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <android.support.v7.widget.AppCompatTextView
+                            style="@style/styleTextViewlyt_DD"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.35"
+                            android:text="Offence Date" />
+
+                        <android.support.v7.widget.AppCompatTextView
+                            style="@style/styleTextViewlyt_DD"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.05"
+                            android:text=":" />
+
+                        <android.support.v7.widget.AppCompatTextView
+                            android:id="@+id/txt_COfnceDate"
+                            style="@style/styleTextViewlyt_DD_fromserver"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.60"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+
+                    <android.support.v7.widget.AppCompatTextView
+                        style="@style/styleTextViewlyt_DD"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:text="Violations"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/lyt_CounvltnsList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:orientation="vertical"></LinearLayout>
+
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <!--Driver Info-->
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="@dimen/_3sdp"
+                android:background="#F1F1F1"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:cardCornerRadius="@dimen/_5sdp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        style="@style/styleTextViewlyt_DD"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#CED2DE"
+                        android:gravity="center_horizontal"
+                        android:padding="@dimen/_10sdp"
+                        android:text="Driver Info"
+                        android:textSize="@dimen/_14sdp" />
+
+
+                    <!--Single Item start-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="5dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <android.support.v7.widget.AppCompatTextView
+                            style="@style/styleTextViewlyt_DD"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.35"
+                            android:text="Driver Name" />
+
+                        <android.support.v7.widget.AppCompatTextView
+                            style="@style/styleTextViewlyt_DD"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.05"
+                            android:text=":" />
+
+                        <android.support.v7.widget.AppCompatTextView
+                            android:id="@+id/txt_DrCName"
+                            style="@style/styleTextViewlyt_DD_fromserver"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.60"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <!--Single Item start-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="5dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <android.support.v7.widget.AppCompatTextView
+                            style="@style/styleTextViewlyt_DD"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.35"
+                            android:text="Father Name" />
+
+                        <android.support.v7.widget.AppCompatTextView
+                            style="@style/styleTextViewlyt_DD"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.05"
+                            android:text=":" />
+
+                        <android.support.v7.widget.AppCompatTextView
+                            android:id="@+id/txt_DrCFName"
+                            style="@style/styleTextViewlyt_DD_fromserver"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.60"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <!--Single Item start-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="5dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <android.support.v7.widget.AppCompatTextView
+                            style="@style/styleTextViewlyt_DD"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.35"
+                            android:text="Age" />
+
+                        <android.support.v7.widget.AppCompatTextView
+                            style="@style/styleTextViewlyt_DD"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.05"
+                            android:text=":" />
+
+                        <android.support.v7.widget.AppCompatTextView
+                            android:id="@+id/txt_CAge"
+                            style="@style/styleTextViewlyt_DD_fromserver"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.60"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <!--Single Item start-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="5dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <android.support.v7.widget.AppCompatTextView
+                            style="@style/styleTextViewlyt_DD"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.35"
+                            android:text="Contact No" />
+
+                        <android.support.v7.widget.AppCompatTextView
+                            style="@style/styleTextViewlyt_DD"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.05"
+                            android:text=":" />
+
+                        <android.support.v7.widget.AppCompatTextView
+                            android:id="@+id/txt_DrCConNo"
+                            style="@style/styleTextViewlyt_DD_fromserver"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.60"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <android.support.v7.widget.AppCompatTextView
+                        style="@style/styleTextViewlyt_DD"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_5sdp"
+                        android:text="FRS Matching "
+                        android:textStyle="bold" />
+
+                    <!--Single Item start-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="10dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <android.support.v7.widget.AppCompatImageView
+                            android:id="@+id/img_CDrImage"
+                            android:layout_width="200dp"
+                            android:layout_height="200dp"
+                            android:scaleType="fitXY"
+                            android:layout_margin="@dimen/_10sdp"
+                            android:src="@drawable/profleimg"/>
+
+                        <android.support.v7.widget.AppCompatImageView
+                            android:id="@+id/img_CDrFrsImage"
+                            android:layout_width="200dp"
+                            android:scaleType="fitXY"
+                            android:layout_margin="@dimen/_10sdp"
+                            android:layout_height="200dp"
+                            android:src="@drawable/profleimg"/>
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <!--Attendant Info-->
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="@dimen/_3sdp"
+                android:background="#F1F1F1"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:cardCornerRadius="@dimen/_5sdp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        style="@style/styleTextViewlyt_DD"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#CED2DE"
+                        android:gravity="center_horizontal"
+                        android:padding="@dimen/_10sdp"
+                        android:text="Attendant Info"
+                        android:textSize="@dimen/_14sdp" />
+
+
+                    <!--Single Item start-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="5dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <android.support.v7.widget.AppCompatTextView
+                            style="@style/styleTextViewlyt_DD"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.35"
+                            android:text="Attendant Name" />
+
+                        <android.support.v7.widget.AppCompatTextView
+                            style="@style/styleTextViewlyt_DD"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.05"
+                            android:text=":" />
+
+                        <android.support.v7.widget.AppCompatEditText
+                            android:id="@+id/edtTxt_AdntCName"
+                            style="@style/styleEditText"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.60" />
+
+
+                    </LinearLayout>
+
+                    <!--Single Item start-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="5dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <android.support.v7.widget.AppCompatTextView
+                            style="@style/styleTextViewlyt_DD"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.35"
+                            android:text="Attendant Address" />
+
+                        <android.support.v7.widget.AppCompatTextView
+                            style="@style/styleTextViewlyt_DD"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.05"
+                            android:text=":" />
+
+                        <android.support.v7.widget.AppCompatEditText
+                            android:id="@+id/txt_AdntAdrs"
+                            style="@style/styleEditText"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.60"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <!--Single Item start-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="5dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <android.support.v7.widget.AppCompatTextView
+                            style="@style/styleTextViewlyt_DD"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.35"
+                            android:text="Contact No" />
+
+                        <android.support.v7.widget.AppCompatTextView
+                            style="@style/styleTextViewlyt_DD"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.05"
+                            android:text=":" />
+
+                        <android.support.v7.widget.AppCompatEditText
+                            android:id="@+id/txt_AdntCConNo"
+                            style="@style/styleEditText"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.45"
+                            android:textStyle="bold"
+                            android:inputType="number"
+                            android:maxLength="10"/>
+
+                        <android.support.v7.widget.AppCompatButton
+                            android:layout_width="0dp"
+                            android:text="Send OTP"
+                            android:textSize="12sp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.15"
+                            android:background="@drawable/background"
+                            android:textColor="@color/white"/>
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@id/btngetdetails"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/colorAccent" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btngetdetails"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl_dp_report_type_xml"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/background"
+        android:gravity="center"
+        android:text="@string/get"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_8sdp" />
+
+    <!--DD Details-->
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/DDdat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header_layout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        android:text="@string/dd_infomation"
+        android:textColor="@color/EditTxt_color"
+        android:textSize="@dimen/Ip_settings_font"
+        android:visibility="gone" />
+
+    <!--DD Details End-->
+
+    <include
+        android:id="@+id/footer_layout"
+        layout="@layout/footer_layout" />
+
+    <include
+        android:id="@+id/header_layout"
+        layout="@layout/header_layout" />
+
+</RelativeLayout>

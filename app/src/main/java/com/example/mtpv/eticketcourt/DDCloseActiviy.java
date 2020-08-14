@@ -95,6 +95,7 @@ import java.util.Objects;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 public class DDCloseActiviy extends Activity {
+    //9533363306
 
     TextView compny_Name;
     AppCompatImageView imgView_CourtOrderCopy, imgView_DLCopy, minor_img_CourtCopy, owner_img_CourtCopy;
@@ -162,7 +163,6 @@ public class DDCloseActiviy extends Activity {
     RadioButton rdoBtnNo_VehcleRlse, rdoBtn_DLCAN, rdoBtnNONE;
     LinearLayout lytConFrom, lytConTo, lytConDays, lytFineAmnt, lytSoclFrom, lytSclSerTo, lytRisingDays, lytSUSDAYS, lytDLCanDate,
             lytDLSusFrom, lytDLSusTo, lytFirNo, lytPSName, lyt_DrvrExpredDate, lytImages;
-
     LinearLayout owner_Lyt_Pay_details, owner_lytConvtdFrom, owner_lytConvtdTo, owner_lytFineAmnt, owner_lytSoclFrom, owner_lytSclSerTo,
             owner_lytRisingDays, owner_lytImages;
     DBHelper db;
@@ -176,13 +176,11 @@ public class DDCloseActiviy extends Activity {
     String vEHICLE_NUMBER, chall_No, chall_Type, violations, offence_Date, driver_Adhar, driver_Mobile, driver_LCNCE, driver_DL_DOB,
             unit_CODE, pid_CODE, ps_CODE;
     String dayDifference;
-
     DateUtil dateUtil;
     byte[] byteArray;
     String img_dataCourtCopy, img_dataDLCopy = null, minor_ImgData = null, driver_ImgData = null;
     String selection_Pic_Flag = "";
     String tckt_UPdated_Flag = "N";
-
     ImageView imageView1;
     TextView tv_officer_name, tv_officer_cadre_name, tv_officer_ps, tv_officer_pid;
     boolean minor_Dvng_Flag = false;
@@ -196,20 +194,6 @@ public class DDCloseActiviy extends Activity {
         imageView1 = (ImageView) findViewById(R.id.img_logo);
         String unitCode = MainActivity.arr_logindetails[0];
         unitCode = unitCode.substring(0, 2);
-        switch (unitCode) {
-            case "22":
-                imageView1.setImageDrawable(getResources().getDrawable(R.drawable.cyb_logo_200x200));
-                break;
-            case "24":
-                imageView1.setImageDrawable(getResources().getDrawable(R.drawable.rac_logo_200x200));
-                break;
-            case "44":
-                imageView1.setImageDrawable(getResources().getDrawable(R.drawable.wgl_logo));
-                break;
-            default:
-                imageView1.setImageDrawable(getResources().getDrawable(R.drawable.hyd_logo_200x200));
-                break;
-        }
 
         tv_officer_name = (TextView) findViewById(R.id.officer_Name);
         tv_officer_name.setText(MainActivity.pidName + "(" + MainActivity.cadreName + ")");
@@ -1257,7 +1241,6 @@ public class DDCloseActiviy extends Activity {
         }
         cursor_court_Disnames.close();
         db.close();
-
     }
 
     public void getCourtNamesFromDB() {
@@ -1284,9 +1267,9 @@ public class DDCloseActiviy extends Activity {
         }
         cursor_courtnames.close();
         db.close();
-
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class Async_getCourtClosingUpdateTicketInfo extends AsyncTask<Void, Void, String> {
         @SuppressLint("DefaultLocale")
         @SuppressWarnings("unused")
@@ -1354,17 +1337,11 @@ public class DDCloseActiviy extends Activity {
                     caseDisposal.setOwner_LICENSE_NO("");
                     caseDisposal.setDriver_imgMegistrateCopy(minor_ImgData);
                     caseDisposal.setDriver_imgDlCopy(driver_ImgData);
-                    // }
                 }
+
                 Gson gson = new Gson();
                 String disposal_Data = gson.toJson(caseDisposal);
                 ServiceHelper.getCourtDisposalTicketInfo(disposal_Data);
-
-                /*ServiceHelper.getCourtClosingUpdateTicketInfo(chall_No, vEHICLE_NUMBER, driver_LCNCE.toUpperCase(), driver_DL_DOB, driver_Adhar, edtTxt_STC_No.getText().toString(),
-                        selectedCourtDisCode, edtTxtConDays.getText().toString(), date_convFRom, date_convicTo, edtTxt_FineAmnt.getText().toString(),
-                        edtTxtRisDays.getText().toString(), selectedCourtCode, date_courtAtnd, vehcleRelse, "Y", edtTxt_Remarks.getText().toString(),
-                        MainActivity.user_id, MainActivity.arr_logindetails[1], "", driver_Mobile, dl_SUS, dl_CAN, date_DL_SUS_FROM, date_DL_SUS_TO,
-                        img_dataCourtCopy, img_dataDLCopy, dl_SusDays, chall_Type, violations, unit_CODE, ps_CODE, pid_CODE, offence_Date);*/
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1378,8 +1355,6 @@ public class DDCloseActiviy extends Activity {
         protected void onPreExecute() {
             super.onPreExecute();
             showDialog(PROGRESS_DIALOG);
-//            dd_lyt.setVisibility(View.GONE);
-//            pay_dd_lyt.setVisibility(View.GONE);
         }
 
         @SuppressWarnings("deprecation")
@@ -1424,50 +1399,38 @@ public class DDCloseActiviy extends Activity {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // TODO Auto-generated method stub
-//                dd_lyt.setVisibility(View.GONE);
-//                pay_dd_lyt.setVisibility(View.GONE);
-//                et_dp_regno.setText("");
-//                btn_dp_date_selection.setText("Select Date");
+
                 if (tckt_UPdated_Flag.equals("Y")) {
                     Intent intent = new Intent(getApplicationContext(), DDCloseActiviy.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 } else {
-//                    finish();
                     alertDialogBuilder.create().dismiss();
                 }
-
             }
         });
 
-
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
-
         alertDialog.getWindow().getAttributes();
-
         TextView textView = (TextView) alertDialog.findViewById(android.R.id.message);
         textView.setTextSize(22);
         textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
         textView.setGravity(Gravity.CENTER);
-
         Button btn = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
         btn.setTextSize(22);
         btn.setTextColor(Color.WHITE);
         btn.setTypeface(btn.getTypeface(), Typeface.BOLD);
         btn.setBackgroundColor(Color.BLUE);
-
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class Async_getDD_details extends AsyncTask<Void, Void, String> {
         @SuppressLint("DefaultLocale")
         @SuppressWarnings("unused")
         @Override
         protected String doInBackground(Void... params) {
-
             ServiceHelper.getCourtClosingTicketInfo("" + et_dp_regno.getText().toString().trim().toUpperCase(), "" + present_date_toSend);
-
             return null;
         }
 
@@ -1950,7 +1913,6 @@ public class DDCloseActiviy extends Activity {
         TextView messageTextView = (TextView) group.getChildAt(0);
         messageTextView.setPadding(20, 0, 20, 0);
         messageTextView.setTextSize(getResources().getDimension(R.dimen._10sdp));
-
         toastView.setBackgroundResource(R.drawable.toast_background);
         toast.show();
     }
@@ -1987,11 +1949,9 @@ public class DDCloseActiviy extends Activity {
             present_year = selectedYear;
             present_month = monthOfYear;
             present_day = dayOfMonth;
-
             format = new SimpleDateFormat("dd-MMM-yyyy");
             date_courtAtnd = format.format(new Date(present_year - 1900, (present_month), present_day));
             btn_courtAttenddate.setText(date_courtAtnd.toUpperCase());
-
         }
 
     };
@@ -2004,7 +1964,6 @@ public class DDCloseActiviy extends Activity {
             present_year = selectedYear;
             present_month = monthOfYear;
             present_day = dayOfMonth;
-
             format = new SimpleDateFormat("dd-MMM-yyyy");
             String date_courtAtnd = format.format(new Date(present_year - 1900, (present_month), present_day));
             owner_btn_CrtAtndDate.setText(date_courtAtnd.toUpperCase());
@@ -2012,6 +1971,7 @@ public class DDCloseActiviy extends Activity {
         }
 
     };
+
     DatePickerDialog.OnDateSetListener md3 = new DatePickerDialog.OnDateSetListener() {
 
         @SuppressWarnings("deprecation")
@@ -2032,7 +1992,6 @@ public class DDCloseActiviy extends Activity {
                 date_From = format.parse(date_convFRom);
             } catch (ParseException e) {
                 e.printStackTrace();
-
             }
         }
     };
@@ -2046,14 +2005,12 @@ public class DDCloseActiviy extends Activity {
             present_year = selectedYear;
             present_month = monthOfYear;
             present_day = dayOfMonth;
-
             format = new SimpleDateFormat("dd-MMM-yyyy");
             date_convicTo = format.format(new Date(present_year - 1900, (present_month), present_day));
             dayDifference = "";
             Date date1;
             Date date2;
             SimpleDateFormat dates = new SimpleDateFormat("dd-MMM-yyyy");
-
             //Setting dates
             try {
                 date1 = dates.parse(date_convFRom);
@@ -2076,7 +2033,6 @@ public class DDCloseActiviy extends Activity {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
         }
     };
 
@@ -2099,7 +2055,6 @@ public class DDCloseActiviy extends Activity {
                 date_From = format.parse(owner_date_convFRom);
             } catch (ParseException e) {
                 e.printStackTrace();
-
             }
         }
     };
@@ -2113,14 +2068,12 @@ public class DDCloseActiviy extends Activity {
             present_year = selectedYear;
             present_month = monthOfYear;
             present_day = dayOfMonth;
-
             format = new SimpleDateFormat("dd-MMM-yyyy");
             owner_date_convicTo = format.format(new Date(present_year - 1900, (present_month), present_day));
             dayDifference = "";
             Date date1;
             Date date2;
             SimpleDateFormat dates = new SimpleDateFormat("dd-MMM-yyyy");
-
             //Setting dates
             try {
                 date1 = dates.parse(owner_date_convFRom);
@@ -2145,7 +2098,6 @@ public class DDCloseActiviy extends Activity {
         }
     };
 
-
     DatePickerDialog.OnDateSetListener md_scl_servceFrom = new DatePickerDialog.OnDateSetListener() {
 
         @SuppressWarnings("deprecation")
@@ -2155,7 +2107,6 @@ public class DDCloseActiviy extends Activity {
             present_year = selectedYear;
             present_month = monthOfYear;
             present_day = dayOfMonth;
-
             format = new SimpleDateFormat("dd-MMM-yyyy");
             date_convFRom = format.format(new Date(present_year - 1900, (present_month), present_day));
             btn_courtSoclServceFromdate.setText("" + date_convFRom.toUpperCase());
@@ -2172,7 +2123,6 @@ public class DDCloseActiviy extends Activity {
             present_year = selectedYear;
             present_month = monthOfYear;
             present_day = dayOfMonth;
-
             format = new SimpleDateFormat("dd-MMM-yyyy");
             date_convicTo = format.format(new Date(present_year - 1900, (present_month), present_day));
             dayDifference = "";
@@ -2200,10 +2150,8 @@ public class DDCloseActiviy extends Activity {
                 e.printStackTrace();
                 showToast("Please select the dates!");
             }
-
         }
     };
-
 
     DatePickerDialog.OnDateSetListener ownerSSFromDt = new DatePickerDialog.OnDateSetListener() {
 
@@ -2269,12 +2217,9 @@ public class DDCloseActiviy extends Activity {
             present_year = selectedYear;
             present_month = monthOfYear;
             present_day = dayOfMonth;
-
             format = new SimpleDateFormat("dd-MMM-yyyy");
             date_DL_SUS_FROM = format.format(new Date(present_year - 1900, (present_month), present_day));
             btn_DLSUS_FromDate.setText("" + date_DL_SUS_FROM.toUpperCase());
-
-
         }
     };
 
@@ -2287,18 +2232,13 @@ public class DDCloseActiviy extends Activity {
             present_year = selectedYear;
             present_month = monthOfYear;
             present_day = dayOfMonth;
-
             format = new SimpleDateFormat("dd-MMM-yyyy");
             date_DL_SUS_TO = format.format(new Date(present_year - 1900, (present_month), present_day));
             //btn_courtSoclServceTodate.setText("" + date_convicTo.toUpperCase());
             dayDifference = "";
-
             Date date1;
             Date date2;
-
             SimpleDateFormat dates = new SimpleDateFormat("dd-MMM-yyyy");
-
-
             //Setting dates
             try {
 
@@ -2323,8 +2263,6 @@ public class DDCloseActiviy extends Activity {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
-
         }
     };
 
@@ -2341,15 +2279,11 @@ public class DDCloseActiviy extends Activity {
             format = new SimpleDateFormat("dd-MMM-yyyy");
             date_dd_dl_dob = format.format(new Date(present_year - 1900, (present_month), present_day));
             try {
-
                 String todaysdate = new DateUtil().getTodaysDate();
-
                 long days = new DateUtil().DaysCalucate(date_dd_dl_dob, todaysdate);
-
                 //Minimum Age should be 16
                 if (days > 5824) {
                     btn_Dl_dob.setText(date_dd_dl_dob.toUpperCase());
-
                 } else {
                     showToast("Please select Date of Birth Atleast Person Age Should be Greater Than 16");
                     btn_Dl_dob.setText("Select Date");
@@ -2357,9 +2291,7 @@ public class DDCloseActiviy extends Activity {
             } catch (Exception e) {
                 e.printStackTrace();
                 btn_Dl_dob.setText("Select Date");
-
             }
-
         }
     };
 
@@ -2372,14 +2304,12 @@ public class DDCloseActiviy extends Activity {
             present_year = selectedYear;
             present_month = monthOfYear;
             present_day = dayOfMonth;
-
             format = new SimpleDateFormat("dd-MMM-yyyy");
             date_DL_SUS_FROM = "";
             date_DL_SUS_FROM = format.format(new Date(present_year - 1900, (present_month), present_day));
             btn_dateSeltion_DL_Canln.setText(date_DL_SUS_FROM.toUpperCase());
         }
     };
-
 
     @SuppressWarnings("deprecation")
     @Override
@@ -2573,6 +2503,5 @@ public class DDCloseActiviy extends Activity {
         }
         return super.onCreateDialog(id);
     }
-
 
 }

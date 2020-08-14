@@ -31,31 +31,14 @@ public class IPSettings extends Activity implements OnClickListener {
     SharedPreferences.Editor editor;
 
     String SERVICE_URL_PREF = "", FTP_URL_PREF = "", SERVICE_TYPE_PREf = "";
-
-    // private String test_service_url3 = "http://192.168.11.55:8080/eTicketMobileHyd";
-    // private String test_service_url4 = "http://192.168.11.55:8080/eTicketMobileHyd";
-    //private String test_service_url = "http://192.168.11.10:8080/eTicketMobileHyd";
-    //private String test_service_url = "http://192.168.11.97:8080/eTicketMobileHyd";
-    // private String local_network_url="http://192.168.11.4/eTicketMobileHyd";
-
-    //Connecting_sunilsys
     private String local_network_url = "http://125.16.1.70:8080/TSeTicketMobile";
-    //private String local_network_url = "http://192.168.11.10:8080/TSeTicketMobile/";
-
-    //Connecting_madhusys
-
-    // private String local_network_url="http://192.168.11.97:8080/eTicketMobileHyd";
-    //private String local_network_url="http://192.168.11.10:8080/eTicketMobileHydTest";
-    // private String live_service_url = "http://192.168.11.4/eTicketMobileHyd";
-    //private String live_service_url = "https://www.echallan.org/TSeTicketMobile";
     private String live_service_url = "https://echallan.tspolice.gov.in/TSeTicketMobile";
-
     public static String ftp_fix = "125.16.1.69";
     public static String open_ftp_fix = "125.16.1.69";
     String service_type = "";
 
     @SuppressWarnings("deprecation")
-    @SuppressLint("WorldReadableFiles")
+    @SuppressLint({"WorldReadableFiles", "CommitPrefEdits"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
@@ -129,7 +112,6 @@ public class IPSettings extends Activity implements OnClickListener {
     @SuppressLint("WorldReadableFiles")
     @Override
     public void onClick(View v) {
-        // TODO Auto-generated method stub
         switch (v.getId()) {
 
             case R.id.btnsubmit_ipsettings_xml:
@@ -181,20 +163,19 @@ public class IPSettings extends Activity implements OnClickListener {
     @SuppressWarnings("unused")
     private void clearFields() {
         // TODO Auto-generated method stub
-        preference.edit().clear().commit();
+        preference.edit().clear().apply();
         et_service_url.setText("");
         et_ftp_url.setText("");
 
     }
 
     private void showToast(String msg) {
-        // TODO Auto-generated method stub
         Toast toast = Toast.makeText(getApplicationContext(), "" + msg, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
         View toastView = toast.getView();
         ViewGroup group = (ViewGroup) toast.getView();
         TextView messageTextView = (TextView) group.getChildAt(0);
-        messageTextView.setPadding(20,0,20, 0);
+        messageTextView.setPadding(20, 0, 20, 0);
         messageTextView.setTextSize(getResources().getDimension(R.dimen._8sdp));
 
         toastView.setBackgroundResource(R.drawable.toast_background);
@@ -204,6 +185,7 @@ public class IPSettings extends Activity implements OnClickListener {
     private void showError(EditText et, String msg) {
         et.setError("" + msg);
     }
+
 }
 
 

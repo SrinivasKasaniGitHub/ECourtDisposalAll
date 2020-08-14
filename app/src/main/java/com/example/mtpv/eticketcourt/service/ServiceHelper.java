@@ -1,6 +1,7 @@
 package com.example.mtpv.eticketcourt.service;
 
 import java.util.Map;
+import java.util.Objects;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.SoapFault;
@@ -28,11 +29,6 @@ public class ServiceHelper {
             version_response, offender_remarks;
 
     public static String rta_data, license_data, aadhar_data;
-
-    // private static String URL =
-    // "http://www.echallan.org/eTicketMobile/services/MobileEticketServiceImpl?wsdl";
-    // private static final String URL =
-    // "http://192.168.11.9:7534/eTicketMobile/services/MobileEticketServiceImpl?wsdl";
 
     public static String[] login_details_arr;
     public static Map<String, String> viodetMap = null;
@@ -349,43 +345,28 @@ public class ServiceHelper {
     public static void getViolationPoint_SystemMasterData() {
 
         try {
-            // Log.i("getViolationPoint_SystemMasterData Details ::::",
-            // "***Called ***");
             SoapObject request = new SoapObject(NAMESPACE, "getVioPSyst");
             SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
             envelope.dotNet = true;
             envelope.setOutputSoapObject(request);
-
             HttpTransportSE httpTransportSE = new HttpTransportSE(MainActivity.URL);
             httpTransportSE.call(SOAP_ACTION, envelope);
             Object result = envelope.getResponse();
-            // getViolationPoint_resp = "";
-            // getViolationPoint_resp = result.toString();
-            Log.i("get", "" + getViolationPoint_resp);
             try {
                 getViolationPoint_resp = new com.example.mtpv.eticketcourt.service.PidSecEncrypt()
                         .decrypt(result.toString());
             } catch (Exception e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-
-            // OFFENCE_CD|WHEELER_CD|PENALTY_POINTS@
-            // OFFENCE_CD|WHEELER_CD|PENALTY_POINTS
-
-            // 01|2|1@
-            // 02|2|2@
-
             violation_points_masters = new String[0];
             violation_points_masters = getViolationPoint_resp.split("\\@");
             for (int i = 0; i < ServiceHelper.violation_points_masters.length; i++) {
+
             }
 
         } catch (SoapFault fault) {
-            Log.i("**getViolationPo", "soapfault = " + fault.getMessage());
-
+            fault.printStackTrace();
         } catch (Exception e) {
-            // TODO: handle exception
             bar_master = new String[0];
         }
     }
@@ -401,30 +382,12 @@ public class ServiceHelper {
             HttpTransportSE httpTransportSE = new HttpTransportSE(MainActivity.URL);
             httpTransportSE.call(SOAP_ACTION, envelope);
             Object result = envelope.getResponse();
-            // Opdata_Chalana = "";
-            // Opdata_Chalana = result.toString();
-
             try {
                 Opdata_Chalana = new com.example.mtpv.eticketcourt.service.PidSecEncrypt().decrypt(result.toString());
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            Log.i("PS_NAMES_RESPONSE :::", "" + Opdata_Chalana);
-            /*
-             * !2399@COURT!2302@MAHANKALI TRPS!2301@GOPALPURAM
-             * TRPS!2304@TRIMULGHERRY TRPS! 2310@BEGUMPET TRPS!2306@PUNJAGUTTA
-             * TRPS!2309@BANJARA HILLS TRPS!2307@S.R.NAGAR TRPS!
-             * 2312@CHIKKADPALLY TRPS!2315@SAIFABAD TRPS!2313@ABIDS
-             * TRPS!2330@GOSHAMAHAL TRPS! 2329@NAMPALLY TRPS!2328@ASIF NAGAR
-             * TRPS!2319@CHARMINAR TRPS!2318@FALAKNUMA TRPS! 2317@MIRCHOWK
-             * TRPS!2322@KACHIGUDA TRPS!2324@SULTAN BAZAR TRPS!2325@MALAKPET
-             * TRPS! 2300@TRAFFIC CELL!2333@TTI GOSHAMAHAL!2303@MARREDPALLY
-             * TRPS!2308@JUBLEE HILLS TRPS! 2323@NALLAKUNTA TRPS!2327@TOLICHOWKI
-             * TRPS!2314@NARAYANAGUDA TRPS!2320@BAHADHURPURA TRPS!
-             * 2398@UNDEFINED!2334@TTI BEGUMPET
-             */
-
             if (Opdata_Chalana == null) {
                 Log.i("NO_PS_DATA_FOUND", "NO_PS_DATA_FOUND");
             } else {
@@ -443,39 +406,21 @@ public class ServiceHelper {
     }
 
     public static void getPsNames() {
+
         try {
             SoapObject request = new SoapObject(NAMESPACE, "" + GET_PS_NAMES_MEHOD_NAME);
             SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
             envelope.dotNet = true;
             envelope.setOutputSoapObject(request);
-
             HttpTransportSE httpTransportSE = new HttpTransportSE(MainActivity.URL);
             httpTransportSE.call(SOAP_ACTION, envelope);
             Object result = envelope.getResponse();
-            // Opdata_Chalana = "";
-            // Opdata_Chalana = result.toString();
-
             try {
                 Opdata_Chalana = new com.example.mtpv.eticketcourt.service.PidSecEncrypt().decrypt(result.toString());
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            Log.i("PS_NAMES_RESPONSE :::", "" + Opdata_Chalana);
-            /*
-             * !2399@COURT!2302@MAHANKALI TRPS!2301@GOPALPURAM
-             * TRPS!2304@TRIMULGHERRY TRPS! 2310@BEGUMPET TRPS!2306@PUNJAGUTTA
-             * TRPS!2309@BANJARA HILLS TRPS!2307@S.R.NAGAR TRPS!
-             * 2312@CHIKKADPALLY TRPS!2315@SAIFABAD TRPS!2313@ABIDS
-             * TRPS!2330@GOSHAMAHAL TRPS! 2329@NAMPALLY TRPS!2328@ASIF NAGAR
-             * TRPS!2319@CHARMINAR TRPS!2318@FALAKNUMA TRPS! 2317@MIRCHOWK
-             * TRPS!2322@KACHIGUDA TRPS!2324@SULTAN BAZAR TRPS!2325@MALAKPET
-             * TRPS! 2300@TRAFFIC CELL!2333@TTI GOSHAMAHAL!2303@MARREDPALLY
-             * TRPS!2308@JUBLEE HILLS TRPS! 2323@NALLAKUNTA TRPS!2327@TOLICHOWKI
-             * TRPS!2314@NARAYANAGUDA TRPS!2320@BAHADHURPURA TRPS!
-             * 2398@UNDEFINED!2334@TTI BEGUMPET
-             */
-
             if (Opdata_Chalana == null) {
                 Log.i("NO_PS_DATA_FOUND", "NO_PS_DATA_FOUND");
             } else {
@@ -499,12 +444,9 @@ public class ServiceHelper {
             SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
             envelope.dotNet = true;
             envelope.setOutputSoapObject(request);
-
             HttpTransportSE httpTransportSE = new HttpTransportSE(MainActivity.URL);
             httpTransportSE.call(NAMESPACE + GET_COURT_NAMES, envelope);
             Object result = envelope.getResponse();
-            // Opdata_Chalana = "";
-            // Opdata_Chalana = result.toString();
 
             try {
                 Opdata_Chalana = new com.example.mtpv.eticketcourt.service.PidSecEncrypt().decrypt(result.toString());
@@ -552,7 +494,6 @@ public class ServiceHelper {
             SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
             envelope.dotNet = true;
             envelope.setOutputSoapObject(request);
-
             HttpTransportSE httpTransportSE = new HttpTransportSE(MainActivity.URL);
             httpTransportSE.call(NAMESPACE + GET_COURT_NAMES_BYUNIT, envelope);
             Object result = envelope.getResponse();
@@ -1123,6 +1064,7 @@ public class ServiceHelper {
             SoapObject request = new SoapObject(NAMESPACE, "" + GET_DDCLOSING_DETAILS);
             request.addProperty("" + utils.ETICKET_REG_NO, "" + eticketRegNo);
             request.addProperty("" + utils.OFFENCE_DT, "" + offenceDT);
+            request.addProperty("counCourt","1");  // Counselling=0 , CourtDisposal=1
             SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
             envelope.dotNet = true;
             envelope.setOutputSoapObject(request);
@@ -1321,9 +1263,7 @@ public class ServiceHelper {
                 Opdata_Chalana = "NA";
             }
 
-        } catch (SoapFault fault) {
-            Opdata_Chalana = "NA";
-        } catch (Exception e) {
+        } catch (Exception fault) {
             Opdata_Chalana = "NA";
         }
     }
@@ -1706,7 +1646,6 @@ public class ServiceHelper {
     }
 
     public static void getAadharDetails(String uid, String eid) {
-        Log.i("**getAadharDetails ***", "Entered");
         try {
             SoapObject request = new SoapObject(NAMESPACE, "" + AADHAR_DETAILS_METHOD_NAME);
             request.addProperty("uid", "" + (uid.toString().trim()));
@@ -1758,21 +1697,6 @@ public class ServiceHelper {
     public static void getpendingChallansByRegNo(String regno, String drvr_lcno, String ownr_lcnce_no, String pid,
                                                  String pidname, String pwd, String simid, String imei, String lat, String logn, String ip_val,
                                                  String unit_code) {
-
-        Log.i("getpendingChalod", "called");
-        Log.i("regno", "" + regno);
-        Log.i("drvr_lcno", "" + drvr_lcno);
-        Log.i("ownr_lcnce_no", "" + ownr_lcnce_no);
-        Log.i("pid", "" + pid);
-        Log.i("pidname", pidname);
-        Log.i("pwd", pwd);
-        Log.i("simid", simid);
-        Log.i("imei", imei);
-        Log.i("lat", lat);
-        Log.i("logn", logn);
-        Log.i("ip_val", ip_val);
-        Log.i("unit_code", unit_code);
-
         try {
             SoapObject request = new SoapObject(NAMESPACE, "" + PENDING_CHALLANS_BY_REGNO);
             request.addProperty("regnNo", "" + regno);
@@ -1787,62 +1711,37 @@ public class ServiceHelper {
             request.addProperty("longitude", "" + logn);
             request.addProperty("ip", "" + ip_val);
             request.addProperty("unitCode", "" + Dashboard.UNIT_CODE);
-            Log.i("getpendinst--->", "" + request);
-
             SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
             envelope.dotNet = true;
             envelope.setOutputSoapObject(request);
-
             HttpTransportSE httpTransportSE = new HttpTransportSE(MainActivity.URL);
             httpTransportSE.call(SOAP_ACTION, envelope);
             Object result = envelope.getResponse();
-            // Opdata_Chalana = "";
-            // Opdata_Chalana = result.toString();
-
             try {
                 Opdata_Chalana = new com.example.mtpv.eticketcourt.service.PidSecEncrypt().decrypt(result.toString());
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            Log.i("**PENDING_CHAL*", "" + Opdata_Chalana);
             if (Opdata_Chalana.toString().equals("0")) {
                 Opdata_Chalana = "0";
                 pending_challans_master = new String[0];
                 pending_challans_details = new String[0][0];
             } else {
-                Log.i("**PENDI", "" + Opdata_Chalana);
-                /*
-                 * AP29BS7402! HYD00TE171000076! 2017-03-02! 12:09! COMPOUNDING
-                 * BOOTH! TRAFFIC CELL! CARRYING GOODS DANGEROUSLY! 100! 0! 100!
-                 * 0! 23@
-                 *
-                 * AP29BS7402! HYD00TE171000077! 2017-03-02! 12:33! COMPOUNDING
-                 * BOOTH! TRAFFIC CELL! NO ENTRY! 100! 0! 100! 0! 23@
-                 *
-                 * AP29BS7402! HYD17TE171001924! 2017-02-24! 17:06! I S SADAN
-                 * JUNCTION! MIRCHOWK TRPS! WITHOUT HELMET / NOT WEARING HELMET!
-                 * 100! 0! 100! 0! 23@
-                 */
-
                 pending_challans_master = new String[0];
                 pending_challans_master = Opdata_Chalana.split("@");
 
                 pending_challans_details = new String[pending_challans_master.length][8];
-                Log.i("**PENDING C**", "" + pending_challans_master.length);
                 for (int i = 0; i < pending_challans_master.length; i++) {
                     pending_challans_details[i] = pending_challans_master[i].split("!");
-                    Log.i("**PENDI**", "" + pending_challans_details[i]);
                 }
             }
         } catch (SoapFault fault) {
-            Log.i("****S*:::", "soapfault = " + fault.getMessage());
+            fault.printStackTrace();
         } catch (Exception e) {
-            // TODO: handle exception
             Opdata_Chalana = "nodata";
             pending_challans_master = new String[0];
             pending_challans_details = new String[0][0];
-            Log.i("**P**", "" + e.toString());
         }
     }
 
@@ -2109,73 +2008,6 @@ public class ServiceHelper {
                                                String is_spot, String ofnce_date, String ofence_time, String lic_status, String whlr_cd, String veh_cat,
                                                String vhle_main_cat, String vhle_sub_cat, String vilatns, String pnding_challans, String epeople,
                                                String dname, String dfname, String daddress, String dcity) {
-        Log.i("****mobileSo***", "Please wait...");
-        Log.i("****mobileS***", "PARAMETERS PASSED START");
-        Log.i("****spot_seles***", "" + spot_selected_penchallans);
-        Log.i("****regn_Cd***", "" + regn_Cd);
-        Log.i("***vehicle_No****", "" + vehicle_No);
-        Log.i("**regn_No*****", "" + regn_No);
-        Log.i("***gtwy_cd****", "" + gtwy_cd);
-        Log.i("****dateof_pymnt***", "" + dateof_pymnt);
-        Log.i("****pymnt_time***", "" + pymnt_time);
-        Log.i("**unit_cd*****", "" + unit_cd);
-        Log.i("****unit_name***", "" + unit_name);
-        Log.i("***ps_code****", "" + ps_code);
-        Log.i("****ps_name***", "" + ps_name);
-        Log.i("****booked_cd***", "" + booked_cd);
-        Log.i("**booked_name*****", "" + booked_name);
-        Log.i("**point_cd*****", "" + point_cd);
-        Log.i("****point_name***", "" + point_name);
-        Log.i("**operator_cd*****", "" + operator_cd);
-        Log.i("***operator_name****", "" + operator_name);
-        Log.i("****pid_cd***", "" + pid_cd);
-        Log.i("****pid_name***", "" + pid_name);
-        Log.i("*cadre_cd******", "" + cadre_cd);
-        Log.i("*****cdre**", "" + cdre);
-        Log.i("***total_amnt****", "" + total_amnt);
-        Log.i("****detained_items***", "" + detained_items);
-        Log.i("****simid***", "" + simid);
-        Log.i("****imei_no***", "" + imei_no);
-        Log.i("*****mac_id**", "" + mac_id);
-        Log.i("*****lat_val**", "" + lat_val);
-        Log.i("***long_val****", "" + long_val);
-        Log.i("****gps_date***", "" + gps_date);
-        Log.i("*****gps_time**", "" + gps_time);
-        Log.i("*onlinemode******", "" + onlinemode);
-        Log.i("***module_code****", "" + module_code);
-        Log.i("***released_items****", "" + released_items);
-        Log.i("***challan_num****", "" + challan_num);
-        Log.i("****service_code***", "" + service_code);
-        Log.i("***ownr_lic_no****", "" + ownr_lic_no);
-        Log.i("**drvr_lic_no*****", "" + drvr_lic_no);
-        Log.i("****pwd***", "" + pwd);
-        Log.i("***image_data****", "" + image_data);
-        Log.i("***challan_type****", "" + challan_type);
-        Log.i("*****challan_code**", "" + challan_code);
-        Log.i("*****location**", "" + location);
-        Log.i("****remarks***", "" + remarks);
-        Log.i("******pan_num*", "" + pan_num);
-        Log.i("****aadhar_num***", "" + aadhar_num);
-        Log.i("**voter_id*****", "" + voter_id);
-        Log.i("*****pasprt**", "" + pasprt);
-        Log.i("***mailid****", "" + mailid);
-        Log.i("**drvr_cntct_num*****", "" + drvr_cntct_num);
-        Log.i("*****is_spot**", "" + is_spot);
-        Log.i("*****ofnce_date**", "" + ofnce_date);
-        Log.i("*****ofence_time**", "" + ofence_time);
-        Log.i("****lic_status***", "" + lic_status);
-        Log.i("*****whlr_cd**", "" + whlr_cd);
-        Log.i("****veh_cat***", "" + veh_cat);
-        Log.i("****vhle_main_cat***", "" + vhle_main_cat);
-        Log.i("****vhle_sub_cat***", "" + vhle_sub_cat);
-        Log.i("****vilatns***", "" + vilatns);
-        Log.i("****pnding_challans***", "" + pnding_challans);
-        Log.i("****extra_psngrs***", "" + epeople);
-        Log.i("****dname***", "" + dname);
-        Log.i("****dfname***", "" + dfname);
-        Log.i("****daddress***", "" + daddress);
-        Log.i("****dcity***", "" + dcity);
-        Log.i("****mobileS*", "PARAMETERS PASSED ENDED");
 
         Utils utils = new Utils();
         try {
@@ -2187,7 +2019,7 @@ public class ServiceHelper {
                 request = new SoapObject(NAMESPACE, "" + TOWING_CPACT_METHOD_NAME);
             }
 
-            request.addProperty(utils.VHLE_HIST_SELECTED_PEN_CHALLANS, "" + spot_selected_penchallans);
+            Objects.requireNonNull(request).addProperty(utils.VHLE_HIST_SELECTED_PEN_CHALLANS, "" + spot_selected_penchallans);
             request.addProperty(utils.SPOT_REGNCD, "" + regn_Cd);
             request.addProperty(utils.SPOT_VHLE_NO, "" + vehicle_No);
             request.addProperty(utils.SPOT_REG_NO, "" + regn_No);
@@ -2376,93 +2208,15 @@ public class ServiceHelper {
                                                        String driverCity, String typeOfVeh, String occupation_Name, String occupation_Address,
                                                        String occupation_EmailId) {
 
-        Log.i("****selectedP*", "" + selectedPendingChallans);
-        Log.i("****regnCd***", "" + regnCd);
-        Log.i("****vehicleNo***", "" + vehicleNo);
-        Log.i("****regnNo***", "" + regnNo);
-        Log.i("****gtwyCd***", "" + gtwyCd);
-        Log.i("****dOfPay***", "" + dOfPay);
-        Log.i("****pmtTime***", "" + pmtTime);
-        Log.i("***unitCode****", "" + unitCode);
-        Log.i("**unitName*****", "" + unitName);
-        Log.i("***psCode****", "" + psCode);
-        Log.i("****psName***", "" + psName);
-        Log.i("****pymnt_time***", "" + pmtTime);
-        Log.i("**unit_cd*****", "" + unitCode);
-        Log.i("****unit_name***", "" + unitName);
-        Log.i("***ps_code****", "" + psCode);
-        Log.i("****ps_name***", "" + psName);
-        Log.i("****booked_cd***", "" + bookedPsCd);
-        Log.i("**booked_name*****", "" + bookedPsName);
-        Log.i("**point_cd*****", "" + pointCode);
-        Log.i("****point_name***", "" + pointName);
-        Log.i("**operator_cd*****", "" + operaterCd);
-        Log.i("***operator_name****", "" + operaterName);
-        Log.i("****pid_cd***", "" + pidCd);
-        Log.i("****pid_name***", "" + pidName);
-        Log.i("*cadre_cd******", "" + cadreCD);
-        Log.i("*****cdre**", "" + cadre);
-        Log.i("***total_amnt****", "" + totalAmount);
-        Log.i("****detained_items***", "" + detained);
-        Log.i("****simid***", "" + simId);
-        Log.i("****imei_no***", "" + imeiNo);
-        Log.i("*****mac_id**", "" + macId);
-        Log.i("*****lat_val**", "" + latitude);
-        Log.i("***long_val****", "" + longitude);
-        Log.i("****gps_date***", "" + gpsDt);
-        Log.i("*****gps_time**", "" + gpsTime);
-        Log.i("*onlinemode******", "" + onlineMode);
-        Log.i("***module_code****", "" + moduleCd);
-        Log.i("***released_items****", "" + releasedItem);
-        Log.i("***challan_num****", "" + challanNo);
-        Log.i("****service_code***", "" + serviceCode);
-        Log.i("***ownr_lic_no****", "" + ownerLicNo);
-        Log.i("**drvr_lic_no*****", "" + drvierLicNo);
-        Log.i("****pwd***", "" + password);
-        Log.i("***image_data****", "" + imageEvidence);
-        Log.i("***challan_type****", "" + challanType);
-        Log.i("*****challan_code**", "" + challanCd);
-        Log.i("*****location**", "" + location);
-        Log.i("****remarks***", "" + remarks);
-        Log.i("******pan_num*", "" + pancardNo);
-        Log.i("****aadhar_num***", "" + aadharNo);
-        Log.i("**voter_id*****", "" + voterId);
-        Log.i("*****pasprt**", "" + passport);
-        Log.i("***mailid****", "" + email);
-        Log.i("**drvr_cntct_num*****", "" + driverContactNo);
-        Log.i("*****is_spot**", "" + isItSpotPmt);
-        Log.i("*****ofnce_date**", "" + offenceDt);
-        Log.i("*****ofence_time**", "" + offenceTime);
-        Log.i("****lic_status***", "" + licStatus);
-        Log.i("*****whlr_cd**", "" + wheelerCd);
-        Log.i("****veh_cat***", "" + vehCategory);
-        Log.i("****vhle_main_cat***", "" + obMkrCD);
-        Log.i("****vhle_sub_cat***", "" + vehicleMainType);
-        Log.i("****vilatns***", "" + violations);
-        Log.i("****pnding_challans***", "" + pendingChallans);
-        Log.i("****extra_psngrs***", "" + noOfExtraPassengers);
-        Log.i("****dname***", "" + driverName);
-        Log.i("****dfname***", "" + driverFatherName);
-        Log.i("****daddress***", "" + driverAddress);
-        Log.i("****dcity***", "" + driverCity);
-        Log.i("is_govt_police   ", "" + SpotChallan.is_govt_police);
-        Log.i("****mobileS**", "PARAMETERS PASSED ENDED");
-
         Utils utils = new Utils();
         try {
-            Log.i("SERVICEHELPER ST", "" + Dashboard.check_vhleHistory_or_Spot);
             SoapObject request = null;
             if (Dashboard.check_vhleHistory_or_Spot.equals("spot")) {
                 request = new SoapObject(NAMESPACE, "" + SPOT_CHALLAN_PAYMENT_NEW_1_5_2);
                 request.addProperty(utils.SPOT_VEHICLE_TYPE, "" + typeOfVeh);
             }
-            /*
-             * } else if (Dashboard.check_vhleHistory_or_Spot.equals("towing"))
-             * { request = new SoapObject(NAMESPACE, ""+
-             * TOWING_CPACT_METHOD_NAME); }
-             */
 
-            request.addProperty(utils.VHLE_HIST_SELECTED_PEN_CHALLANS, "" + selectedPendingChallans);
+            Objects.requireNonNull(request).addProperty(utils.VHLE_HIST_SELECTED_PEN_CHALLANS, "" + selectedPendingChallans);
             request.addProperty(utils.SPOT_REGNCD, "" + regnCd);
             request.addProperty(utils.SPOT_VHLE_NO, "" + vehicleNo);
             request.addProperty(utils.SPOT_REG_NO, "" + regnNo);
@@ -2642,50 +2396,6 @@ public class ServiceHelper {
                                       String pan_num, String aadhar_num, String voter_id, String pasprt, String mailid, String drvr_cntct_num,
                                       String is_spot, String cadre_cd, String cdre) {
 
-        Log.i("****sele*", "" + vhle_hist_penchallans != null && vhle_hist_penchallans.length() > 0
-                ? vhle_hist_penchallans : "NA");
-        Log.i("****pen_challans***", "" + pen_challans != null && pen_challans.length() > 0 ? pen_challans : "NA");
-        Log.i("**regn_No*****", "" + regn_No != null && regn_No.length() > 0 ? regn_No : "NA");
-        Log.i("***gtwy_cd****", "" + gtwy_cd != null && gtwy_cd.length() > 0 ? gtwy_cd : "NA");
-        Log.i("**unit_cd*****", "" + unit_cd != null && unit_cd.length() > 0 ? unit_cd : "NA");
-        Log.i("***ps_code****", "" + ps_code != null && ps_code.length() > 0 ? ps_code : "NA");
-        Log.i("****ps_name***", "" + ps_name != null && ps_name.length() > 0 ? ps_name : "NA");
-        Log.i("****pid_cd***", "" + pid_cd != null && pid_cd.length() > 0 ? pid_cd : "NA");
-        Log.i("****pid_name***", "" + pid_name != null && pid_name.length() > 0 ? pid_name : "NA");
-        Log.i("***total_amnt****", "" + total_amnt != null && total_amnt.length() > 0 ? total_amnt : "NA");
-        Log.i("****detained_items***",
-                "" + detained_items != null && detained_items.length() > 0 ? detained_items : "");
-        Log.i("****dateof_pymnt***", "" + dateof_pymnt != null && dateof_pymnt.length() > 0 ? dateof_pymnt : "NA");
-        Log.i("****pymnt_time***", "" + pymnt_time != null && pymnt_time.length() > 0 ? pymnt_time : "NA");
-        Log.i("****simid***", "" + simid);
-        Log.i("****imei_no***", "" + imei_no);
-        Log.i("*****lat_val**", "" + lat_val);
-        Log.i("***long_val****", "" + long_val);
-        Log.i("***point_cd****", "" + point_cd != null && point_cd.length() > 0 ? point_cd : "NA");
-        Log.i("***point_name****", "" + point_name != null && point_name.length() > 0 ? point_name : "NA");
-        Log.i("*onlinemode******", "" + onlinemode != null && onlinemode.length() > 0 ? onlinemode : "NA");
-        Log.i("***module_code****", "" + module_code != null && module_code.length() > 0 ? module_code : "NA");
-        Log.i("***re*",
-                "" + released_detValues != null && released_detValues.length() > 0 ? released_detValues : "NA");
-        Log.i("***challan_num****", "" + challan_num != null && challan_num.length() > 0 ? challan_num : "NA");
-        Log.i("****service_code***", "" + service_code != null && service_code.length() > 0 ? service_code : "NA");
-        Log.i("***ownr_lic_no****", "" + ownr_lic_no != null && ownr_lic_no.length() > 0 ? ownr_lic_no : "NA");
-        Log.i("**drvr_lic_no*****", "" + drvr_lic_no != null && drvr_lic_no.length() > 0 ? drvr_lic_no : "NA");
-        Log.i("****pwd***", "" + pwd != null && pwd.length() > 0 ? pwd : "NA");
-        Log.i("***image_data****", "" + image_data != null && image_data.length() > 0 ? image_data : "NA");
-        Log.i("***challan_type****", "" + challan_type != null && challan_type.length() > 0 ? challan_type : "NA");
-        Log.i("*****challan_code**", "" + challan_code != null && challan_code.length() > 0 ? challan_code : "NA");
-        Log.i("*****location**", "" + location != null && location.length() > 0 ? location : "NA");
-        Log.i("****remarks***", "" + remarks != null && remarks.length() > 0 ? remarks : "NA");
-        Log.i("******pan_num*", "" + pan_num != null && pan_num.length() > 0 ? pan_num : "NA");
-        Log.i("****aadhar_num***", "" + aadhar_num != null && aadhar_num.length() > 0 ? aadhar_num : "NA");
-        Log.i("**voter_id*****", "" + voter_id != null && voter_id.length() > 0 ? voter_id : "NA");
-        Log.i("*****pasprt**", "" + pasprt != null && pasprt.length() > 0 ? pasprt : "NA");
-        Log.i("***mailid****", "" + mailid != null && mailid.length() > 0 ? mailid : "NA");
-        Log.i("**drvr_cntct_num*****", "" + drvr_cntct_num);
-        Log.i("*****is_spot**", "" + is_spot);
-        Log.i("*cadre_cd******", "" + cadre_cd);
-
         try {
             SoapObject request = new SoapObject(NAMESPACE, "mobilePendingChallanPayment");
             request.addProperty("selectedPendingChallans",
@@ -2740,10 +2450,6 @@ public class ServiceHelper {
             SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
             envelope.dotNet = true;
             envelope.setOutputSoapObject(request);
-            Log.i("request", "" + request);
-            Log.i("URL", "" + MainActivity.URL);
-            // HttpTransportSE androidHttpTransport = new
-            // HttpTransportSE("http://192.168.11.23:8080/eTicketMobileCyb/services/MobileEticketServiceImpl?wsdl");
             HttpTransportSE androidHttpTransport = new HttpTransportSE(MainActivity.URL);
             androidHttpTransport.call(SOAP_ACTION, envelope);
 
