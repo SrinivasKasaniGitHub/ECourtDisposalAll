@@ -63,7 +63,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-
 public class Dashboard extends Activity implements View.OnClickListener {
 
     String server = "192.168.11.9";
@@ -81,7 +80,7 @@ public class Dashboard extends Activity implements View.OnClickListener {
     TextView cur_val;
 
     TextView tv_login_username, echallan, echallan_reports;
-    AppCompatImageView tv_pending_booked_dashboard_xml;
+    AppCompatImageView tv_pending_booked_dashboard_xml, img_CounUpdate;
     AppCompatImageView tv_drunk_and_drive;// drunk & drive
     TextView tv_spot_challan;
     TextView tv_vehicle_history;
@@ -219,8 +218,7 @@ public class Dashboard extends Activity implements View.OnClickListener {
     String unitCode;
     String pidCode;
 
-	/* DATE DETAILS END */
-
+    /* DATE DETAILS END */
     @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -228,10 +226,10 @@ public class Dashboard extends Activity implements View.OnClickListener {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dashboard);
         LoadUIComponents();
-        imageView1 = (ImageView)findViewById(R.id.img_logo);
+        imageView1 = (ImageView) findViewById(R.id.img_logo);
         pidCode = MainActivity.arr_logindetails[0];
         unitCode = pidCode.substring(0, 2);
-        switch (unitCode) {
+        /*switch (unitCode) {
             case "22":
                 imageView1.setImageDrawable(getResources().getDrawable(R.drawable.cyb_logo_200x200));
                 break;
@@ -244,7 +242,7 @@ public class Dashboard extends Activity implements View.OnClickListener {
             default:
                 imageView1.setImageDrawable(getResources().getDrawable(R.drawable.hyd_logo_200x200));
                 break;
-        }
+        }*/
 
         compny_Name = (TextView) findViewById(R.id.CompanyName);
         Animation marquee = AnimationUtils.loadAnimation(this, R.anim.marquee);
@@ -439,7 +437,7 @@ public class Dashboard extends Activity implements View.OnClickListener {
                                 float per = ((float) downloadedSize / totalSize) * 100;
 
 
-                                cur_val.setText((int) per / 170000+ "%");
+                                cur_val.setText((int) per / 170000 + "%");
                             }
                         });
                     }
@@ -539,12 +537,13 @@ public class Dashboard extends Activity implements View.OnClickListener {
     ImageView imageView1;
     TextView tv_officer_name, tv_officer_cadre_name, tv_officer_ps, tv_officer_pid;
 
+    @SuppressLint("SetTextI18n")
     private void LoadUIComponents() {
         tv_officer_name = (TextView) findViewById(R.id.officer_Name);
         tv_officer_name.setText(MainActivity.pidName + "(" + MainActivity.cadreName + ")");
         //tv_officer_cadre_name = findViewById(R.id.officer_cadre);
         //tv_officer_cadre_name.setText(MainActivity.cadreName);
-        tv_officer_ps = (TextView)findViewById(R.id.officer_PS);
+        tv_officer_ps = (TextView) findViewById(R.id.officer_PS);
         tv_officer_ps.setText(MainActivity.psName);
         //tv_officer_pid = findViewById(R.id.tv_officer_pid);
         //tv_officer_pid.setText(MainActivity.user_id);
@@ -560,6 +559,7 @@ public class Dashboard extends Activity implements View.OnClickListener {
         //tv_settings = (TextView) findViewById(R.id.tv_settings_dashboard_xml);
         tv_sync = (AppCompatImageView) findViewById(R.id.tv_sync_dashboard_xml);
         tv_pending_booked_dashboard_xml = (AppCompatImageView) findViewById(R.id.tv_pending_booked_dashboard_xml);
+        img_CounUpdate = findViewById(R.id.img_CounUpdate);
         //tv_about_version = (ImageView) findViewById(R.id.tv_about_version);
 
         aadhaar = (ImageView) findViewById(R.id.aadhaar);
@@ -572,6 +572,7 @@ public class Dashboard extends Activity implements View.OnClickListener {
         tv_drunk_and_drive.setOnClickListener(this);
         //tv_settings.setOnClickListener(this);
         tv_sync.setOnClickListener(this);
+        img_CounUpdate.setOnClickListener(this);
         //tv_duplicate_print.setOnClickListener(this);
         //tv_spot_challan.setOnClickListener(this);
         tv_pending_booked_dashboard_xml.setOnClickListener(this);
@@ -641,6 +642,48 @@ public class Dashboard extends Activity implements View.OnClickListener {
                 db.close();
                 break;
 
+            case R.id.img_CounUpdate:
+                check_vhleHistory_or_Spot = "drunkdrive";
+                getPreferenceValues();
+                preferences = getSharedPreferences("preferences", MODE_PRIVATE);
+                editor = preferences.edit();
+                address_spot = preferences.getString("btaddress", "btaddr");
+
+                try {
+                    db.open();
+                    cursor_psnames = DBHelper.db.rawQuery("select * from " + db.psName_table, null);
+                    cursor_courtnames = DBHelper.db.rawQuery("select * from " + db.courtName_table, null);
+                    cursor_court_disnames = DBHelper.db.rawQuery("select * from " + db.court_disName_table, null);
+                    c_whlr_details = DBHelper.db.rawQuery("select * from " + DBHelper.wheelercode_table, null);
+
+                    if ((cursor_psnames.getCount() == 0) && (cursor_courtnames.getCount() == 0) && (cursor_court_disnames.getCount() == 0) && (c_whlr_details.getCount() == 0)) {
+                        showToast("Please download master's !");
+                    }
+
+                   /* else if ((psname_settings.equals("psname")) && (pointnameBycode_settings.equals("pointname"))) {
+                        showToast("Configure Settings!");
+                    }*/
+//                    else if (address_spot.trim() != null && address_spot.trim().length() < 15) {
+//                        showToast("Configure BlueTooth Settings!");
+//                    }
+                    else {
+                        if (isOnline()) {
+                            startActivity(new Intent(Dashboard.this, CounsellingUpdateActivity.class));
+                        } else {
+                            showToast("" + netwrk_info_txt);
+                        }
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    c_whlr_details.close();
+                    cursor_psnames.close();
+                    db.close();
+                }
+                c_whlr_details.close();
+                cursor_psnames.close();
+                db.close();
+                break;
+
             case R.id.tv_pending_booked_dashboard_xml:
                 check_vhleHistory_or_Spot = "drunkdrive";
                 getPreferenceValues();
@@ -654,7 +697,7 @@ public class Dashboard extends Activity implements View.OnClickListener {
                     cursor_courtnames = DBHelper.db.rawQuery("select * from " + db.courtName_table, null);
                     cursor_court_disnames = DBHelper.db.rawQuery("select * from " + db.court_disName_table, null);
 
-				/* TO GET WHEELER LENGTH */
+                    /* TO GET WHEELER LENGTH */
                     c_whlr_details = DBHelper.db.rawQuery("select * from " + DBHelper.wheelercode_table, null);
 
                     if ((cursor_psnames.getCount() == 0) && (cursor_courtnames.getCount() == 0) && (cursor_court_disnames.getCount() == 0) && (c_whlr_details.getCount() == 0)) {
@@ -806,7 +849,7 @@ public class Dashboard extends Activity implements View.OnClickListener {
                     db.open();
                     cursor_psnames = DBHelper.db.rawQuery("select * from " + db.psName_table, null);
 
-				/* TO GET WHEELER LENGTH */
+                    /* TO GET WHEELER LENGTH */
                     c_whlr_details = DBHelper.db.rawQuery("select * from " + DBHelper.wheelercode_table, null);
                     // DOWNLOAD MASTERS ALERT
                     if ((cursor_psnames.getCount() == 0) && (c_whlr_details.getCount() == 0)) {
@@ -961,8 +1004,8 @@ public class Dashboard extends Activity implements View.OnClickListener {
             case R.id.tv_about_version:
             *//*
              * check_vhleHistory_or_Spot = "specialdrive"; startActivity(new
-			 * Intent(Dashboard.this, SpotChallan.class));
-			 *//*
+             * Intent(Dashboard.this, SpotChallan.class));
+             *//*
                 new Async_About_Version().execute();
 
                 break;*/
@@ -1278,9 +1321,9 @@ public class Dashboard extends Activity implements View.OnClickListener {
         return super.onCreateDialog(id);
     }
 
-	/*
+    /*
      * FOR GETTING WHEELER'S DETAILS 2-3-4 WHEELERS
-	 */
+     */
 
     // getViolationPointSystemMasterData()
 
@@ -1470,7 +1513,6 @@ public class Dashboard extends Activity implements View.OnClickListener {
         }
     }
 
-
     public class Async_getCourtDetails extends AsyncTask<Void, Void, String> {
         @Override
         protected String doInBackground(Void... params) {
@@ -1545,7 +1587,6 @@ public class Dashboard extends Activity implements View.OnClickListener {
         }
     }
 
-
     public class Async_getCourtDisDetails extends AsyncTask<Void, Void, String> {
         @Override
         protected String doInBackground(Void... params) {
@@ -1613,7 +1654,6 @@ public class Dashboard extends Activity implements View.OnClickListener {
         }
     }
 
-
     @SuppressWarnings("unused")
     private class AsyncTask_Occupation extends AsyncTask<Void, Void, String> {
 
@@ -1679,7 +1719,7 @@ public class Dashboard extends Activity implements View.OnClickListener {
     public void getWheelerCodeFromDB() {
         // TODO Auto-generated method stub
 
-		/* TO GET WHEELER CODE DETAILS */
+        /* TO GET WHEELER CODE DETAILS */
         try {
             db.open();
             // WHEELER CODE
@@ -1704,7 +1744,7 @@ public class Dashboard extends Activity implements View.OnClickListener {
         }
         c_whlr.close();
         db.close();
-        }
+    }
 
     /* TO GET QUALIFICATION DETAILS */
     public class Async_getViolationDetails extends AsyncTask<Void, Void, String> {
@@ -1878,11 +1918,11 @@ public class Dashboard extends Activity implements View.OnClickListener {
                         db.open();
                         DBHelper helper = new DBHelper(getApplicationContext());
 
-						/*
+                        /*
                          * ContentValues values = new ContentValues();
-						 * values.put("PINPAD_ID", "");
-						 * values.put("PINPAD_NAME", "");
-						 */
+                         * values.put("PINPAD_ID", "");
+                         * values.put("PINPAD_NAME", "");
+                         */
 
                         db2 = openOrCreateDatabase(DBHelper.DATABASE_NAME, MODE_PRIVATE, null);
                         db2.execSQL(DBHelper.termailDetailsCreation);
@@ -2116,7 +2156,7 @@ public class Dashboard extends Activity implements View.OnClickListener {
 
     }
 
-	/* DATE DETAILS END */
+    /* DATE DETAILS END */
     @SuppressWarnings("deprecation")
     @SuppressLint("WorldReadableFiles")
     @Override
@@ -2137,7 +2177,7 @@ public class Dashboard extends Activity implements View.OnClickListener {
         View toastView = toast.getView();
         ViewGroup group = (ViewGroup) toast.getView();
         TextView messageTextView = (TextView) group.getChildAt(0);
-        messageTextView.setPadding(20,0,20, 0);
+        messageTextView.setPadding(20, 0, 20, 0);
         messageTextView.setTextSize(getResources().getDimension(R.dimen._10sdp));
 
         toastView.setBackgroundResource(R.drawable.toast_background);

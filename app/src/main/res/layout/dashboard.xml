@@ -66,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal|center_vertical"
 
-                android:text="Court/Councelling\nSMS Intimation" />
+                android:text="Court/Counselling\nSMS Intimation" />
         </LinearLayout>
 
         <LinearLayout
@@ -104,6 +104,30 @@
         android:layout_marginEnd="@dimen/_2sdp"
         android:weightSum="2">
 
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_marginStart="@dimen/_3sdp"
+            android:visibility="visible">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/img_CounUpdate"
+                android:layout_width="@dimen/_55sdp"
+                android:layout_height="@dimen/_55sdp"
+                android:src="@drawable/spot_challan" />
+
+            <TextView
+                style="@style/navi_text_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="Counselling \n Upadation" />
+        </LinearLayout>
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -124,28 +148,6 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal|center_vertical"
                 android:text="@string/sync" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:layout_marginStart="@dimen/_3sdp"
-            android:visibility="invisible">
-
-            <android.support.v7.widget.AppCompatImageView
-                android:layout_width="@dimen/_55sdp"
-                android:layout_height="@dimen/_55sdp"
-                android:src="@drawable/spot_challan" />
-
-            <TextView
-                style="@style/navi_text_style"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal|center_vertical"
-                android:text="Court-Details \n Upadation" />
         </LinearLayout>
 
     </LinearLayout>

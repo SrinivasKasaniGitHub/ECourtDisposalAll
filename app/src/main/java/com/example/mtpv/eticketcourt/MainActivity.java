@@ -50,8 +50,6 @@ import com.example.mtpv.eticketcourt.service.ServiceHelper;
 import com.example.mtpv.eticketcourt.service.PidSecEncrypt;
 import com.wang.avi.AVLoadingIndicatorView;
 
-import examples.Main;
-
 public class MainActivity extends Activity implements LocationListener {
 
     ImageView ip_Settings;
@@ -93,6 +91,7 @@ public class MainActivity extends Activity implements LocationListener {
     public static String appVersion;
     private static final int REQUEST_PERMISSIONS = 20;
     public SparseIntArray mErrorString;
+
     private static final String[] requiredPermissions = new String[]{
             Manifest.permission.READ_PHONE_STATE,
             Manifest.permission.ACCESS_FINE_LOCATION,
@@ -116,9 +115,9 @@ public class MainActivity extends Activity implements LocationListener {
         btn_login = (Button) findViewById(R.id.btnlog);
         et_pid = (EditText) findViewById(R.id.edtTxt_pid);
         et_pid_pwd = (EditText) findViewById(R.id.edtTxt_pwd);
-       /* et_wpid.setText("23001004");
-        et_pid_pd.setText("Ranga2018");*/
-        progIndicator = (AVLoadingIndicatorView) findViewById(R.id.progIndicator);
+        et_pid.setText("2300001044");
+        et_pid_pwd.setText("Sri@1044");
+        progIndicator = findViewById(R.id.progIndicator);
         Animation marquee = AnimationUtils.loadAnimation(this, R.anim.marquee);
         compny_Name.startAnimation(marquee);
         mErrorString = new SparseIntArray();
@@ -130,13 +129,11 @@ public class MainActivity extends Activity implements LocationListener {
                 } else {
                     showToast("Please check your Internet Connection!");
                 }
-
             }
         });
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
-        ip_Settings.setOnClickListener(
-                new View.OnClickListener() {
+        ip_Settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent_ipSettings = new Intent(MainActivity.this, IPSettings.class);
@@ -155,7 +152,7 @@ public class MainActivity extends Activity implements LocationListener {
                             Manifest.permission.INTERNET,
                             Manifest.permission.WRITE_EXTERNAL_STORAGE,
                             Manifest.permission.READ_EXTERNAL_STORAGE,
-                            Manifest.permission.INSTALL_SHORTCUT,Manifest.permission.CAMERA}, R.string.permissions
+                            Manifest.permission.INSTALL_SHORTCUT, Manifest.permission.CAMERA}, R.string.permissions
                     , REQUEST_PERMISSIONS);
         }
         appVersion = getResources().getString(R.string.app_version);
@@ -326,7 +323,7 @@ public class MainActivity extends Activity implements LocationListener {
 
             String[] version_split = appVersion.split("\\-");
             ServiceHelper.authenticateLogin("" + user_id, "" + e_user_tmp, "" + IMEI, "" + sim_No, "" + latitude, "" + longitude,
-                    "" + version_split[1],"eCourt");
+                    "" + version_split[1], "eCourt");
             return null;
         }
 
@@ -493,8 +490,13 @@ public class MainActivity extends Activity implements LocationListener {
             //showToast("Please check the GPS Location !");
         }
 
+        @SuppressLint("HardwareIds")
+        String IMEI = Settings.Secure.getString(getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+
         TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         IMEI = getDeviceID(telephonyManager);
+
         if (telephonyManager.getSimState() != TelephonyManager.SIM_STATE_ABSENT) {
             sim_No = "" + telephonyManager.getSimSerialNumber();
             String phone_Number = "" + telephonyManager.getNetworkOperator();
@@ -612,7 +614,7 @@ public class MainActivity extends Activity implements LocationListener {
         View toastView = toast.getView();
         ViewGroup group = (ViewGroup) toast.getView();
         TextView messageTextView = (TextView) group.getChildAt(0);
-        messageTextView.setPadding(20,0,20, 0);
+        messageTextView.setPadding(20, 0, 20, 0);
         messageTextView.setTextSize(getResources().getDimension(R.dimen._8sdp));
 
         toastView.setBackgroundResource(R.drawable.toast_background);

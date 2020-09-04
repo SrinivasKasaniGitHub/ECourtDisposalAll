@@ -41,23 +41,23 @@ import java.util.Date;
 import java.util.Objects;
 
 public class CounsellingUpdateActivity extends Activity {
+
     EditText edt_Regno;
     AppCompatTextView txt_CRegNo, txt_CChalnNo, txt_BkdOfficerName, txt_BkdPSName, txt_BkdPntName, txt_COfnceDate,
             txt_DrCName, txt_DrCFName, txt_CAge, txt_DrCConNo;
     AppCompatImageView img_CDrImage, img_CDrFrsImage;
     Button btn_OffenceDate, btngetdetails;
     LinearLayout Lyt_details;
-
     Calendar cal;
     int present_year;
     int present_month;
     int present_day;
     final int PRESENT_DATE_PICKER = 1, PROGRESS_DIALOG = 2;
     String str_OffenceDt;
-
     SimpleDateFormat format;
     Date date_From;
-
+    String vEHICLE_NUMBER, chall_No, chall_Type, violations, offence_Date, driver_Adhar, driver_Mobile, driver_LCNCE, driver_DL_DOB,
+            unit_CODE, pid_CODE, ps_CODE;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -113,7 +113,6 @@ public class CounsellingUpdateActivity extends Activity {
         Lyt_details = findViewById(R.id.Lyt_details);
     }
 
-
     @SuppressWarnings("deprecation")
     @Override
     protected Dialog onCreateDialog(int id) {
@@ -141,9 +140,7 @@ public class CounsellingUpdateActivity extends Activity {
     /* FOR OFFENSE DATE */
     DatePickerDialog.OnDateSetListener md1 = new DatePickerDialog.OnDateSetListener() {
 
-        @SuppressWarnings("deprecation")
-        @SuppressLint({"SimpleDateFormat", "DefaultLocale", "SetTextI18n"})
-
+        @SuppressLint({"SimpleDateFormat", "SetTextI18n"})
         @Override
         public void onDateSet(DatePicker view, int selectedYear, int monthOfYear, int dayOfMonth) {
             present_year = selectedYear;
@@ -152,7 +149,6 @@ public class CounsellingUpdateActivity extends Activity {
             format = new SimpleDateFormat("dd-MMM-yyyy");
             str_OffenceDt = format.format(new Date(present_year - 1900, (present_month), present_day));
             btn_OffenceDate.setText("" + str_OffenceDt.toUpperCase());
-
         }
     };
 
@@ -163,14 +159,13 @@ public class CounsellingUpdateActivity extends Activity {
         present_day = cal.get(Calendar.DAY_OF_MONTH);
     }
 
-
     @SuppressLint("StaticFieldLeak")
     private class Async_getCounselling_details extends AsyncTask<Void, Void, String> {
         @SuppressLint("DefaultLocale")
         @SuppressWarnings("unused")
         @Override
         protected String doInBackground(Void... params) {
-            ServiceHelper.getCourtClosingTicketInfo("" + edt_Regno.getText().toString().trim().toUpperCase(), "" + str_OffenceDt);
+            ServiceHelper.getCourtClosingTicketInfo("" + edt_Regno.getText().toString().trim().toUpperCase(), "" + str_OffenceDt, "0");
             return null;
         }
 
@@ -183,6 +178,7 @@ public class CounsellingUpdateActivity extends Activity {
             Lyt_details.setVisibility(View.GONE);
         }
 
+        @SuppressLint("SetTextI18n")
         @SuppressWarnings("deprecation")
         @Override
         protected void onPostExecute(String result) {
@@ -193,7 +189,7 @@ public class CounsellingUpdateActivity extends Activity {
             if (null != ServiceHelper.Opdata_Chalana && !ServiceHelper.Opdata_Chalana.equals("NA")) {
 
                 try {
-                    Log.d("DDCounData", "" + ServiceHelper.Opdata_Chalana);
+                    Log.d("CounData", "" + ServiceHelper.Opdata_Chalana);
                     JSONObject jsonObject = new JSONObject(ServiceHelper.Opdata_Chalana);
                     JSONArray jsonArray = jsonObject.getJSONArray("Challan Details");
                     for (int i = 0; i < jsonArray.length(); i++) {
@@ -204,7 +200,7 @@ public class CounsellingUpdateActivity extends Activity {
 
                             Lyt_details.setVisibility(View.VISIBLE);
 
-                            /*vEHICLE_NUMBER = jsonObject1.getString("VEHICLE NUMBER");
+                            vEHICLE_NUMBER = jsonObject1.getString("VEHICLE NUMBER");
                             chall_No = jsonObject1.getString("CHALLAN NUMBER");
                             chall_Type = jsonObject1.getString("CHALLAN_TYPE");
                             violations = jsonObject1.getString("VIOLATIONS");
@@ -217,15 +213,16 @@ public class CounsellingUpdateActivity extends Activity {
                             pid_CODE = jsonObject1.getString("PID_CODE");
                             ps_CODE = jsonObject1.getString("PS_CODE");
                             String offence_codes = jsonObject1.getString("OFFENCE_CODES");
-                            minor_Dvng_Flag = offence_codes.contains("30");
-                            if (minor_Dvng_Flag) {
-                                owner_Lyt_Pay_details.setVisibility(View.VISIBLE);
-                            } else {
-                                owner_Lyt_Pay_details.setVisibility(View.GONE);
-                            }
-                            Reg_No.setText(vEHICLE_NUMBER);
-                            Challan_No.setText(chall_No);
-                            Offender_Date.setText(offence_Date);*/
+                            txt_CRegNo.setText(vEHICLE_NUMBER);
+                            txt_CChalnNo.setText(chall_No);
+                            txt_COfnceDate.setText(offence_Date);
+                            txt_BkdOfficerName.setText(""+jsonObject1.getString("OFFICER NAME"));
+                            txt_BkdPSName.setText(""+jsonObject1.getString("TrPS JURIS"));
+                            txt_BkdPntName.setText(""+jsonObject1.getString("LOCATION NAME"));
+                            txt_DrCName.setText(""+jsonObject1.getString("DRIVER NAME"));
+                            txt_DrCFName.setText(""+jsonObject1.getString("DRIVER FNAME"));
+                            txt_DrCConNo.setText(""+jsonObject1.getString("DRIVER MOBILE"));
+
 
                         }
                     }
@@ -241,7 +238,6 @@ public class CounsellingUpdateActivity extends Activity {
             }
         }
     }
-
 
     private void showToast(String msg) {
         Toast toast = Toast.makeText(getApplicationContext(), "" + msg, Toast.LENGTH_SHORT);
@@ -260,4 +256,5 @@ public class CounsellingUpdateActivity extends Activity {
         NetworkInfo nwInfo = conManager.getActiveNetworkInfo();
         return nwInfo != null;
     }
+
 }

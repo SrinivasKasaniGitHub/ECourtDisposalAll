@@ -95,7 +95,6 @@ import java.util.Objects;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 public class DDCloseActiviy extends Activity {
-    //9533363306
 
     TextView compny_Name;
     AppCompatImageView imgView_CourtOrderCopy, imgView_DLCopy, minor_img_CourtCopy, owner_img_CourtCopy;
@@ -1430,7 +1429,7 @@ public class DDCloseActiviy extends Activity {
         @SuppressWarnings("unused")
         @Override
         protected String doInBackground(Void... params) {
-            ServiceHelper.getCourtClosingTicketInfo("" + et_dp_regno.getText().toString().trim().toUpperCase(), "" + present_date_toSend);
+            ServiceHelper.getCourtClosingTicketInfo("" + et_dp_regno.getText().toString().trim().toUpperCase(), "" + present_date_toSend,"1");
             return null;
         }
 

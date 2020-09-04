@@ -1057,14 +1057,14 @@ public class ServiceHelper {
         }
     }
 
-    public static void getCourtClosingTicketInfo(String eticketRegNo, String offenceDT) {
+    public static void getCourtClosingTicketInfo(String eticketRegNo, String offenceDT,String counCourt) {
 
         Utils utils = new Utils();
         try {
             SoapObject request = new SoapObject(NAMESPACE, "" + GET_DDCLOSING_DETAILS);
             request.addProperty("" + utils.ETICKET_REG_NO, "" + eticketRegNo);
             request.addProperty("" + utils.OFFENCE_DT, "" + offenceDT);
-            request.addProperty("counCourt","1");  // Counselling=0 , CourtDisposal=1
+            request.addProperty("counCourt",""+counCourt);  // Counselling=0 , CourtDisposal=1
             SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
             envelope.dotNet = true;
             envelope.setOutputSoapObject(request);
@@ -1078,22 +1078,15 @@ public class ServiceHelper {
                 } else {
                     Opdata_Chalana = "NA";
                 }
-                //Opdata_Chalana = new com.example.mtpv.eticketcourt.service.PidSecEncrypt().decrypt(result.toString().trim());
-
             } catch (Exception e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
                 Opdata_Chalana = "NA";
             }
 
-        } catch (SoapFault fault) {
+        } catch (Exception fault) {
             Opdata_Chalana = "NA";
 
-        } catch (Exception e) {
-            // TODO: handle exception
-            Opdata_Chalana = "NA";
         }
-
 
     }
 

@@ -408,7 +408,7 @@
                         android:layout_height="wrap_content"
                         android:background="#CED2DE"
                         android:gravity="center_horizontal"
-                        android:padding="@dimen/_10sdp"
+                        android:padding="@dimen/_5sdp"
                         android:text="Challan Info"
                         android:textSize="@dimen/_14sdp" />
 
@@ -658,7 +658,7 @@
                         android:layout_height="wrap_content"
                         android:background="#CED2DE"
                         android:gravity="center_horizontal"
-                        android:padding="@dimen/_10sdp"
+                        android:padding="@dimen/_5sdp"
                         android:text="Driver Info"
                         android:textSize="@dimen/_14sdp" />
 
@@ -859,7 +859,7 @@
                         android:layout_height="wrap_content"
                         android:background="#CED2DE"
                         android:gravity="center_horizontal"
-                        android:padding="@dimen/_10sdp"
+                        android:padding="@dimen/_5sdp"
                         android:text="Attendant Info"
                         android:textSize="@dimen/_14sdp" />
 
