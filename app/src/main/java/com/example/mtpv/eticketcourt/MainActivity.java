@@ -76,7 +76,6 @@ public class MainActivity extends Activity implements LocationListener {
     boolean canGetLocation = false;
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
     private static final long MIN_TIME_BW_UPDATES = 1000 * 60; // 1 minute
-
     SharedPreferences preference;
     SharedPreferences.Editor editor;
     String services_url = "";
@@ -115,8 +114,8 @@ public class MainActivity extends Activity implements LocationListener {
         btn_login = (Button) findViewById(R.id.btnlog);
         et_pid = (EditText) findViewById(R.id.edtTxt_pid);
         et_pid_pwd = (EditText) findViewById(R.id.edtTxt_pwd);
-        et_pid.setText("2300001044");
-        et_pid_pwd.setText("Sri@1044");
+       /* et_pid.setText("2300001044");
+        et_pid_pwd.setText("Sri@1044");*/
         progIndicator = findViewById(R.id.progIndicator);
         Animation marquee = AnimationUtils.loadAnimation(this, R.anim.marquee);
         compny_Name.startAnimation(marquee);
@@ -312,6 +311,40 @@ public class MainActivity extends Activity implements LocationListener {
         return nwInfo != null && nwInfo.isConnected();
     }
 
+    private void deviceId_Dlg() {
+        final AlertDialog alertDialog = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_LIGHT).create();
+        @SuppressLint("InflateParams")
+        View view = getLayoutInflater().inflate(R.layout.device_id, null);
+        final EditText edtTxt_DevceId = view.findViewById(R.id.edtTxt_DevceId);
+        Button btn_Copy = view.findViewById(R.id.btn_Copy);
+        try {
+            @SuppressLint("HardwareIds")
+            String IMEI = Settings.Secure.getString(getContentResolver(),
+                    Settings.Secure.ANDROID_ID);
+            Log.d("Device Model", "" + IMEI);
+
+            edtTxt_DevceId.setText(IMEI);
+        } catch (Exception e) {
+            e.printStackTrace();
+           // edtTxt_DevceId.setEnabled(false);
+            edtTxt_DevceId.setText("");
+        }
+        btn_Copy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clipData = ClipData.newPlainText("key", edtTxt_DevceId.getText().toString());
+                clipboardManager.setPrimaryClip(clipData);
+                Toast.makeText(getApplicationContext(), "DeviceId Copied", Toast.LENGTH_SHORT).show();*/
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.setView(view);
+        alertDialog.setCancelable(false);
+        alertDialog.show();
+    }
+
     public static String pidName, cadreName, psName;
 
     @SuppressLint("StaticFieldLeak")
@@ -346,7 +379,11 @@ public class MainActivity extends Activity implements LocationListener {
                 } else if (ServiceHelper.Opdata_Chalana.trim().equals("2")) {
                     showToast("Invalid Password");
                 } else if (ServiceHelper.Opdata_Chalana.trim().equals("3")) {
-                    showToast("Unauthorized Device");
+                    if (Build.VERSION.SDK_INT < 29) {
+                        showToast("Unauthorized Device");
+                    } else {
+                        deviceId_Dlg();
+                    }
                 } else if (ServiceHelper.Opdata_Chalana.trim().equals("4")) {
                     showToast("Error, Please Contact E Challan Team at 040-27852721");
                 } else if (ServiceHelper.Opdata_Chalana.trim().equals("5")) {
@@ -403,6 +440,7 @@ public class MainActivity extends Activity implements LocationListener {
 
     }
 
+    @SuppressLint("HardwareIds")
     public void getLocation() {
 
         try {
@@ -490,12 +528,18 @@ public class MainActivity extends Activity implements LocationListener {
             //showToast("Please check the GPS Location !");
         }
 
-        @SuppressLint("HardwareIds")
+ /*       @SuppressLint("HardwareIds")
         String IMEI = Settings.Secure.getString(getContentResolver(),
                 Settings.Secure.ANDROID_ID);
 
+        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);*/
         TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        IMEI = getDeviceID(telephonyManager);
+        if (Build.VERSION.SDK_INT < 29) {
+            IMEI = getDeviceID(telephonyManager);
+        } else {
+            IMEI = Settings.Secure.getString(getContentResolver(),
+                    Settings.Secure.ANDROID_ID);
+        }
 
         if (telephonyManager.getSimState() != TelephonyManager.SIM_STATE_ABSENT) {
             sim_No = "" + telephonyManager.getSimSerialNumber();

@@ -1057,14 +1057,14 @@ public class ServiceHelper {
         }
     }
 
-    public static void getCourtClosingTicketInfo(String eticketRegNo, String offenceDT,String counCourt) {
+    public static void getCourtClosingTicketInfo(String eticketRegNo, String offenceDT, String counCourt) {
 
         Utils utils = new Utils();
         try {
             SoapObject request = new SoapObject(NAMESPACE, "" + GET_DDCLOSING_DETAILS);
             request.addProperty("" + utils.ETICKET_REG_NO, "" + eticketRegNo);
             request.addProperty("" + utils.OFFENCE_DT, "" + offenceDT);
-            request.addProperty("counCourt",""+counCourt);  // Counselling=0 , CourtDisposal=1
+            // request.addProperty("counCourt",""+counCourt);  // Counselling=0 , CourtDisposal=1
             SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
             envelope.dotNet = true;
             envelope.setOutputSoapObject(request);

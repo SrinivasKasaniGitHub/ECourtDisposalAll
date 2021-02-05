@@ -578,6 +578,22 @@ public class DDCloseActiviy extends Activity {
                     rdoBtnNONE.setKeyListener(null);
                     clearData();
 
+                } else if ("19".equals(selectedCourtDisCode)) {  // DL SUSPENSION AND IMPRISONMENT AND FINE
+                    lytConFrom.setVisibility(View.VISIBLE);
+                    lytConTo.setVisibility(View.VISIBLE);
+                    lytConDays.setVisibility(View.VISIBLE);
+                    lytFineAmnt.setVisibility(View.VISIBLE);
+                    lytSoclFrom.setVisibility(View.GONE);
+                    lytSclSerTo.setVisibility(View.GONE);
+                    lytRisingDays.setVisibility(View.GONE);
+                    lytFirNo.setVisibility(View.GONE);
+                    lytPSName.setVisibility(View.GONE);
+                    lyt_DrvrExpredDate.setVisibility(View.GONE);
+                    rdoBtn_DLSUS.setChecked(true);
+                    rdoBtn_DLCAN.setKeyListener(null);
+                    rdoBtnNONE.setKeyListener(null);
+                    clearData();
+
                 } else if ("11".equals(selectedCourtDisCode)) {  // DL CANCELLATION AND FINE
                     lytConFrom.setVisibility(View.GONE);
                     lytConTo.setVisibility(View.GONE);
@@ -600,6 +616,23 @@ public class DDCloseActiviy extends Activity {
                     lytConTo.setVisibility(View.VISIBLE);
                     lytConDays.setVisibility(View.VISIBLE);
                     lytFineAmnt.setVisibility(View.GONE);
+                    lytSoclFrom.setVisibility(View.GONE);
+                    lytSclSerTo.setVisibility(View.GONE);
+                    lytRisingDays.setVisibility(View.GONE);
+                    lytFirNo.setVisibility(View.GONE);
+                    lytPSName.setVisibility(View.GONE);
+                    lyt_DrvrExpredDate.setVisibility(View.GONE);
+                    rdoBtn_DLCAN.setChecked(true);
+                    rdoBtn_DLSUS.setKeyListener(null);
+                    rdoBtnNONE.setKeyListener(null);
+                    clearData();
+
+                } else if ("20".equals(selectedCourtDisCode)) {  // DL CANCELLATION AND IMPRISON AND FINE
+
+                    lytConFrom.setVisibility(View.VISIBLE);
+                    lytConTo.setVisibility(View.VISIBLE);
+                    lytConDays.setVisibility(View.VISIBLE);
+                    lytFineAmnt.setVisibility(View.VISIBLE);
                     lytSoclFrom.setVisibility(View.GONE);
                     lytSclSerTo.setVisibility(View.GONE);
                     lytRisingDays.setVisibility(View.GONE);
@@ -749,6 +782,16 @@ public class DDCloseActiviy extends Activity {
                     owner_lytFineAmnt.setVisibility(View.GONE);
                     clearOwnerData();
 
+                }else if ("19".equals(owner_selectedCourtDisCode)) {  // DL SUSPENSION AND IMPRISONMENT AND FINE
+
+                    owner_lytConvtdFrom.setVisibility(View.GONE);
+                    owner_lytConvtdTo.setVisibility(View.GONE);
+                    owner_lytSoclFrom.setVisibility(View.GONE);
+                    owner_lytSclSerTo.setVisibility(View.GONE);
+                    owner_lytRisingDays.setVisibility(View.GONE);
+                    owner_lytFineAmnt.setVisibility(View.VISIBLE);
+                    clearOwnerData();
+
                 } else if ("11".equals(owner_selectedCourtDisCode)) {  // DL CANCELLATION AND FINE
 
                     owner_lytConvtdFrom.setVisibility(View.GONE);
@@ -769,7 +812,17 @@ public class DDCloseActiviy extends Activity {
                     owner_lytRisingDays.setVisibility(View.GONE);
                     owner_lytFineAmnt.setVisibility(View.GONE);
 
-                } else if ("13".equals(owner_selectedCourtDisCode)) {
+                } else if ("20".equals(owner_selectedCourtDisCode)) {  // DL CANCELLATION AND IMPRISON AND FINE
+
+                    clearOwnerData();
+                    owner_lytConvtdFrom.setVisibility(View.GONE);
+                    owner_lytConvtdTo.setVisibility(View.GONE);
+                    owner_lytSoclFrom.setVisibility(View.GONE);
+                    owner_lytSclSerTo.setVisibility(View.GONE);
+                    owner_lytRisingDays.setVisibility(View.GONE);
+                    owner_lytFineAmnt.setVisibility(View.VISIBLE);
+
+                }else if ("13".equals(owner_selectedCourtDisCode)) {
 
                     owner_lytConvtdFrom.setVisibility(View.GONE);
                     owner_lytConvtdTo.setVisibility(View.GONE);
@@ -1035,6 +1088,9 @@ public class DDCloseActiviy extends Activity {
                 } else if (sTS_No.trim().equals("")) {
                     edtTxt_STC_No.setError(Html.fromHtml("<font color='white'>Enter STC No</font>"));
                     edtTxt_STC_No.requestFocus();
+                } else if (edtTxt_FineAmnt.isShown() && edtTxt_FineAmnt.getText().toString().equals("")) {
+                    edtTxt_FineAmnt.setError(Html.fromHtml("<font color='white'>Enter Fine Amount </font>"));
+                    edtTxt_FineAmnt.requestFocus();
                 }/* else if (dl_SusDays.trim().equals("") && dl_SUS.equals("Y")) {
                     edtTxt_DL_SUSDAYS.setError(Html.fromHtml("<font color='white'>Enter Suspention Days</font>"));
                     edtTxt_DL_SUSDAYS.requestFocus();
@@ -1063,10 +1119,10 @@ public class DDCloseActiviy extends Activity {
                     showToast("Select Owner Social Service From Date!");
                 } else if (owner_btn_courtSoclServceTodate.isShown() && owner_btn_courtSoclServceTodate.getText().toString().equals("Select Date")) {
                     showToast("Select Owner Social Service To Date!");
-                } else if (owner_edtTxt_RisingDays.isShown()&& owner_edtTxt_RisingDays.getText().toString().isEmpty()){
+                } else if (owner_edtTxt_RisingDays.isShown() && owner_edtTxt_RisingDays.getText().toString().isEmpty()) {
                     owner_edtTxt_RisingDays.setError("Please enter the Owner Rising Days!");
                     owner_edtTxt_RisingDays.requestFocus();
-                }else if (minor_Dvng_Flag && driver_ImgData == null) {
+                } else if (minor_Dvng_Flag && driver_ImgData == null) {
                     showToast("Please Select/Capture Owner Magistrate Copy!");
                 } else if (minor_Dvng_Flag && minor_ImgData == null) {
                     showToast("Please Select/Capture Driver Magistrate Copy!");
@@ -1083,7 +1139,9 @@ public class DDCloseActiviy extends Activity {
                         new Async_getCourtClosingUpdateTicketInfo().execute();
                     }
 
-                } else if (Objects.requireNonNull(court_Disposal_code).equals("1") || court_Disposal_code.equals("11") || court_Disposal_code.equals("9")
+                } else if (Objects.requireNonNull(court_Disposal_code).equals("1")
+                        || court_Disposal_code.equals("11")
+                        || court_Disposal_code.equals("9")
                         || court_Disposal_code.equals("15")) {
 
                     if (fineAmnt.trim().equals("")) {
@@ -1152,7 +1210,9 @@ public class DDCloseActiviy extends Activity {
 
                     }
 
-                } else if (court_Disposal_code.equals("2") || court_Disposal_code.equals("12") || court_Disposal_code.equals("10") || court_Disposal_code.equals("16")) {
+                } else if (court_Disposal_code.equals("2") || court_Disposal_code.equals("12")
+                        || court_Disposal_code.equals("10") || court_Disposal_code.equals("16")
+                        || court_Disposal_code.equals("19") || court_Disposal_code.equals("20")) {
 
                     if (btn_courtConFromdate.getText().toString().equals("Select Date")) {
                         showToast("Please select Court Convicted From date");
@@ -1429,7 +1489,7 @@ public class DDCloseActiviy extends Activity {
         @SuppressWarnings("unused")
         @Override
         protected String doInBackground(Void... params) {
-            ServiceHelper.getCourtClosingTicketInfo("" + et_dp_regno.getText().toString().trim().toUpperCase(), "" + present_date_toSend,"1");
+            ServiceHelper.getCourtClosingTicketInfo("" + et_dp_regno.getText().toString().trim().toUpperCase(), "" + present_date_toSend, "1");
             return null;
         }
 
@@ -2280,7 +2340,7 @@ public class DDCloseActiviy extends Activity {
             try {
                 String todaysdate = new DateUtil().getTodaysDate();
                 long days = new DateUtil().DaysCalucate(date_dd_dl_dob, todaysdate);
-                //Minimum Age should be 16
+                // Minimum Age should be 16
                 if (days > 5824) {
                     btn_Dl_dob.setText(date_dd_dl_dob.toUpperCase());
                 } else {
