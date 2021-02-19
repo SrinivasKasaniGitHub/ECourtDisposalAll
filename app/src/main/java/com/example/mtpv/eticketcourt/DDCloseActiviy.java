@@ -782,7 +782,7 @@ public class DDCloseActiviy extends Activity {
                     owner_lytFineAmnt.setVisibility(View.GONE);
                     clearOwnerData();
 
-                }else if ("19".equals(owner_selectedCourtDisCode)) {  // DL SUSPENSION AND IMPRISONMENT AND FINE
+                } else if ("19".equals(owner_selectedCourtDisCode)) {  // DL SUSPENSION AND IMPRISONMENT AND FINE
 
                     owner_lytConvtdFrom.setVisibility(View.GONE);
                     owner_lytConvtdTo.setVisibility(View.GONE);
@@ -822,7 +822,7 @@ public class DDCloseActiviy extends Activity {
                     owner_lytRisingDays.setVisibility(View.GONE);
                     owner_lytFineAmnt.setVisibility(View.VISIBLE);
 
-                }else if ("13".equals(owner_selectedCourtDisCode)) {
+                } else if ("13".equals(owner_selectedCourtDisCode)) {
 
                     owner_lytConvtdFrom.setVisibility(View.GONE);
                     owner_lytConvtdTo.setVisibility(View.GONE);
@@ -1122,9 +1122,9 @@ public class DDCloseActiviy extends Activity {
                 } else if (owner_edtTxt_RisingDays.isShown() && owner_edtTxt_RisingDays.getText().toString().isEmpty()) {
                     owner_edtTxt_RisingDays.setError("Please enter the Owner Rising Days!");
                     owner_edtTxt_RisingDays.requestFocus();
-                } else if (minor_Dvng_Flag && driver_ImgData == null) {
+                } else if (minor_Dvng_Flag && driver_ImgData == null && owner_img_CourtCopy.isShown()) {
                     showToast("Please Select/Capture Owner Magistrate Copy!");
-                } else if (minor_Dvng_Flag && minor_ImgData == null) {
+                } else if (minor_Dvng_Flag && minor_ImgData == null && minor_img_CourtCopy.isShown()) {
                     showToast("Please Select/Capture Driver Magistrate Copy!");
                 } else if ("3".equals(court_Disposal_code) || "17".equals(court_Disposal_code)) {
                     if (btn_courtConFromdate.getText().toString().equals("Select Date")) {
@@ -2082,7 +2082,7 @@ public class DDCloseActiviy extends Activity {
                     long differenceDates = difference / (24 * 60 * 60 * 1000);
 
                     //Convert long to String
-                    dayDifference = Long.toString(differenceDates);
+                    dayDifference = Long.toString(differenceDates+1);
                     edtTxtConDays.setText(dayDifference);
                 } else {
                     showToast("Date should be greater than From_Date ");
@@ -2311,7 +2311,7 @@ public class DDCloseActiviy extends Activity {
                     long differenceDates = difference / (24 * 60 * 60 * 1000);
 
                     //Convert long to String
-                    dayDifference = Long.toString(differenceDates);
+                    dayDifference = Long.toString(differenceDates+1);
                     edtTxt_DL_SUSDAYS.setText(dayDifference);
                 } else {
                     showToast("Date should be greater than From_Date ");

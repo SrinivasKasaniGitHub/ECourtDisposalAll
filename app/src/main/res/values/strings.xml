@@ -1,4 +1,4 @@
- <resources>
+<resources>
     <string name="app_name">TS e-Court</string>
 
     // Login
@@ -8,13 +8,13 @@
     <string name="CompanyName">TELANGANA TRAFFIC POLICE</string>
     <string name="permissions">Please accept all permissions</string>
 
-     <!-- DASHBOARD -->
+    <!-- DASHBOARD -->
     <string name="release_documents">Release\nDocuments</string>
     <string name="release_documents_one_line">Release Documents</string>
     <string name="towing">Crane \n41 CP ACT</string>
     <string name="towing_one_line">Crane 41 CP ACT</string>
     <string name="reports">Reports</string>
-    <string name="app_version">Version-3.1.5</string>
+    <string name="app_version">Version-3.2.1</string>
     <string name="regNo">Regn.No</string>
     <string name="engine">Engine No</string>
     <string name="chasis">Chasis No</string>
@@ -328,30 +328,30 @@
     <string name="chg_Bkd"><u>CG_BKD_Num</u></string>
     <string name="chg_Pnd"><u>CG_PND_Num</u></string>
     <string name="TopVltn_Bkd"><u>TV_BKD_Num</u></string>
-     <string name="officer_pid">Officer PID</string>
-     <string name="pid">PID:</string>
-     <string name="cadre">Cadre:</string>
-     <string name="ps">PS Name:</string>
-     <string name="offence_from_date">Offence From Date</string>
-     <string name="offence_to_date">Offence To Date</string>
-     <string name="get">GET</string>
-     <string name="cases">Cases</string>
-     <string name="dd">DD</string>
-     <string name="chargesheet">ChargeSheet</string>
-     <string name="topviolator">TopViolator</string>
-     <string name="booked">Booked</string>
-     <string name="counselling_n_not_attended">Counselling   not attended</string>
-     <string name="court_not_attended">Court not attended</string>
-     <string name="dd_infomation">DD Information</string>
-     <string name="e_ticket_regn_no">E-Ticket/Regn. No.</string>
-     <string name="challan_details">Challan Details</string>
-     <string name="regn_no">Regn. No.</string>
-     <string name="mobile_no">Mobile No.</string>
-     <string name="challan_no">Challan No</string>
-     <string name="dl_no">DL No</string>
-     <string name="mpls_network">TEST</string>
-     <string name="open_network">LIVE</string>
-     <string name="download_masters">Download Masters</string>
-     <string name="login_">Login</string>
+    <string name="officer_pid">Officer PID</string>
+    <string name="pid">PID:</string>
+    <string name="cadre">Cadre:</string>
+    <string name="ps">PS Name:</string>
+    <string name="offence_from_date">Offence From Date</string>
+    <string name="offence_to_date">Offence To Date</string>
+    <string name="get">GET</string>
+    <string name="cases">Cases</string>
+    <string name="dd">DD</string>
+    <string name="chargesheet">ChargeSheet</string>
+    <string name="topviolator">TopViolator</string>
+    <string name="booked">Booked</string>
+    <string name="counselling_n_not_attended">Counselling   not attended</string>
+    <string name="court_not_attended">Court not attended</string>
+    <string name="dd_infomation">DD Information</string>
+    <string name="e_ticket_regn_no">E-Ticket/Regn. No.</string>
+    <string name="challan_details">Challan Details</string>
+    <string name="regn_no">Regn. No.</string>
+    <string name="mobile_no">Mobile No.</string>
+    <string name="challan_no">Challan No</string>
+    <string name="dl_no">DL No</string>
+    <string name="mpls_network">TEST</string>
+    <string name="open_network">LIVE</string>
+    <string name="download_masters">Download Masters</string>
+    <string name="login_">Login</string>
 
- </resources>
+</resources>
